@@ -70,3 +70,15 @@
 2025-09-26 17:26:16 - realtime_service - INFO - Starting Real-time Communication service on port 8021
 2025-09-26 18:24:08 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
 2025-09-26 18:24:08 - realtime_service - INFO - Starting Real-time Communication service on port 8021
+2025-09-26 22:58:12 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-26 22:58:12 - realtime_service - INFO - Starting Real-time Communication service on port 8021
+2025-09-26 23:37:34 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-26 23:37:34 - realtime_service - INFO - Starting Real-time Communication service on port 8021
+2025-09-26 23:53:26 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-26 23:53:26 - realtime_service - INFO - Starting Real-time Communication service on port 8021
+2025-09-27 00:03:40 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-27 00:03:40 - realtime_service - INFO - Starting Real-time Communication service on port 8021
+2025-09-27 00:10:50 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-27 00:10:50 - realtime_service - INFO - Starting Real-time Communication service on port 8021
+2025-09-27 00:26:22 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-27 00:26:22 - realtime_service - INFO - Starting Real-time Communication service on port 8021

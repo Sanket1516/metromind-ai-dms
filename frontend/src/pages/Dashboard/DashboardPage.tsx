@@ -355,31 +355,41 @@ const DashboardPage: React.FC = () => {
       announceError('Task title is required');
       return;
     }
-
+  
     announce('Creating new task');
-    
+  
     try {
-      await apiClient.post('/tasks/tasks', {
-        title: newTaskTitle,
-        description: newTaskDescription,
-        assigned_to: user?.id || user?.email, // Assign to current user
-        priority: newTaskPriority,
-        status: 'PENDING',
-        category: 'general',
-        task_type: 'TODO'
-      });
-
+      // Map UI priority to backend numeric enum (1..4)
+const priorityMap: Record<string, number> = {
+  low: 1,       // LOW
+  medium: 2,    // MEDIUM
+  high: 3,      // HIGH
+  urgent: 4,    // CRITICAL
+};
+const priorityEnum =
+  priorityMap[String(newTaskPriority || 'medium').toLowerCase()] ?? 2; // default MEDIUM
+  
+  await apiClient.post('/tasks', {
+    title: newTaskTitle.trim(),
+    description: newTaskDescription?.trim() || undefined,
+    assigned_to: user?.id,          // must be UUID
+    priority: priorityEnum,         // numeric enum: 1 | 2 | 3 | 4
+    status: 'PENDING',              // string enum is fine (PENDING / IN_PROGRESS / COMPLETED / CANCELLED)
+    category: 'general',
+    task_type: 'TODO'
+  });
+  
       setTaskDialogOpen(false);
       setNewTaskTitle('');
       setNewTaskDescription('');
       setNewTaskPriority('medium');
-      
+  
       const successMessage = 'Task created successfully!';
       toast.showSuccess(successMessage);
       announceSuccess(successMessage);
-      
+  
       // Navigate to tasks page to see the new task
-      navigate('../Tasks/TasksPage.tsx');
+      navigate('/tasks');
     } catch (error) {
       console.error('Task creation failed:', error);
       const errorMessage = toErrorMessage(error) || 'Failed to create task. Please try again.';
@@ -668,7 +678,7 @@ const DashboardPage: React.FC = () => {
               <Button
                 fullWidth
                 variant="outlined"
-                onClick={() => navigate('../Tasks/TasksPage.tsx')}
+                onClick={() => navigate('/tasks')}
                 sx={{ mt: 3 }}
               >
                 View All Tasks

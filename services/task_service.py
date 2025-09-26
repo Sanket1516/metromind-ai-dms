@@ -35,6 +35,14 @@ app = FastAPI(
 
 security = HTTPBearer()
 
+# Helper to validate UUID
+def _is_valid_uuid(val: str) -> bool:
+    try:
+        uuid.UUID(str(val))
+        return True
+    except Exception:
+        return False
+
 # Task Status Enum
 class TaskStatus(str, Enum):
     PENDING = "PENDING"
@@ -64,6 +72,7 @@ class TaskCreate(BaseModel):
     description: Optional[str] = None
     document_id: Optional[str] = None
     assigned_to: str
+    # NOTE: Priority is an enum in DB with numeric values (1..4). We accept it as Priority.
     priority: Priority = Priority.MEDIUM
     status: TaskStatus = TaskStatus.PENDING
     category: Optional[str] = None
@@ -168,7 +177,6 @@ async def create_task(
         
         # Validate document if provided
         if task_data.document_id:
-            from database import Document
             document = db.query(Document).filter(Document.id == task_data.document_id).first()
             if not document:
                 raise HTTPException(status_code=400, detail="Document not found")
@@ -180,7 +188,8 @@ async def create_task(
             description=task_data.description,
             document_id=task_data.document_id,
             assigned_to=task_data.assigned_to,
-            assigned_by=current_user,
+            # Only set assigned_by if current_user is a valid UUID
+            assigned_by=current_user if _is_valid_uuid(current_user) else None,
             priority=task_data.priority,
             status=task_data.status.value,
             category=task_data.category,
@@ -203,6 +212,8 @@ async def create_task(
         
         return _format_task_response(task, db)
         
+    except HTTPException:
+        raise
     except Exception as e:
         db.rollback()
         logger.error(f"Error creating task: {e}")
@@ -406,7 +417,7 @@ async def delete_task(
         
         # Check permissions - only admin or task creator can delete
         user = db.query(User).filter(User.id == current_user).first()
-        if user.role != UserRole.ADMIN and task.assigned_by != current_user:
+        if user and user.role != UserRole.ADMIN and task.assigned_by != current_user:
             raise HTTPException(status_code=403, detail="Not authorized to delete this task")
         
         db.delete(task)
@@ -523,7 +534,6 @@ def _format_task_response(task: Task, db: Session) -> TaskResponse:
         # Get document details
         document = None
         if task.document_id:
-            from database import Document
             document = db.query(Document).filter(Document.id == task.document_id).first()
         
         return TaskResponse(

@@ -95,6 +95,12 @@ SERVICE_REGISTRY = {
         "instances": [f"http://localhost:{service_config.analytics_service_port}"],
         "health_endpoint": "/health",
         "priority": 3
+    },
+    # Task management service
+    "tasks": {
+        "instances": [f"http://localhost:{service_config.task_service_port}"],
+        "health_endpoint": "/health",
+        "priority": 2
     }
 }
 
@@ -173,7 +179,9 @@ def get_service_from_path(path: str) -> Optional[str]:
         'search': ['search', 'vector-search', 'semantic-search'],
         'notifications': ['notifications', 'alerts', 'ws'],
         'integrations': ['integrations', 'whatsapp', 'sharepoint'],
-        'analytics': ['analytics', 'reports', 'metrics', 'insights']
+        'analytics': ['analytics', 'reports', 'metrics', 'insights'],
+        # Tasks service mapping
+        'tasks': ['tasks']
     }
     
     path_parts = path.split('/')
@@ -202,10 +210,15 @@ async def proxy_request(request: Request, service_name: str) -> Response:
     original_path = request.url.path.lstrip('/')
     path_parts = original_path.split('/')
     
-    # If path starts with service name, remove it
+    # If path starts with service name, remove it for most services.
+    # Special-case: tasks service exposes endpoints under /tasks/* already,
+    # so we should NOT strip the prefix for it.
     if path_parts and path_parts[0] == service_name:
-        # Remove service prefix: /auth/login -> /login
-        backend_path = '/' + '/'.join(path_parts[1:]) if len(path_parts) > 1 else '/'
+        if service_name == 'tasks':
+            backend_path = '/' + original_path  # keep /tasks/* intact
+        else:
+            # Remove service prefix: /auth/login -> /login
+            backend_path = '/' + '/'.join(path_parts[1:]) if len(path_parts) > 1 else '/'
     else:
         # Keep original path if no service prefix
         backend_path = '/' + original_path

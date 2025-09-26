@@ -113,3 +113,18 @@ connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection re
 2025-09-26 18:23:45 - audit_service - INFO - Starting Audit & Monitoring service on port 8022
 2025-09-26 18:23:45 - audit_service - INFO - Audit & Monitoring service started
 2025-09-26 19:13:14 - audit_service - INFO - Audit & Monitoring service shutdown
+2025-09-26 22:57:49 - audit_service - INFO - Starting Audit & Monitoring service on port 8022
+2025-09-26 22:57:49 - audit_service - INFO - Audit & Monitoring service started
+2025-09-26 23:19:40 - audit_service - INFO - Audit & Monitoring service shutdown
+2025-09-26 23:37:11 - audit_service - INFO - Starting Audit & Monitoring service on port 8022
+2025-09-26 23:37:11 - audit_service - INFO - Audit & Monitoring service started
+2025-09-26 23:53:03 - audit_service - INFO - Starting Audit & Monitoring service on port 8022
+2025-09-26 23:53:03 - audit_service - INFO - Audit & Monitoring service started
+2025-09-27 00:03:17 - audit_service - INFO - Starting Audit & Monitoring service on port 8022
+2025-09-27 00:03:17 - audit_service - INFO - Audit & Monitoring service started
+2025-09-27 00:09:11 - audit_service - INFO - Audit & Monitoring service shutdown
+2025-09-27 00:10:27 - audit_service - INFO - Starting Audit & Monitoring service on port 8022
+2025-09-27 00:10:27 - audit_service - INFO - Audit & Monitoring service started
+2025-09-27 00:24:04 - audit_service - INFO - Audit & Monitoring service shutdown
+2025-09-27 00:25:55 - audit_service - INFO - Starting Audit & Monitoring service on port 8022
+2025-09-27 00:25:56 - audit_service - INFO - Audit & Monitoring service started
