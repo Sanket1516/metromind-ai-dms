@@ -1,0 +1,198 @@
+/* Accessibility enhancements for MetroMind Extension Options */
+
+/* Skip links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 8px;
+  background: #1a202c;
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  z-index: 1000;
+  transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Enhanced focus indicators */
+*:focus {
+  outline: 2px solid #3182ce;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus {
+  outline-color: #1d4ed8;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+}
+
+/* Improved form accessibility */
+label {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.required::after {
+  content: " *";
+  color: #e53e3e;
+  font-weight: bold;
+}
+
+input:invalid {
+  border-color: #e53e3e;
+}
+
+input:invalid:focus {
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+/* Button accessibility */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.loading {
+  position: relative;
+  color: transparent;
+}
+
+button.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Status messages with proper ARIA */
+.status {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-top: 1rem;
+  border-left: 4px solid;
+}
+
+.status.success {
+  background: #f0fff4;
+  color: #22543d;
+  border-left-color: #38a169;
+}
+
+.status.error {
+  background: #fff5f5;
+  color: #742a2a;
+  border-left-color: #e53e3e;
+}
+
+.status.info {
+  background: #ebf8ff;
+  color: #2a4365;
+  border-left-color: #3182ce;
+}
+
+/* High contrast support */
+@media (prefers-contrast: high) {
+  * {
+    border-color: #000 !important;
+  }
+  
+  button {
+    border: 2px solid #000 !important;
+  }
+  
+  .btn-primary {
+    background: #000 !important;
+    color: #fff !important;
+  }
+  
+  .btn-secondary {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  
+  input, select, textarea {
+    border: 2px solid #000 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Large text support */
+@media (min-resolution: 2dppx) {
+  body {
+    font-size: 18px;
+  }
+  
+  button {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+  }
+  
+  input, select, textarea {
+    padding: 16px 20px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .skip-link,
+  button {
+    display: none !important;
+  }
+}

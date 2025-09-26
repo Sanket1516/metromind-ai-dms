@@ -1,0 +1,3750 @@
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Button,
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip,
+  IconButton,
+  Menu,
+  Tabs,
+  Tab,
+  CircularProgress,
+  Autocomplete,
+  LinearProgress,
+  Alert,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  Avatar,
+  Tooltip,
+  Paper,
+  Badge,
+  Stack
+} from '@mui/material';
+import {
+  Add as AddIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  MoreVert as MoreVertIcon,
+  Assignment as AssignmentIcon,
+  Search as SearchIcon,
+  FilterList as FilterListIcon,
+  PlayArrow as PlayIcon,
+  CheckCircle as CheckCircleIcon,
+  Person as PersonIcon,
+  Flag as FlagIcon,
+  Comment as CommentIcon,
+  CalendarToday as CalendarIcon,
+  PriorityHigh as PriorityIcon,
+  Schedule as ScheduleIcon
+} from '@mui/icons-material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { useAuth } from '../../contexts/AuthContext';
+import { api } from '../../services/api';
+
+  Dialog,  CardContent,import { Box, Typography, Card, CardContent } from '@mui/material';import {
+
+  DialogTitle,
+
+  DialogContent,  Typography,
+
+  DialogActions,
+
+  TextField,  Button,
+
+  FormControl,
+
+  InputLabel,  TextField,
+
+  Select,
+
+  MenuItem,  Grid,const TaskManagement: React.FC = () => {  Box,import {import React, { useState, useEffect } from 'react';
+
+  Chip,
+
+  IconButton,  Dialog,
+
+  Menu,
+
+  Tabs,  DialogTitle,  return (
+
+  Tab,
+
+  CircularProgress,  DialogContent,
+
+  Autocomplete,
+
+  LinearProgress,  DialogActions,    <Box>  Card,
+
+  Avatar,
+
+  Divider,  Chip,
+
+  Alert,
+
+  Tooltip,  Avatar,      <Typography variant="h4" component="h1" gutterBottom>
+
+  Badge,
+
+  Fab,  IconButton,
+
+  List,
+
+  ListItem,  Menu,        Task Management  CardContent,  Box,import {
+
+  ListItemText,
+
+  ListItemIcon  MenuItem,
+
+} from '@mui/material';
+
+import {  FormControl,      </Typography>
+
+  Add as AddIcon,
+
+  Edit as EditIcon,  InputLabel,
+
+  Delete as DeleteIcon,
+
+  MoreVert as MoreVertIcon,  Select,      <Card>  Typography,
+
+  Assignment as AssignmentIcon,
+
+  Search as SearchIcon,  Tabs,
+
+  FilterList as FilterListIcon,
+
+  PlayArrow as PlayIcon,  Tab,        <CardContent>
+
+  Pause as PauseIcon,
+
+  CheckCircle as CheckCircleIcon,  CircularProgress,
+
+  Schedule as ScheduleIcon,
+
+  Person as PersonIcon,  Autocomplete,          <Typography variant="h6" gutterBottom>  Button,  Card,  Box,
+
+  Flag as FlagIcon,
+
+  Comment as CommentIcon,  SelectChangeEvent,
+
+  AttachFile as AttachFileIcon,
+
+  CalendarToday as CalendarIcon,} from '@mui/material';            Task Management Feature
+
+  Notifications as NotificationsIcon
+
+} from '@mui/icons-material';import {
+
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';  Add as AddIcon,          </Typography>  Grid,
+
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
+import { useAuth } from '../../contexts/AuthContext';  Edit as EditIcon,
+
+import { api } from '../../services/api';
+
+  Delete as DeleteIcon,          <Typography variant="body2" color="text.secondary">
+
+// TypeScript Interfaces
+
+interface User {  MoreVert as MoreVertIcon,
+
+  id: string;
+
+  first_name: string;  Assignment as AssignmentIcon,            This feature is under development. Please check back later for the full task management interface.  Dialog,  CardContent,  Card,
+
+  last_name: string;
+
+  email: string;  Search as SearchIcon,
+
+}
+
+  FilterList as FilterListIcon,          </Typography>
+
+interface Task {
+
+  id: string;} from '@mui/icons-material';
+
+  title: string;
+
+  description: string;import { api } from '../../services/api';        </CardContent>  DialogTitle,
+
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+
+  assigned_to: string;
+
+  created_by: string;// TypeScript Interfaces      </Card>
+
+  due_date: string;
+
+  estimated_hours?: number;interface Task {
+
+  actual_hours?: number;
+
+  tags: string[];  id: string;    </Box>  DialogContent,  Typography,  CardContent,
+
+  created_at: string;
+
+  updated_at: string;  title: string;
+
+  comments?: TaskComment[];
+
+  progress_percentage?: number;  description: string;  );
+
+  assigned_to_name?: string;
+
+}  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+
+
+
+interface TaskComment {  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';};  DialogActions,
+
+  id: string;
+
+  comment: string;  assigned_to: string;
+
+  created_by: string;
+
+  created_at: string;  created_by: string;
+
+  user?: User;
+
+}  due_date: string;
+
+
+
+interface TaskStats {  estimated_hours?: number;export default TaskManagement;  TextField,  Button,  Typography,
+
+  total: number;
+
+  completed: number;  actual_hours?: number;
+
+  in_progress: number;
+
+  pending: number;  tags: string[];  Select,
+
+  overdue: number;
+
+}  created_at: string;
+
+
+
+interface TaskFormData {  updated_at: string;  MenuItem,  Grid,  Button,
+
+  title: string;
+
+  description: string;  comments?: TaskComment[];
+
+  status: Task['status'];
+
+  priority: Task['priority'];}  FormControl,
+
+  assigned_to: string;
+
+  due_date: string;
+
+  estimated_hours?: number;
+
+  tags: string[];interface TaskComment {  InputLabel,  Dialog,  Grid,
+
+}
+
+  id: string;
+
+// Utility Functions
+
+const getStatusColor = (status: Task['status']): 'success' | 'info' | 'warning' | 'error' | 'default' => {  comment: string;  Chip,
+
+  switch (status) {
+
+    case 'COMPLETED': return 'success';  created_by: string;
+
+    case 'IN_PROGRESS': return 'info';
+
+    case 'PENDING': return 'warning';  created_at: string;  Badge,  DialogTitle,  Chip,
+
+    case 'CANCELLED': return 'error';
+
+    default: return 'default';}
+
+  }
+
+};  LinearProgress,
+
+
+
+const getPriorityColor = (priority: Task['priority']): 'error' | 'warning' | 'info' | 'success' | 'default' => {interface User {
+
+  switch (priority) {
+
+    case 'URGENT': return 'error';  id: string;  IconButton  DialogContent,  Dialog,
+
+    case 'HIGH': return 'warning';
+
+    case 'MEDIUM': return 'info';  first_name: string;
+
+    case 'LOW': return 'success';
+
+    default: return 'default';  last_name: string;} from '@mui/material';
+
+  }
+
+};  email: string;
+
+
+
+const getDaysUntilDue = (dueDate: string): number | null => {}import {  DialogActions,  DialogTitle,
+
+  if (!dueDate) return null;
+
+  const today = new Date();
+
+  const due = new Date(dueDate);
+
+  const diffTime = due.getTime() - today.getTime();interface TaskStats {  Add as AddIcon,
+
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return diffDays;  total: number;
+
+};
+
+  completed: number;  Edit as EditIcon,  TextField,  DialogContent,
+
+// Task Card Component
+
+interface TaskCardProps {  in_progress: number;
+
+  task: Task;
+
+  onEdit: (task: Task) => void;  pending: number;  Delete as DeleteIcon,
+
+  onDelete: (taskId: string) => void;
+
+  onStatusChange: (taskId: string, status: Task['status']) => void;  overdue: number;
+
+  onAddComment: (taskId: string, comment: string) => void;
+
+}}  Search as SearchIcon,  Select,  DialogActions,
+
+
+
+const TaskCard: React.FC<TaskCardProps> = ({ 
+
+  task, 
+
+  onEdit, interface TaskFormData {  Flag as FlagIcon,
+
+  onDelete, 
+
+  onStatusChange,   title: string;
+
+  onAddComment 
+
+}) => {  description: string;  Person as PersonIcon,  MenuItem,  TextField,
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const [commentText, setCommentText] = useState('');  status: Task['status'];
+
+  const [showComments, setShowComments] = useState(false);
+
+  priority: Task['priority'];  AttachFile as AttachFileIcon,
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+
+    setAnchorEl(event.currentTarget);  assigned_to: string;
+
+  };
+
+  due_date: string;  Comment as CommentIcon  FormControl,  FormControl,
+
+  const handleMenuClose = () => {
+
+    setAnchorEl(null);  estimated_hours?: number;
+
+  };
+
+  tags: string[];} from '@mui/icons-material';
+
+  const handleStatusChange = (newStatus: Task['status']) => {
+
+    onStatusChange(task.id, newStatus);}
+
+    handleMenuClose();
+
+  };import { DatePicker } from '@mui/x-date-pickers/DatePicker';  InputLabel,  InputLabel,
+
+
+
+  const handleAddComment = () => {interface TaskCardProps {
+
+    if (commentText.trim()) {
+
+      onAddComment(task.id, commentText);  task: Task;import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
+      setCommentText('');
+
+    }  onEdit: (task: Task) => void;
+
+  };
+
+  onDelete: (taskId: string) => void;import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';  Chip,  Select,
+
+  const daysUntilDue = getDaysUntilDue(task.due_date);
+
+  const isOverdue = daysUntilDue !== null && daysUntilDue < 0;  onStatusChange: (taskId: string, status: Task['status']) => void;
+
+  const isDueSoon = daysUntilDue !== null && daysUntilDue <= 3 && daysUntilDue >= 0;
+
+  onAddComment: (taskId: string, comment: string) => void;
+
+  return (
+
+    <Card }
+
+      sx={{ 
+
+        mb: 2,// Define interfaces  Badge,  MenuItem,
+
+        border: isOverdue ? '2px solid #f44336' : isDueSoon ? '2px solid #ff9800' : 'none'
+
+      }}interface TaskFormDialogProps {
+
+    >
+
+      <CardContent>  open: boolean;interface User {
+
+        <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+
+          <Box flex={1}>  onClose: () => void;
+
+            <Typography variant="h6" gutterBottom>
+
+              {task.title}  task?: Task | null;  id: string;  LinearProgress,  List,
+
+            </Typography>
+
+              users: User[];
+
+            {task.description && (
+
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>  onSave: (taskData: TaskFormData) => void;  name: string;
+
+                {task.description}
+
+              </Typography>}
+
+            )}
+
+  email: string;  IconButton,  ListItem,
+
+            <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
+
+              <Chipinterface TaskStatisticsProps {
+
+                label={task.status.replace('_', ' ')}
+
+                color={getStatusColor(task.status)}  stats: TaskStats;}
+
+                size="small"
+
+              />}
+
+              <Chip
+
+                label={task.priority}  Fab  ListItemText,
+
+                color={getPriorityColor(task.priority)}
+
+                variant="outlined"// Task Card Component
+
+                size="small"
+
+                icon={<FlagIcon />}const TaskCard: React.FC<TaskCardProps> = ({ interface Task {
+
+              />
+
+              {isOverdue && (  task, 
+
+                <Chip
+
+                  label="OVERDUE"  onEdit,   id: string;} from '@mui/material';  IconButton,
+
+                  color="error"
+
+                  size="small"  onDelete, 
+
+                  sx={{ ml: 1 }}
+
+                />  onStatusChange,   title: string;
+
+              )}
+
+              {isDueSoon && (  onAddComment 
+
+                <Chip
+
+                  label="DUE SOON"}) => {  description: string;import {  Avatar,
+
+                  color="warning"
+
+                  size="small"  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+                  sx={{ ml: 1 }}
+
+                />  const [commentText, setCommentText] = useState('');  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+
+              )}
+
+            </Box>  const [showComments, setShowComments] = useState(false);
+
+
+
+            <Box display="flex" alignItems="center" gap={2} mb={1}>  priority: 'low' | 'medium' | 'high' | 'urgent';  Add as AddIcon,  LinearProgress,
+
+              {task.assigned_to_name && (
+
+                <Box display="flex" alignItems="center" gap={1}>  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+
+                  <PersonIcon fontSize="small" />
+
+                  <Typography variant="caption" color="text.secondary">    setAnchorEl(event.currentTarget);  assigned_to: string;
+
+                    {task.assigned_to_name}
+
+                  </Typography>  };
+
+                </Box>
+
+              )}  task_type: string;  Edit as EditIcon,  Tab,
+
+              
+
+              {task.due_date && (  const handleMenuClose = () => {
+
+                <Typography variant="caption" color="text.secondary">
+
+                  Due: {new Date(task.due_date).toLocaleDateString()}    setAnchorEl(null);  tags: string[];
+
+                </Typography>
+
+              )}  };
+
+              
+
+              {task.estimated_hours && (  due_date: string | null;  Delete as DeleteIcon,  Tabs,
+
+                <Typography variant="caption" color="text.secondary">
+
+                  Est: {task.estimated_hours}h  const getStatusColor = (status: Task['status']) => {
+
+                </Typography>
+
+              )}    switch (status) {  estimated_hours: number | null;
+
+            </Box>
+
+      case 'COMPLETED': return 'success';
+
+            {task.progress_percentage !== undefined && task.progress_percentage > 0 && (
+
+              <Box sx={{ mb: 2 }}>      case 'IN_PROGRESS': return 'info';  // Optional properties that may not exist in all tasks  Search as SearchIcon,  Autocomplete,
+
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+
+                  <Typography variant="body2">Progress</Typography>      case 'PENDING': return 'warning';
+
+                  <Typography variant="body2">{task.progress_percentage}%</Typography>
+
+                </Box>      case 'CANCELLED': return 'error';  category?: string;
+
+                <LinearProgress
+
+                  variant="determinate"      default: return 'default';
+
+                  value={task.progress_percentage}
+
+                />    }  assigned_to_name?: string;  FilterList as FilterListIcon,  Alert,
+
+              </Box>
+
+            )}  };
+
+
+
+            {task.tags && task.tags.length > 0 && (  progress_percentage?: number;
+
+              <Box display="flex" flexWrap="wrap" gap={0.5} mb={2}>
+
+                {task.tags.map((tag, index) => (  const getPriorityColor = (priority: Task['priority']) => {
+
+                  <Chip
+
+                    key={index}    switch (priority) {  attachments?: any[];  Flag as FlagIcon,  CircularProgress,
+
+                    label={tag}
+
+                    size="small"      case 'URGENT': return 'error';
+
+                    variant="outlined"
+
+                  />      case 'HIGH': return 'warning';  created_at?: string;
+
+                ))}
+
+              </Box>      case 'MEDIUM': return 'info';
+
+            )}
+
+          </Box>      case 'LOW': return 'success';  updated_at?: string;  Person as PersonIcon,  Menu,
+
+
+
+          <IconButton onClick={handleMenuClick}>      default: return 'default';
+
+            <MoreVertIcon />
+
+          </IconButton>    }}
+
+
+
+          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>  };
+
+            <MenuItem onClick={() => { onEdit(task); handleMenuClose(); }}>
+
+              <EditIcon sx={{ mr: 1 }} fontSize="small" />  AttachFile as AttachFileIcon,  MenuList,
+
+              Edit
+
+            </MenuItem>  const handleStatusChange = (newStatus: Task['status']) => {
+
+            <MenuItem onClick={() => handleStatusChange('IN_PROGRESS')}>
+
+              <PlayIcon sx={{ mr: 1 }} fontSize="small" />    onStatusChange(task.id, newStatus);interface TaskStats {
+
+              Start Progress
+
+            </MenuItem>    handleMenuClose();
+
+            <MenuItem onClick={() => handleStatusChange('COMPLETED')}>
+
+              <CheckCircleIcon sx={{ mr: 1 }} fontSize="small" />  };  total: number;  Comment as CommentIcon  ListItemIcon,
+
+              Complete
+
+            </MenuItem>
+
+            <MenuItem onClick={() => { onDelete(task.id); handleMenuClose(); }}>
+
+              <DeleteIcon sx={{ mr: 1 }} fontSize="small" />  const handleAddComment = () => {  pending: number;
+
+              Delete
+
+            </MenuItem>    if (commentText.trim()) {
+
+          </Menu>
+
+        </Box>      onAddComment(task.id, commentText);  in_progress: number;} from '@mui/icons-material';  Divider,
+
+
+
+        {/* Comments Section */}      setCommentText('');
+
+        <Box mt={2}>
+
+          <Button    }  completed: number;
+
+            size="small"
+
+            onClick={() => setShowComments(!showComments)}  };
+
+            sx={{ mb: 1 }}
+
+            startIcon={<CommentIcon />}  overdue: number;import { DatePicker } from '@mui/x-date-pickers/DatePicker';  Badge,
+
+          >
+
+            {showComments ? 'Hide' : 'Show'} Comments ({task.comments?.length || 0})  return (
+
+          </Button>
+
+    <Card sx={{ mb: 2 }}>  // Optional properties that may not exist
+
+          {showComments && (
+
+            <Box>      <CardContent>
+
+              {task.comments?.map((comment) => (
+
+                <Box key={comment.id} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>        <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>  total_tasks?: number;import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';  Tooltip
+
+                  <Typography variant="body2">{comment.comment}</Typography>
+
+                  <Typography variant="caption" color="text.secondary">          <Box flex={1}>
+
+                    {comment.user?.first_name} {comment.user?.last_name} - {new Date(comment.created_at).toLocaleString()}
+
+                  </Typography>            <Typography variant="h6" gutterBottom>  in_progress_tasks?: number;
+
+                </Box>
+
+              ))}              {task.title}
+
+
+
+              <Box display="flex" gap={1} mt={2}>            </Typography>  completed_tasks?: number;import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';} from '@mui/material';
+
+                <TextField
+
+                  size="small"            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+
+                  placeholder="Add a comment..."
+
+                  value={commentText}              {task.description}  overdue_tasks?: number;
+
+                  onChange={(e) => setCommentText(e.target.value)}
+
+                  sx={{ flex: 1 }}            </Typography>
+
+                />
+
+                <Button size="small" onClick={handleAddComment} disabled={!commentText.trim()}>            }import {
+
+                  Add
+
+                </Button>            <Box display="flex" gap={1} mb={2} flexWrap="wrap">
+
+              </Box>
+
+            </Box>              <Chip 
+
+          )}
+
+        </Box>                label={task.status.replace('_', ' ')} 
+
+      </CardContent>
+
+    </Card>                color={getStatusColor(task.status)} interface TaskFormData {// Define interfaces  Add as AddIcon,
+
+  );
+
+};                size="small" 
+
+
+
+// Task Form Dialog Component              />  title: string;
+
+interface TaskFormDialogProps {
+
+  open: boolean;              <Chip 
+
+  onClose: () => void;
+
+  task?: Task | null;                label={task.priority}   description: string;interface User {  Edit as EditIcon,
+
+  users: User[];
+
+  onSave: (taskData: TaskFormData) => void;                color={getPriorityColor(task.priority)} 
+
+}
+
+                variant="outlined"   status: string;
+
+const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
+
+  open,                size="small" 
+
+  onClose,
+
+  task,              />  priority: string;  id: string;  Delete as DeleteIcon,
+
+  users,
+
+  onSave              {task.tags.map((tag, index) => (
+
+}) => {
+
+  const [formData, setFormData] = useState<TaskFormData>({                <Chip key={index} label={tag} size="small" variant="outlined" />  assigned_to: string;
+
+    title: '',
+
+    description: '',              ))}
+
+    status: 'PENDING',
+
+    priority: 'MEDIUM',            </Box>  task_type: string;  name: string;  PlayArrow as PlayIcon,
+
+    assigned_to: '',
+
+    due_date: '',
+
+    estimated_hours: undefined,
+
+    tags: [],            <Box display="flex" alignItems="center" gap={2} mb={1}>  tags: string[];
+
+  });
+
+  const [saving, setSaving] = useState(false);              <Typography variant="caption" color="text.secondary">
+
+
+
+  useEffect(() => {                Due: {new Date(task.due_date).toLocaleDateString()}  due_date: Date | null;  email: string;  Pause as PauseIcon,
+
+    if (task) {
+
+      setFormData({              </Typography>
+
+        title: task.title,
+
+        description: task.description,              {task.estimated_hours && (  estimated_hours: number | null;
+
+        status: task.status,
+
+        priority: task.priority,                <Typography variant="caption" color="text.secondary">
+
+        assigned_to: task.assigned_to,
+
+        due_date: task.due_date.split('T')[0], // Format for date input                  Est: {task.estimated_hours}h}}  CheckCircle as CheckCircleIcon,
+
+        estimated_hours: task.estimated_hours,
+
+        tags: task.tags,                </Typography>
+
+      });
+
+    } else {              )}
+
+      setFormData({
+
+        title: '',            </Box>
+
+        description: '',
+
+        status: 'PENDING',          </Box>interface TaskManagementProps {  Schedule as ScheduleIcon,
+
+        priority: 'MEDIUM',
+
+        assigned_to: '',
+
+        due_date: '',
+
+        estimated_hours: undefined,          <IconButton onClick={handleMenuClick}>  tasks: Task[];
+
+        tags: [],
+
+      });            <MoreVertIcon />
+
+    }
+
+  }, [task, open]);          </IconButton>  users: User[];interface Task {  Person as PersonIcon,
+
+
+
+  const handleSave = async () => {
+
+    setSaving(true);
+
+    try {          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>  onCreateTask: (task: TaskFormData) => void;
+
+      await onSave(formData);
+
+      onClose();            <MenuItem onClick={() => { onEdit(task); handleMenuClose(); }}>
+
+    } catch (error) {
+
+      console.error('Error saving task:', error);              <EditIcon sx={{ mr: 1 }} fontSize="small" />  onUpdateTask: (id: string, task: TaskFormData) => void;  id: string;  Assignment as AssignmentIcon,
+
+    } finally {
+
+      setSaving(false);              Edit
+
+    }
+
+  };            </MenuItem>  onDeleteTask: (id: string) => void;
+
+
+
+  return (            <MenuItem onClick={() => handleStatusChange('IN_PROGRESS')}>
+
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+
+      <DialogTitle>              In Progress  stats: TaskStats;  title: string;  Search as SearchIcon,
+
+        {task ? 'Edit Task' : 'Create New Task'}
+
+      </DialogTitle>            </MenuItem>
+
+      <DialogContent>
+
+        <Box sx={{ pt: 1 }}>            <MenuItem onClick={() => handleStatusChange('COMPLETED')}>  loading?: boolean;
+
+          <Grid container spacing={2}>
+
+            <Grid item xs={12}>              Complete
+
+              <TextField
+
+                fullWidth            </MenuItem>}  description: string;  FilterList as FilterListIcon,
+
+                label="Title"
+
+                value={formData.title}            <MenuItem onClick={() => { onDelete(task.id); handleMenuClose(); }}>
+
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+
+                required              <DeleteIcon sx={{ mr: 1 }} fontSize="small" />
+
+              />
+
+            </Grid>              Delete
+
+            <Grid item xs={12}>
+
+              <TextField            </MenuItem>const TaskManagement: React.FC<TaskManagementProps> = ({  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';  MoreVert as MoreVertIcon,
+
+                fullWidth
+
+                label="Description"          </Menu>
+
+                multiline
+
+                rows={3}        </Box>  tasks,
+
+                value={formData.description}
+
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+
+              />
+
+            </Grid>        {/* Comments Section */}  users,  priority: 'low' | 'medium' | 'high' | 'urgent';  Comment as CommentIcon,
+
+            <Grid item xs={12} sm={6}>
+
+              <FormControl fullWidth>        <Box mt={2}>
+
+                <InputLabel>Status</InputLabel>
+
+                <Select          <Button  onCreateTask,
+
+                  value={formData.status}
+
+                  label="Status"            size="small"
+
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value as Task['status'] })}
+
+                >            onClick={() => setShowComments(!showComments)}  onUpdateTask,  assigned_to: string;  Flag as FlagIcon,
+
+                  <MenuItem value="PENDING">Pending</MenuItem>
+
+                  <MenuItem value="IN_PROGRESS">In Progress</MenuItem>            sx={{ mb: 1 }}
+
+                  <MenuItem value="COMPLETED">Completed</MenuItem>
+
+                  <MenuItem value="CANCELLED">Cancelled</MenuItem>          >  onDeleteTask,
+
+                </Select>
+
+              </FormControl>            {showComments ? 'Hide' : 'Show'} Comments ({task.comments?.length || 0})
+
+            </Grid>
+
+            <Grid item xs={12} sm={6}>          </Button>  stats,  task_type: string;  AttachFile as AttachFileIcon,
+
+              <FormControl fullWidth>
+
+                <InputLabel>Priority</InputLabel>
+
+                <Select
+
+                  value={formData.priority}          {showComments && (  loading = false
+
+                  label="Priority"
+
+                  onChange={(e) => setFormData({ ...formData, priority: e.target.value as Task['priority'] })}            <Box>
+
+                >
+
+                  <MenuItem value="LOW">Low</MenuItem>              {task.comments?.map((comment) => (}) => {  tags: string[];  CalendarToday as CalendarIcon,
+
+                  <MenuItem value="MEDIUM">Medium</MenuItem>
+
+                  <MenuItem value="HIGH">High</MenuItem>                <Box key={comment.id} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
+
+                  <MenuItem value="URGENT">Urgent</MenuItem>
+
+                </Select>                  <Typography variant="body2">{comment.comment}</Typography>  const [searchTerm, setSearchTerm] = useState('');
+
+              </FormControl>
+
+            </Grid>                  <Typography variant="caption" color="text.secondary">
+
+            <Grid item xs={12} sm={6}>
+
+              <FormControl fullWidth>                    {new Date(comment.created_at).toLocaleString()}  const [filterStatus, setFilterStatus] = useState('all');  due_date: string | null;  Notifications as NotificationsIcon
+
+                <InputLabel>Assigned To</InputLabel>
+
+                <Select                  </Typography>
+
+                  value={formData.assigned_to}
+
+                  label="Assigned To"                </Box>  const [filterPriority, setFilterPriority] = useState('all');
+
+                  onChange={(e) => setFormData({ ...formData, assigned_to: e.target.value })}
+
+                  required              ))}
+
+                >
+
+                  {users.map((user) => (                const [isDialogOpen, setIsDialogOpen] = useState(false);  estimated_hours: number | null;} from '@mui/icons-material';
+
+                    <MenuItem key={user.id} value={user.id}>
+
+                      {user.first_name} {user.last_name}              <Box display="flex" gap={1} mt={2}>
+
+                    </MenuItem>
+
+                  ))}                <TextField  const [editingTask, setEditingTask] = useState<Task | null>(null);
+
+                </Select>
+
+              </FormControl>                  size="small"
+
+            </Grid>
+
+            <Grid item xs={12} sm={6}>                  placeholder="Add a comment..."  const [formData, setFormData] = useState<TaskFormData>({  // Optional properties that may not exist in all tasksimport { useAuth } from '../../contexts/AuthContext';
+
+              <TextField
+
+                fullWidth                  value={commentText}
+
+                label="Due Date"
+
+                type="date"                  onChange={(e) => setCommentText(e.target.value)}    title: '',
+
+                value={formData.due_date}
+
+                onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}                  sx={{ flex: 1 }}
+
+                InputLabelProps={{
+
+                  shrink: true,                />    description: '',  category?: string;import { api } from '../../services/api';
+
+                }}
+
+              />                <Button size="small" onClick={handleAddComment} disabled={!commentText.trim()}>
+
+            </Grid>
+
+            <Grid item xs={12} sm={6}>                  Add    status: 'pending',
+
+              <TextField
+
+                fullWidth                </Button>
+
+                label="Estimated Hours"
+
+                type="number"              </Box>    priority: 'medium',  assigned_to_name?: string;
+
+                value={formData.estimated_hours || ''}
+
+                onChange={(e) => setFormData({ ...formData, estimated_hours: parseFloat(e.target.value) || undefined })}            </Box>
+
+              />
+
+            </Grid>          )}    assigned_to: '',
+
+          </Grid>
+
+        </Box>
+
+          <Autocomplete
+
+            multiple      </CardContent>    task_type: 'general',  progress_percentage?: number;// Interfaces
+
+            freeSolo
+
+            options={[]}    </Card>
+
+            value={formData.tags}
+
+            onChange={(event, newValue) => setFormData({ ...formData, tags: newValue })}  );    tags: [],
+
+            renderInput={(params) => (
+
+              <TextField};
+
+                {...params}
+
+                label="Tags"    due_date: null,  attachments?: any[];interface User {
+
+                sx={{ mt: 2 }}
+
+              />// Task Form Dialog Component
+
+            )}
+
+          />const TaskFormDialog: React.FC<TaskFormDialogProps> = ({     estimated_hours: null
+
+        </Box>
+
+      </DialogContent>  open, 
+
+      <DialogActions>
+
+        <Button onClick={onClose}>Cancel</Button>  onClose,   });  created_at?: string;  id: string;
+
+        <Button
+
+          onClick={handleSave}  task, 
+
+          variant="contained"
+
+          disabled={saving || !formData.title || !formData.assigned_to}  users, 
+
+          startIcon={saving ? <CircularProgress size={20} /> : null}
+
+        >  onSave 
+
+          {task ? 'Update' : 'Create'} Task
+
+        </Button>}) => {  // Filter tasks based on search term and filters  updated_at?: string;  first_name: string;
+
+      </DialogActions>
+
+    </Dialog>  const [formData, setFormData] = useState<TaskFormData>({
+
+  );
+
+};    title: '',  const filteredTasks = tasks.filter(task => {
+
+
+
+// Task Statistics Component    description: '',
+
+interface TaskStatisticsProps {
+
+  stats: TaskStats;    status: 'PENDING',    const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||}  last_name: string;
+
+}
+
+    priority: 'MEDIUM',
+
+const TaskStatistics: React.FC<TaskStatisticsProps> = ({ stats }) => {
+
+  return (    assigned_to: '',                         task.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+    <Grid container spacing={3} sx={{ mb: 3 }}>
+
+      <Grid item xs={12} sm={6} md={3}>    due_date: '',
+
+        <Card>
+
+          <CardContent>    estimated_hours: undefined,    const matchesStatus = filterStatus === 'all' || task.status === filterStatus;}
+
+            <Typography color="text.secondary" gutterBottom>
+
+              Total Tasks    tags: [],
+
+            </Typography>
+
+            <Typography variant="h4">  });    const matchesPriority = filterPriority === 'all' || task.priority === filterPriority;
+
+              {stats.total}
+
+            </Typography>  const [saving, setSaving] = useState(false);
+
+          </CardContent>
+
+        </Card>    return matchesSearch && matchesStatus && matchesPriority;interface TaskStats {
+
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>  useEffect(() => {
+
+        <Card>
+
+          <CardContent>    if (task) {  });
+
+            <Typography color="text.secondary" gutterBottom>
+
+              In Progress      setFormData({
+
+            </Typography>
+
+            <Typography variant="h4" color="info.main">        title: task.title,  total: number;interface Task {
+
+              {stats.in_progress}
+
+            </Typography>        description: task.description,
+
+          </CardContent>
+
+        </Card>        status: task.status,  const handleCreateTask = () => {
+
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>        priority: task.priority,
+
+        <Card>
+
+          <CardContent>        assigned_to: task.assigned_to,    setEditingTask(null);  pending: number;  id: string;
+
+            <Typography color="text.secondary" gutterBottom>
+
+              Completed        due_date: task.due_date.split('T')[0], // Format for date input
+
+            </Typography>
+
+            <Typography variant="h4" color="success.main">        estimated_hours: task.estimated_hours,    setFormData({
+
+              {stats.completed}
+
+            </Typography>        tags: task.tags,
+
+          </CardContent>
+
+        </Card>      });      title: '',  in_progress: number;  title: string;
+
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>    } else {
+
+        <Card>
+
+          <CardContent>      setFormData({      description: '',
+
+            <Typography color="text.secondary" gutterBottom>
+
+              Overdue        title: '',
+
+            </Typography>
+
+            <Typography variant="h4" color="error.main">        description: '',      status: 'pending',  completed: number;  description: string;
+
+              {stats.overdue}
+
+            </Typography>        status: 'PENDING',
+
+          </CardContent>
+
+        </Card>        priority: 'MEDIUM',      priority: 'medium',
+
+      </Grid>
+
+    </Grid>        assigned_to: '',
+
+  );
+
+};        due_date: '',      assigned_to: '',  overdue: number;  status: string;
+
+
+
+// Main Task Management Component        estimated_hours: undefined,
+
+const TaskManagement: React.FC = () => {
+
+  const { user } = useAuth();        tags: [],      task_type: 'general',
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const [stats, setStats] = useState<TaskStats>({      });
+
+    total: 0,
+
+    completed: 0,    }      tags: [],  // Optional properties that may not exist  priority: string;
+
+    in_progress: 0,
+
+    pending: 0,  }, [task, open]);
+
+    overdue: 0
+
+  });      due_date: null,
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  const [loading, setLoading] = useState(true);  const handleSave = async () => {
+
+  const [activeTab, setActiveTab] = useState(0);
+
+  const [taskDialogOpen, setTaskDialogOpen] = useState(false);    setSaving(true);      estimated_hours: null  total_tasks?: number;  assigned_to: string;
+
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
+  const [filters, setFilters] = useState({    try {
+
+    status: [] as string[],
+
+    priority: [] as string[],      await onSave(formData);    });
+
+    search: '',
+
+    assigned_to: '',      onClose();
+
+  });
+
+    } catch (error) {    setIsDialogOpen(true);  in_progress_tasks?: number;  due_date: string;
+
+  useEffect(() => {
+
+    fetchTasks();      console.error('Error saving task:', error);
+
+    fetchStats();
+
+    fetchUsers();    } finally {  };
+
+  }, [filters]);
+
+      setSaving(false);
+
+  const fetchTasks = async () => {
+
+    try {    }  completed_tasks?: number;  estimated_hours: number | null;
+
+      setLoading(true);
+
+      const params = new URLSearchParams();  };
+
+
+
+      if (filters.status.length > 0) {  const handleEditTask = (task: Task) => {
+
+        filters.status.forEach(status => params.append('status', status));
+
+      }  const handleStatusChange = (event: SelectChangeEvent<Task['status']>) => {
+
+      if (filters.priority.length > 0) {
+
+        filters.priority.forEach(priority => params.append('priority', priority));    setFormData({ ...formData, status: event.target.value as Task['status'] });    setEditingTask(task);  overdue_tasks?: number;  tags: string[];
+
+      }
+
+      if (filters.search) {  };
+
+        params.append('search', filters.search);
+
+      }    setFormData({
+
+      if (filters.assigned_to) {
+
+        params.append('assigned_to', filters.assigned_to);  const handlePriorityChange = (event: SelectChangeEvent<Task['priority']>) => {
+
+      }
+
+    setFormData({ ...formData, priority: event.target.value as Task['priority'] });      title: task.title,}  task_type: string;
+
+      const response = await api.get(`/task-management/tasks?${params.toString()}`);
+
+      setTasks(response.data);  };
+
+    } catch (error) {
+
+      console.error('Error fetching tasks:', error);      description: task.description,
+
+    } finally {
+
+      setLoading(false);  const handleAssignedToChange = (event: SelectChangeEvent<string>) => {
+
+    }
+
+  };    setFormData({ ...formData, assigned_to: event.target.value });      status: task.status,  comments?: Comment[];
+
+
+
+  const fetchStats = async () => {  };
+
+    try {
+
+      const response = await api.get('/task-management/tasks/stats');      priority: task.priority,
+
+      setStats(response.data);
+
+    } catch (error) {  return (
+
+      console.error('Error fetching stats:', error);
+
+    }    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>      assigned_to: task.assigned_to,interface TaskFormData {}
+
+  };
+
+      <DialogTitle>
+
+  const fetchUsers = async () => {
+
+    try {        {task ? 'Edit Task' : 'Create New Task'}      task_type: task.task_type,
+
+      const response = await api.get('/auth/users');
+
+      setUsers(response.data);      </DialogTitle>
+
+    } catch (error) {
+
+      console.error('Error fetching users:', error);      <DialogContent>      tags: task.tags,  title: string;
+
+    }
+
+  };        <Box sx={{ pt: 1 }}>
+
+
+
+  const handleCreateTask = () => {          <Grid container spacing={2}>      due_date: task.due_date ? new Date(task.due_date) : null,
+
+    setSelectedTask(null);
+
+    setTaskDialogOpen(true);            <Grid item xs={12}>
+
+  };
+
+              <TextField      estimated_hours: task.estimated_hours  description: string;interface Comment {
+
+  const handleEditTask = (task: Task) => {
+
+    setSelectedTask(task);                fullWidth
+
+    setTaskDialogOpen(true);
+
+  };                label="Title"    });
+
+
+
+  const handleDeleteTask = async (taskId: string) => {                value={formData.title}
+
+    if (window.confirm('Are you sure you want to delete this task?')) {
+
+      try {                onChange={(e) => setFormData({ ...formData, title: e.target.value })}    setIsDialogOpen(true);  status: string;  id: string;
+
+        await api.delete(`/task-management/tasks/${taskId}`);
+
+        fetchTasks();                required
+
+        fetchStats();
+
+      } catch (error) {              />  };
+
+        console.error('Error deleting task:', error);
+
+      }            </Grid>
+
+    }
+
+  };            <Grid item xs={12}>  priority: string;  content: string;
+
+
+
+  const handleStatusChange = async (taskId: string, newStatus: string) => {              <TextField
+
+    try {
+
+      await api.put(`/task-management/tasks/${taskId}`, { status: newStatus });                fullWidth  const handleSaveTask = () => {
+
+      fetchTasks();
+
+      fetchStats();                label="Description"
+
+    } catch (error) {
+
+      console.error('Error updating task status:', error);                multiline    if (!formData.title.trim()) {  assigned_to: string;  created_at: string;
+
+    }
+
+  };                rows={3}
+
+
+
+  const handleAddComment = async (taskId: string, comment: string) => {                value={formData.description}      alert('Please enter a task title');
+
+    try {
+
+      await api.post(`/task-management/tasks/${taskId}/comments`, { comment });                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+
+      fetchTasks();
+
+    } catch (error) {              />      return;  task_type: string;  user: User;
+
+      console.error('Error adding comment:', error);
+
+    }            </Grid>
+
+  };
+
+            <Grid item xs={12} sm={6}>    }
+
+  const handleSaveTask = async (taskData: TaskFormData) => {
+
+    try {              <FormControl fullWidth>
+
+      if (selectedTask) {
+
+        await api.put(`/task-management/tasks/${selectedTask.id}`, taskData);                <InputLabel>Status</InputLabel>  tags: string[];}
+
+      } else {
+
+        await api.post('/task-management/tasks', taskData);                <Select
+
+      }
+
+      fetchTasks();                  value={formData.status}    try {
+
+      fetchStats();
+
+    } catch (error) {                  label="Status"
+
+      console.error('Error saving task:', error);
+
+      throw error;                  onChange={handleStatusChange}      if (editingTask) {  due_date: Date | null;
+
+    }
+
+  };                >
+
+
+
+  const filteredTasks = tasks.filter(task => {                  <MenuItem value="PENDING">Pending</MenuItem>        onUpdateTask(editingTask.id, formData);
+
+    if (activeTab === 1) {
+
+      // My Tasks tab - filter by current user                  <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
+
+      return task.assigned_to === user?.id;
+
+    } else if (activeTab === 2) {                  <MenuItem value="COMPLETED">Completed</MenuItem>      } else {  estimated_hours: number | null;interface TaskStats {
+
+      // Assigned by Me tab - filter by creator
+
+      return task.created_by === user?.id;                  <MenuItem value="CANCELLED">Cancelled</MenuItem>
+
+    }
+
+    return true;                </Select>        onCreateTask(formData);
+
+  });
+
+              </FormControl>
+
+  return (
+
+    <LocalizationProvider dateAdapter={AdapterDateFns}>            </Grid>      }}  total: number;
+
+      <Box sx={{ p: 3 }}>
+
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>            <Grid item xs={12} sm={6}>
+
+          <Typography variant="h4" component="h1" gutterBottom>
+
+            Task Management              <FormControl fullWidth>      setIsDialogOpen(false);
+
+          </Typography>
+
+          <Button                <InputLabel>Priority</InputLabel>
+
+            variant="contained"
+
+            startIcon={<AddIcon />}                <Select    } catch (error) {  completed: number;
+
+            onClick={handleCreateTask}
+
+          >                  value={formData.priority}
+
+            Create Task
+
+          </Button>                  label="Priority"      console.error('Error saving task:', error);
+
+        </Box>
+
+                  onChange={handlePriorityChange}
+
+        <TaskStatistics stats={stats} />
+
+                >    }interface TaskManagementProps {  in_progress: number;
+
+        <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ mb: 3 }}>
+
+          <Tab label="All Tasks" />                  <MenuItem value="LOW">Low</MenuItem>
+
+          <Tab label="My Tasks" />
+
+          <Tab label="Assigned by Me" />                  <MenuItem value="MEDIUM">Medium</MenuItem>  };
+
+        </Tabs>
+
+                  <MenuItem value="HIGH">High</MenuItem>
+
+        {/* Filters */}
+
+        <Card sx={{ mb: 3 }}>                  <MenuItem value="URGENT">Urgent</MenuItem>  tasks: Task[];  pending: number;
+
+          <CardContent>
+
+            <Grid container spacing={2} alignItems="center">                </Select>
+
+              <Grid item xs={12} sm={6} md={3}>
+
+                <TextField              </FormControl>  const handleDeleteTask = (taskId: string) => {
+
+                  fullWidth
+
+                  placeholder="Search tasks..."            </Grid>
+
+                  value={filters.search}
+
+                  onChange={(e) => setFilters({ ...filters, search: e.target.value })}            <Grid item xs={12} sm={6}>    if (window.confirm('Are you sure you want to delete this task?')) {  users: User[];  overdue: number;
+
+                  InputProps={{
+
+                    startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />              <FormControl fullWidth>
+
+                  }}
+
+                />                <InputLabel>Assigned To</InputLabel>      onDeleteTask(taskId);
+
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={2}>                <Select
+
+                <Button
+
+                  fullWidth                  value={formData.assigned_to}    }  onCreateTask: (task: TaskFormData) => void;}
+
+                  variant="outlined"
+
+                  onClick={fetchTasks}                  label="Assigned To"
+
+                  startIcon={<FilterListIcon />}
+
+                >                  onChange={handleAssignedToChange}  };
+
+                  Apply Filters
+
+                </Button>                  required
+
+              </Grid>
+
+            </Grid>                >  onUpdateTask: (id: string, task: TaskFormData) => void;
+
+          </CardContent>
+
+        </Card>                  {users.map((user) => (
+
+
+
+        {/* Tasks */}                    <MenuItem key={user.id} value={user.id}>  const getPriorityColor = (priority: string) => {
+
+        {loading ? (
+
+          <Box display="flex" justifyContent="center" my={4}>                      {user.first_name} {user.last_name}
+
+            <CircularProgress />
+
+          </Box>                    </MenuItem>    switch (priority) {  onDeleteTask: (id: string) => void;interface TaskFormData {
+
+        ) : (
+
+          <Box>                  ))}
+
+            {filteredTasks.length === 0 ? (
+
+              <Card>                </Select>      case 'urgent': return 'error';
+
+                <CardContent>
+
+                  <Box textAlign="center" py={4}>              </FormControl>
+
+                    <AssignmentIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
+
+                    <Typography variant="h6" color="text.secondary">            </Grid>      case 'high': return 'warning';  stats: TaskStats;  title: string;
+
+                      No tasks found
+
+                    </Typography>            <Grid item xs={12} sm={6}>
+
+                    <Typography variant="body2" color="text.secondary">
+
+                      Try adjusting your filters or create a new task              <TextField      case 'medium': return 'info';
+
+                    </Typography>
+
+                  </Box>                fullWidth
+
+                </CardContent>
+
+              </Card>                label="Due Date"      case 'low': return 'success';  loading?: boolean;  description: string;
+
+            ) : (
+
+              <Grid container spacing={3}>                type="date"
+
+                {filteredTasks.map((task) => (
+
+                  <Grid item xs={12} md={6} lg={4} key={task.id}>                value={formData.due_date}      default: return 'default';
+
+                    <TaskCard
+
+                      task={task}                onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
+
+                      onEdit={handleEditTask}
+
+                      onDelete={handleDeleteTask}                InputLabelProps={{    }}  status: string;
+
+                      onStatusChange={handleStatusChange}
+
+                      onAddComment={handleAddComment}                  shrink: true,
+
+                    />
+
+                  </Grid>                }}  };
+
+                ))}
+
+              </Grid>              />
+
+            )}
+
+          </Box>            </Grid>  priority: string;
+
+        )}
+
+            <Grid item xs={12} sm={6}>
+
+        <TaskFormDialog
+
+          open={taskDialogOpen}              <TextField  const getStatusColor = (status: string) => {
+
+          onClose={() => setTaskDialogOpen(false)}
+
+          task={selectedTask}                fullWidth
+
+          users={users}
+
+          onSave={handleSaveTask}                label="Estimated Hours"    switch (status) {const TaskManagement: React.FC<TaskManagementProps> = ({  assigned_to: string;
+
+        />
+
+      </Box>                type="number"
+
+    </LocalizationProvider>
+
+  );                value={formData.estimated_hours || ''}      case 'completed': return 'success';
+
+};
+
+                onChange={(e) => setFormData({ ...formData, estimated_hours: parseFloat(e.target.value) || undefined })}
+
+export default TaskManagement;
+              />      case 'in_progress': return 'info';  tasks,  task_type: string;
+
+            </Grid>
+
+          </Grid>      case 'pending': return 'warning';
+
+
+
+          <Autocomplete      case 'cancelled': return 'error';  users,  tags: string[];
+
+            multiple
+
+            freeSolo      default: return 'default';
+
+            options={[]}
+
+            value={formData.tags}    }  onCreateTask,  due_date: Date | null;
+
+            onChange={(event, newValue) => setFormData({ ...formData, tags: newValue })}
+
+            renderInput={(params) => (  };
+
+              <TextField
+
+                {...params}  onUpdateTask,  estimated_hours: number | null;
+
+                label="Tags"
+
+                sx={{ mt: 2 }}  return (
+
+              />
+
+            )}    <LocalizationProvider dateAdapter={AdapterDateFns}>  onDeleteTask,}
+
+          />
+
+        </Box>      <Box sx={{ p: 3 }}>
+
+      </DialogContent>
+
+      <DialogActions>        {/* Stats Cards */}  stats,
+
+        <Button onClick={onClose}>Cancel</Button>
+
+        <Button        <Grid container spacing={3} sx={{ mb: 3 }}>
+
+          onClick={handleSave}
+
+          variant="contained"          <Grid item xs={12} sm={6} md={3}>  loading = false// Priority colors and labels
+
+          disabled={saving || !formData.title || !formData.assigned_to}
+
+          startIcon={saving ? <CircularProgress size={20} /> : null}            <Card>
+
+        >
+
+          {task ? 'Update' : 'Create'} Task              <CardContent>}) => {const getPriorityColor = (priority: string): 'error' | 'warning' | 'info' | 'default' => {
+
+        </Button>
+
+      </DialogActions>                <Typography color="textSecondary" gutterBottom>
+
+    </Dialog>
+
+  );                  Total Tasks  const [searchTerm, setSearchTerm] = useState('');  switch (priority) {
+
+};
+
+                </Typography>
+
+// Task Statistics Component
+
+const TaskStatistics: React.FC<TaskStatisticsProps> = ({ stats }) => {                <Typography variant="h4">  const [filterStatus, setFilterStatus] = useState('all');    case 'HIGH': return 'error';
+
+  return (
+
+    <Grid container spacing={3} sx={{ mb: 3 }}>                  {stats.total_tasks || stats.total || 0}
+
+      <Grid item xs={12} sm={6} md={3}>
+
+        <Card>                </Typography>  const [filterPriority, setFilterPriority] = useState('all');    case 'MEDIUM': return 'warning';
+
+          <CardContent>
+
+            <Typography color="text.secondary" gutterBottom>              </CardContent>
+
+              Total Tasks
+
+            </Typography>            </Card>  const [isDialogOpen, setIsDialogOpen] = useState(false);    case 'LOW': return 'info';
+
+            <Typography variant="h4">
+
+              {stats.total}          </Grid>
+
+            </Typography>
+
+          </CardContent>          <Grid item xs={12} sm={6} md={3}>  const [editingTask, setEditingTask] = useState<Task | null>(null);    case 'CRITICAL': return 'error';
+
+        </Card>
+
+      </Grid>            <Card>
+
+      <Grid item xs={12} sm={6} md={3}>
+
+        <Card>              <CardContent>  const [formData, setFormData] = useState<TaskFormData>({    default: return 'default';
+
+          <CardContent>
+
+            <Typography color="text.secondary" gutterBottom>                <Typography color="textSecondary" gutterBottom>
+
+              In Progress
+
+            </Typography>                  In Progress    title: '',  }
+
+            <Typography variant="h4" color="info.main">
+
+              {stats.in_progress}                </Typography>
+
+            </Typography>
+
+          </CardContent>                <Typography variant="h4" color="info.main">    description: '',};
+
+        </Card>
+
+      </Grid>                  {stats.in_progress_tasks || stats.in_progress || 0}
+
+      <Grid item xs={12} sm={6} md={3}>
+
+        <Card>                </Typography>    status: 'pending',
+
+          <CardContent>
+
+            <Typography color="text.secondary" gutterBottom>              </CardContent>
+
+              Completed
+
+            </Typography>            </Card>    priority: 'medium',const getPriorityLabel = (priority: string): string => {
+
+            <Typography variant="h4" color="success.main">
+
+              {stats.completed}          </Grid>
+
+            </Typography>
+
+          </CardContent>          <Grid item xs={12} sm={6} md={3}>    assigned_to: '',  switch (priority) {
+
+        </Card>
+
+      </Grid>            <Card>
+
+      <Grid item xs={12} sm={6} md={3}>
+
+        <Card>              <CardContent>    task_type: 'general',    case 'HIGH': return 'High';
+
+          <CardContent>
+
+            <Typography color="text.secondary" gutterBottom>                <Typography color="textSecondary" gutterBottom>
+
+              Overdue
+
+            </Typography>                  Completed    tags: [],    case 'MEDIUM': return 'Medium';
+
+            <Typography variant="h4" color="error.main">
+
+              {stats.overdue}                </Typography>
+
+            </Typography>
+
+          </CardContent>                <Typography variant="h4" color="success.main">    due_date: null,    case 'LOW': return 'Low';
+
+        </Card>
+
+      </Grid>                  {stats.completed_tasks || stats.completed || 0}
+
+    </Grid>
+
+  );                </Typography>    estimated_hours: null    case 'CRITICAL': return 'Critical';
+
+};
+
+              </CardContent>
+
+// Main Task Management Component
+
+const TaskManagement: React.FC = () => {            </Card>  });    default: return priority;
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const [stats, setStats] = useState<TaskStats>({          </Grid>
+
+    total: 0,
+
+    completed: 0,          <Grid item xs={12} sm={6} md={3}>  }
+
+    in_progress: 0,
+
+    pending: 0,            <Card>
+
+    overdue: 0
+
+  });              <CardContent>  // Filter tasks based on search term and filters};
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  const [loading, setLoading] = useState(true);                <Typography color="textSecondary" gutterBottom>
+
+  const [activeTab, setActiveTab] = useState(0);
+
+  const [taskDialogOpen, setTaskDialogOpen] = useState(false);                  Overdue  const filteredTasks = tasks.filter(task => {
+
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
+  const [filters, setFilters] = useState({                </Typography>
+
+    status: [] as string[],
+
+    priority: [] as string[],                <Typography variant="h4" color="error.main">    const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||// Status colors and labels
+
+    search: '',
+
+    assigned_to: '',                  {stats.overdue_tasks || stats.overdue || 0}
+
+  });
+
+                </Typography>                         task.description.toLowerCase().includes(searchTerm.toLowerCase());const getStatusColor = (status: string): 'success' | 'info' | 'default' | 'error' | 'warning' => {
+
+  useEffect(() => {
+
+    fetchTasks();              </CardContent>
+
+    fetchStats();
+
+    fetchUsers();            </Card>    const matchesStatus = filterStatus === 'all' || task.status === filterStatus;  switch (status) {
+
+  }, [filters]);
+
+          </Grid>
+
+  const fetchTasks = async () => {
+
+    try {        </Grid>    const matchesPriority = filterPriority === 'all' || task.priority === filterPriority;    case 'COMPLETED': return 'success';
+
+      setLoading(true);
+
+      const params = new URLSearchParams();
+
+
+
+      if (filters.status.length > 0) {        {/* Search and Filter Controls */}    return matchesSearch && matchesStatus && matchesPriority;    case 'IN_PROGRESS': return 'info';
+
+        filters.status.forEach(status => params.append('status', status));
+
+      }        <Card sx={{ mb: 3 }}>
+
+      if (filters.priority.length > 0) {
+
+        filters.priority.forEach(priority => params.append('priority', priority));          <CardContent>  });    case 'PENDING': return 'default';
+
+      }
+
+      if (filters.search) {            <Grid container spacing={2} alignItems="center">
+
+        params.append('search', filters.search);
+
+      }              <Grid item xs={12} md={4}>    case 'CANCELLED': return 'error';
+
+      if (filters.assigned_to) {
+
+        params.append('assigned_to', filters.assigned_to);                <TextField
+
+      }
+
+                  fullWidth  const handleCreateTask = () => {    case 'ON_HOLD': return 'warning';
+
+      const response = await api.get(`/task-management/tasks?${params.toString()}`);
+
+      setTasks(response.data);                  label="Search tasks"
+
+    } catch (error) {
+
+      console.error('Error fetching tasks:', error);                  value={searchTerm}    setEditingTask(null);    default: return 'default';
+
+    } finally {
+
+      setLoading(false);                  onChange={(e) => setSearchTerm(e.target.value)}
+
+    }
+
+  };                  InputProps={{    setFormData({  }
+
+
+
+  const fetchStats = async () => {                    startAdornment: <SearchIcon />
+
+    try {
+
+      const response = await api.get('/task-management/tasks/stats');                  }}      title: '',};
+
+      setStats(response.data);
+
+    } catch (error) {                />
+
+      console.error('Error fetching stats:', error);
+
+    }              </Grid>      description: '',
+
+  };
+
+              <Grid item xs={12} md={3}>
+
+  const fetchUsers = async () => {
+
+    try {                <FormControl fullWidth>      status: 'pending',// Task Card Component
+
+      const response = await api.get('/auth/users');
+
+      setUsers(response.data);                  <InputLabel>Status</InputLabel>
+
+    } catch (error) {
+
+      console.error('Error fetching users:', error);                  <Select      priority: 'medium',interface TaskCardProps {
+
+    }
+
+  };                    value={filterStatus}
+
+
+
+  const handleCreateTask = () => {                    onChange={(e) => setFilterStatus(e.target.value)}      assigned_to: '',  task: Task;
+
+    setSelectedTask(null);
+
+    setTaskDialogOpen(true);                    label="Status"
+
+  };
+
+                  >      task_type: 'general',  onEdit: (task: Task) => void;
+
+  const handleEditTask = (task: Task) => {
+
+    setSelectedTask(task);                    <MenuItem value="all">All Status</MenuItem>
+
+    setTaskDialogOpen(true);
+
+  };                    <MenuItem value="pending">Pending</MenuItem>      tags: [],  onDelete: (taskId: string) => void;
+
+
+
+  const handleDeleteTask = async (taskId: string) => {                    <MenuItem value="in_progress">In Progress</MenuItem>
+
+    if (window.confirm('Are you sure you want to delete this task?')) {
+
+      try {                    <MenuItem value="completed">Completed</MenuItem>      due_date: null,  onStatusChange: (taskId: string, newStatus: string) => void;
+
+        await api.delete(`/task-management/tasks/${taskId}`);
+
+        fetchTasks();                    <MenuItem value="cancelled">Cancelled</MenuItem>
+
+        fetchStats();
+
+      } catch (error) {                  </Select>      estimated_hours: null  onAddComment: (taskId: string, comment: string) => void;
+
+        console.error('Error deleting task:', error);
+
+      }                </FormControl>
+
+    }
+
+  };              </Grid>    });}
+
+
+
+  const handleStatusChange = async (taskId: string, newStatus: string) => {              <Grid item xs={12} md={3}>
+
+    try {
+
+      await api.put(`/task-management/tasks/${taskId}`, { status: newStatus });                <FormControl fullWidth>    setIsDialogOpen(true);
+
+      fetchTasks();
+
+      fetchStats();                  <InputLabel>Priority</InputLabel>
+
+    } catch (error) {
+
+      console.error('Error updating task status:', error);                  <Select  };const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete, onStatusChange, onAddComment }) => {
+
+    }
+
+  };                    value={filterPriority}
+
+
+
+  const handleAddComment = async (taskId: string, comment: string) => {                    onChange={(e) => setFilterPriority(e.target.value)}  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    try {
+
+      await api.post(`/task-management/tasks/${taskId}/comments`, { comment });                    label="Priority"
+
+      fetchTasks();
+
+    } catch (error) {                  >  const handleEditTask = (task: Task) => {  const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+
+      console.error('Error adding comment:', error);
+
+    }                    <MenuItem value="all">All Priorities</MenuItem>
+
+  };
+
+                    <MenuItem value="low">Low</MenuItem>    setEditingTask(task);  const [comment, setComment] = useState('');
+
+  const handleSaveTask = async (taskData: TaskFormData) => {
+
+    try {                    <MenuItem value="medium">Medium</MenuItem>
+
+      if (selectedTask) {
+
+        await api.put(`/task-management/tasks/${selectedTask.id}`, taskData);                    <MenuItem value="high">High</MenuItem>    setFormData({
+
+      } else {
+
+        await api.post('/task-management/tasks', taskData);                    <MenuItem value="urgent">Urgent</MenuItem>
+
+      }
+
+      fetchTasks();                  </Select>      title: task.title,  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+
+      fetchStats();
+
+    } catch (error) {                </FormControl>
+
+      console.error('Error saving task:', error);
+
+      throw error;              </Grid>      description: task.description,    setAnchorEl(event.currentTarget);
+
+    }
+
+  };              <Grid item xs={12} md={2}>
+
+
+
+  const filteredTasks = tasks.filter(task => {                <Button      status: task.status,  };
+
+    if (activeTab === 1) {
+
+      // My Tasks tab - filter by current user                  fullWidth
+
+      return task.assigned_to === 'current-user-id'; // Replace with actual user ID
+
+    }                  variant="contained"      priority: task.priority,
+
+    return true;
+
+  });                  startIcon={<AddIcon />}
+
+
+
+  return (                  onClick={handleCreateTask}      assigned_to: task.assigned_to,  const handleMenuClose = () => {
+
+    <Box>
+
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>                >
+
+        <Typography variant="h4" component="h1">
+
+          Task Management                  Add Task      task_type: task.task_type,    setAnchorEl(null);
+
+        </Typography>
+
+        <Button                </Button>
+
+          variant="contained"
+
+          startIcon={<AddIcon />}              </Grid>      tags: task.tags,  };
+
+          onClick={handleCreateTask}
+
+        >            </Grid>
+
+          Create Task
+
+        </Button>          </CardContent>      due_date: task.due_date ? new Date(task.due_date) : null,
+
+      </Box>
+
+        </Card>
+
+      <TaskStatistics stats={stats} />
+
+      estimated_hours: task.estimated_hours  const handleStatusChange = (newStatus: string) => {
+
+      <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ mb: 3 }}>
+
+        <Tab label="All Tasks" />        {/* Tasks Grid */}
+
+        <Tab label="My Tasks" />
+
+        <Tab label="Assigned by Me" />        <Grid container spacing={3}>    });    onStatusChange(task.id, newStatus);
+
+      </Tabs>
+
+          {filteredTasks.map((task) => (
+
+      {/* Filters */}
+
+      <Card sx={{ mb: 3 }}>            <Grid item xs={12} md={6} lg={4} key={task.id}>    setIsDialogOpen(true);    handleMenuClose();
+
+        <CardContent>
+
+          <Grid container spacing={2} alignItems="center">              <Card>
+
+            <Grid item xs={12} sm={6} md={3}>
+
+              <TextField                <CardContent>  };  };
+
+                fullWidth
+
+                placeholder="Search tasks..."                  <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+
+                value={filters.search}
+
+                onChange={(e) => setFilters({ ...filters, search: e.target.value })}                    <Typography variant="h6" noWrap>
+
+                InputProps={{
+
+                  startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />                      {task.title}
+
+                }}
+
+              />                    </Typography>  const handleSaveTask = () => {  const handleAddComment = () => {
+
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={2}>                    <Box>
+
+              <FormControl fullWidth>
+
+                <InputLabel>Status</InputLabel>                      <IconButton size="small" onClick={() => handleEditTask(task)}>    if (!formData.title.trim()) {    if (comment.trim()) {
+
+                <Select
+
+                  multiple                        <EditIcon />
+
+                  value={filters.status}
+
+                  onChange={(e) => setFilters({ ...filters, status: typeof e.target.value === 'string' ? [e.target.value] : e.target.value })}                      </IconButton>      alert('Please enter a task title');      onAddComment(task.id, comment);
+
+                >
+
+                  <MenuItem value="PENDING">Pending</MenuItem>                      <IconButton size="small" onClick={() => handleDeleteTask(task.id)}>
+
+                  <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
+
+                  <MenuItem value="COMPLETED">Completed</MenuItem>                        <DeleteIcon />      return;      setComment('');
+
+                  <MenuItem value="CANCELLED">Cancelled</MenuItem>
+
+                </Select>                      </IconButton>
+
+              </FormControl>
+
+            </Grid>                    </Box>    }      setCommentDialogOpen(false);
+
+            <Grid item xs={12} sm={6} md={2}>
+
+              <FormControl fullWidth>                  </Box>
+
+                <InputLabel>Priority</InputLabel>
+
+                <Select    }
+
+                  multiple
+
+                  value={filters.priority}                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+
+                  onChange={(e) => setFilters({ ...filters, priority: typeof e.target.value === 'string' ? [e.target.value] : e.target.value })}
+
+                >                    {task.description}    try {  };
+
+                  <MenuItem value="LOW">Low</MenuItem>
+
+                  <MenuItem value="MEDIUM">Medium</MenuItem>                  </Typography>
+
+                  <MenuItem value="HIGH">High</MenuItem>
+
+                  <MenuItem value="URGENT">Urgent</MenuItem>      if (editingTask) {
+
+                </Select>
+
+              </FormControl>                  <Box display="flex" gap={1} mb={2}>
+
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={3}>                    <Chip        onUpdateTask(editingTask.id, formData);  const getDaysUntilDue = () => {
+
+              <FormControl fullWidth>
+
+                <InputLabel>Assigned To</InputLabel>                      label={task.status.replace('_', ' ')}
+
+                <Select
+
+                  value={filters.assigned_to}                      color={getStatusColor(task.status) as any}      } else {    if (!task.due_date) return null;
+
+                  onChange={(e) => setFilters({ ...filters, assigned_to: e.target.value })}
+
+                >                      size="small"
+
+                  <MenuItem value="">All</MenuItem>
+
+                  {users.map((user) => (                    />        onCreateTask(formData);    const dueDate = new Date(task.due_date);
+
+                    <MenuItem key={user.id} value={user.id}>
+
+                      {user.first_name} {user.last_name}                    <Chip
+
+                    </MenuItem>
+
+                  ))}                      label={task.priority}      }    const today = new Date();
+
+                </Select>
+
+              </FormControl>                      color={getPriorityColor(task.priority) as any}
+
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={2}>                      size="small"      setIsDialogOpen(false);    const diffTime = dueDate.getTime() - today.getTime();
+
+              <Button
+
+                fullWidth                      icon={<FlagIcon />}
+
+                variant="outlined"
+
+                onClick={fetchTasks}                    />    } catch (error) {    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                startIcon={<FilterListIcon />}
+
+              >                    {task.category && (
+
+                Apply Filters
+
+              </Button>                      <Chip      console.error('Error saving task:', error);    return diffDays;
+
+            </Grid>
+
+          </Grid>                        label={task.category}
+
+        </CardContent>
+
+      </Card>                        size="small"    }  };
+
+
+
+      {/* Tasks List */}                        variant="outlined"
+
+      {loading ? (
+
+        <Box display="flex" justifyContent="center" p={4}>                      />  };
+
+          <CircularProgress />
+
+        </Box>                    )}
+
+      ) : (
+
+        <Box>                  </Box>  const daysUntilDue = getDaysUntilDue();
+
+          {filteredTasks.length === 0 ? (
+
+            <Card>
+
+              <CardContent>
+
+                <Box textAlign="center" py={4}>                  <Box display="flex" alignItems="center" gap={2} mb={2}>  const handleDeleteTask = (taskId: string) => {  const isOverdue = daysUntilDue !== null && daysUntilDue < 0;
+
+                  <AssignmentIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
+
+                  <Typography variant="h6" color="text.secondary">                    {(task.assigned_to_name || task.assigned_to) && (
+
+                    No tasks found
+
+                  </Typography>                      <Box display="flex" alignItems="center" gap={1}>    if (window.confirm('Are you sure you want to delete this task?')) {  const isDueSoon = daysUntilDue !== null && daysUntilDue <= 3 && daysUntilDue >= 0;
+
+                  <Typography variant="body2" color="text.secondary">
+
+                    Try adjusting your filters or create a new task                        <PersonIcon fontSize="small" />
+
+                  </Typography>
+
+                </Box>                        <Typography variant="body2">      onDeleteTask(taskId);
+
+              </CardContent>
+
+            </Card>                          {task.assigned_to_name || task.assigned_to}
+
+          ) : (
+
+            filteredTasks.map((task) => (                        </Typography>    }  return (
+
+              <TaskCard
+
+                key={task.id}                      </Box>
+
+                task={task}
+
+                onEdit={handleEditTask}                    )}  };    <>
+
+                onDelete={handleDeleteTask}
+
+                onStatusChange={handleStatusChange}                    {task.due_date && (
+
+                onAddComment={handleAddComment}
+
+              />                      <Typography variant="body2" color="text.secondary">      <Card 
+
+            ))
+
+          )}                        Due: {new Date(task.due_date).toLocaleDateString()}
+
+        </Box>
+
+      )}                      </Typography>  const getPriorityColor = (priority: string) => {        sx={{ 
+
+
+
+      <TaskFormDialog                    )}
+
+        open={taskDialogOpen}
+
+        onClose={() => setTaskDialogOpen(false)}                  </Box>    switch (priority) {          mb: 2,
+
+        task={selectedTask}
+
+        users={users}
+
+        onSave={handleSaveTask}
+
+      />                  {(task.progress_percentage || 0) > 0 && (      case 'urgent': return 'error';          border: isOverdue ? '2px solid #f44336' : isDueSoon ? '2px solid #ff9800' : 'none',
+
+    </Box>
+
+  );                    <Box>
+
+};
+
+                      <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>      case 'high': return 'warning';          '&:hover': { boxShadow: 3 }
+
+export default TaskManagement;
+                        <Typography variant="body2">Progress</Typography>
+
+                        <Typography variant="body2">{task.progress_percentage || 0}%</Typography>      case 'medium': return 'info';        }}
+
+                      </Box>
+
+                      <LinearProgress      case 'low': return 'success';      >
+
+                        variant="determinate"
+
+                        value={task.progress_percentage || 0}      default: return 'default';        <CardContent>
+
+                        sx={{ mb: 2 }}
+
+                      />    }          <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+
+                    </Box>
+
+                  )}  };            <Box flex={1}>
+
+
+
+                  <Box display="flex" gap={1} mb={2}>              <Typography variant="h6" component="div" gutterBottom>
+
+                    {task.tags && task.tags.length > 0 && (
+
+                      <Badge badgeContent={task.tags.length} color="primary">  const getStatusColor = (status: string) => {                {task.title}
+
+                        <CommentIcon fontSize="small" />
+
+                      </Badge>    switch (status) {                {isOverdue && (
+
+                    )}
+
+                    {task.attachments && task.attachments.length > 0 && (      case 'completed': return 'success';                  <Chip 
+
+                      <Badge badgeContent={task.attachments.length} color="secondary">
+
+                        <AttachFileIcon fontSize="small" />      case 'in_progress': return 'info';                    label="Overdue" 
+
+                      </Badge>
+
+                    )}      case 'pending': return 'warning';                    color="error" 
+
+                  </Box>
+
+      case 'cancelled': return 'error';                    size="small" 
+
+                  {(task.created_at || task.updated_at) && (
+
+                    <Typography variant="caption" color="text.secondary">      default: return 'default';                    sx={{ ml: 1 }}
+
+                      {task.created_at && `Created: ${new Date(task.created_at).toLocaleDateString()}`}
+
+                      {task.updated_at && task.updated_at !== task.created_at && (    }                  />
+
+                        <> • Updated: {new Date(task.updated_at).toLocaleDateString()}</>
+
+                      )}  };                )}
+
+                    </Typography>
+
+                  )}                {isDueSoon && (
+
+                </CardContent>
+
+              </Card>  return (                  <Chip 
+
+            </Grid>
+
+          ))}    <LocalizationProvider dateAdapter={AdapterDateFns}>                    label="Due Soon" 
+
+        </Grid>
+
+      <Box sx={{ p: 3 }}>                    color="warning" 
+
+        {/* Task Form Dialog */}
+
+        <Dialog        {/* Stats Cards */}                    size="small" 
+
+          open={isDialogOpen}
+
+          onClose={() => setIsDialogOpen(false)}        <Grid container spacing={3} sx={{ mb: 3 }}>                    sx={{ ml: 1 }}
+
+          maxWidth="md"
+
+          fullWidth          <Grid item xs={12} sm={6} md={3}>                  />
+
+        >
+
+          <DialogTitle>            <Card>                )}
+
+            {editingTask ? 'Edit Task' : 'Create New Task'}
+
+          </DialogTitle>              <CardContent>              </Typography>
+
+          <DialogContent>
+
+            <Grid container spacing={2} sx={{ mt: 1 }}>                <Typography color="textSecondary" gutterBottom>              
+
+              <Grid item xs={12}>
+
+                <TextField                  Total Tasks              {task.description && (
+
+                  fullWidth
+
+                  label="Title"                </Typography>                <Typography color="text.secondary" gutterBottom>
+
+                  value={formData.title}
+
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}                <Typography variant="h4">                  {task.description}
+
+                  required
+
+                />                  {stats.total_tasks || stats.total || 0}                </Typography>
+
+              </Grid>
+
+              <Grid item xs={12}>                </Typography>              )}
+
+                <TextField
+
+                  fullWidth              </CardContent>              
+
+                  label="Description"
+
+                  multiline            </Card>              <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
+
+                  rows={3}
+
+                  value={formData.description}          </Grid>                <Chip
+
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+
+                />          <Grid item xs={12} sm={6} md={3}>                  label={task.status.replace('_', ' ')}
+
+              </Grid>
+
+              <Grid item xs={12} md={6}>            <Card>                  color={getStatusColor(task.status)}
+
+                <FormControl fullWidth>
+
+                  <InputLabel>Status</InputLabel>              <CardContent>                  size="small"
+
+                  <Select
+
+                    value={formData.status}                <Typography color="textSecondary" gutterBottom>                />
+
+                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+
+                    label="Status"                  In Progress                <Chip
+
+                  >
+
+                    <MenuItem value="pending">Pending</MenuItem>                </Typography>                  label={getPriorityLabel(task.priority)}
+
+                    <MenuItem value="in_progress">In Progress</MenuItem>
+
+                    <MenuItem value="completed">Completed</MenuItem>                <Typography variant="h4" color="info.main">                  color={getPriorityColor(task.priority)}
+
+                    <MenuItem value="cancelled">Cancelled</MenuItem>
+
+                  </Select>                  {stats.in_progress_tasks || stats.in_progress || 0}                  size="small"
+
+                </FormControl>
+
+              </Grid>                </Typography>                  icon={<FlagIcon />}
+
+              <Grid item xs={12} md={6}>
+
+                <FormControl fullWidth>              </CardContent>                />
+
+                  <InputLabel>Priority</InputLabel>
+
+                  <Select            </Card>                {task.category && (
+
+                    value={formData.priority}
+
+                    onChange={(e) => setFormData({ ...formData, priority: e.target.value })}          </Grid>                  <Chip
+
+                    label="Priority"
+
+                  >          <Grid item xs={12} sm={6} md={3}>                    label={task.category}
+
+                    <MenuItem value="low">Low</MenuItem>
+
+                    <MenuItem value="medium">Medium</MenuItem>            <Card>                    size="small"
+
+                    <MenuItem value="high">High</MenuItem>
+
+                    <MenuItem value="urgent">Urgent</MenuItem>              <CardContent>                    variant="outlined"
+
+                  </Select>
+
+                </FormControl>                <Typography color="textSecondary" gutterBottom>                  />
+
+              </Grid>
+
+              <Grid item xs={12} md={6}>                  Completed                )}
+
+                <FormControl fullWidth>
+
+                  <InputLabel>Assigned To</InputLabel>                </Typography>              </Box>
+
+                  <Select
+
+                    value={formData.assigned_to}                <Typography variant="h4" color="success.main">
+
+                    onChange={(e) => setFormData({ ...formData, assigned_to: e.target.value })}
+
+                    label="Assigned To"                  {stats.completed_tasks || stats.completed || 0}              {task.tags && task.tags.length > 0 && (
+
+                  >
+
+                    {users.map((user) => (                </Typography>                <Box display="flex" flexWrap="wrap" gap={0.5} mb={2}>
+
+                      <MenuItem key={user.id} value={user.id}>
+
+                        {user.name}              </CardContent>                  {task.tags.map((tag, index) => (
+
+                      </MenuItem>
+
+                    ))}            </Card>                    <Chip
+
+                  </Select>
+
+                </FormControl>          </Grid>                      key={index}
+
+              </Grid>
+
+              <Grid item xs={12} md={6}>          <Grid item xs={12} sm={6} md={3}>                      label={tag}
+
+                <TextField
+
+                  fullWidth            <Card>                      size="small"
+
+                  label="Task Type"
+
+                  value={formData.task_type}              <CardContent>                      variant="outlined"
+
+                  onChange={(e) => setFormData({ ...formData, task_type: e.target.value })}
+
+                />                <Typography color="textSecondary" gutterBottom>                      sx={{ fontSize: '0.7rem', height: 20 }}
+
+              </Grid>
+
+              <Grid item xs={12} md={6}>                  Overdue                    />
+
+                <DatePicker
+
+                  label="Due Date"                </Typography>                  ))}
+
+                  value={formData.due_date}
+
+                  onChange={(date) => setFormData({ ...formData, due_date: date })}                <Typography variant="h4" color="error.main">                </Box>
+
+                  slotProps={{ textField: { fullWidth: true } }}
+
+                />                  {stats.overdue_tasks || stats.overdue || 0}              )}
+
+              </Grid>
+
+              <Grid item xs={12} md={6}>                </Typography>
+
+                <TextField
+
+                  fullWidth              </CardContent>              <Box display="flex" alignItems="center" gap={2} mb={2}>
+
+                  label="Estimated Hours"
+
+                  type="number"            </Card>                {task.assigned_to_name && (
+
+                  value={formData.estimated_hours || ''}
+
+                  onChange={(e) => setFormData({           </Grid>                  <Box display="flex" alignItems="center" gap={1}>
+
+                    ...formData, 
+
+                    estimated_hours: e.target.value ? Number(e.target.value) : null         </Grid>                    <PersonIcon fontSize="small" />
+
+                  })}
+
+                />                    <Typography variant="body2">
+
+              </Grid>
+
+            </Grid>        {/* Search and Filter Controls */}                      {task.assigned_to_name}
+
+          </DialogContent>
+
+          <DialogActions>        <Card sx={{ mb: 3 }}>                    </Typography>
+
+            <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+
+            <Button onClick={handleSaveTask} variant="contained">          <CardContent>                  </Box>
+
+              {editingTask ? 'Update' : 'Create'}
+
+            </Button>            <Grid container spacing={2} alignItems="center">                )}
+
+          </DialogActions>
+
+        </Dialog>              <Grid item xs={12} md={4}>                
+
+      </Box>
+
+    </LocalizationProvider>                <TextField                {task.due_date && (
+
+  );
+
+};                  fullWidth                  <Box display="flex" alignItems="center" gap={1}>
+
+
+
+export default TaskManagement;                  label="Search tasks"                    <ScheduleIcon fontSize="small" />
+
+                  value={searchTerm}                    <Typography variant="body2">
+
+                  onChange={(e) => setSearchTerm(e.target.value)}                      {new Date(task.due_date).toLocaleDateString()}
+
+                  InputProps={{                    </Typography>
+
+                    startAdornment: <SearchIcon />                  </Box>
+
+                  }}                )}
+
+                />              </Box>
+
+              </Grid>
+
+              <Grid item xs={12} md={3}>              {task.progress_percentage > 0 && (
+
+                <FormControl fullWidth>                <Box>
+
+                  <InputLabel>Status</InputLabel>                  <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+
+                  <Select                    <Typography variant="body2">Progress</Typography>
+
+                    value={filterStatus}                    <Typography variant="body2">{task.progress_percentage}%</Typography>
+
+                    onChange={(e) => setFilterStatus(e.target.value)}                  </Box>
+
+                    label="Status"                  <LinearProgress 
+
+                  >                    variant="determinate" 
+
+                    <MenuItem value="all">All Status</MenuItem>                    value={task.progress_percentage} 
+
+                    <MenuItem value="pending">Pending</MenuItem>                    sx={{ mb: 2 }}
+
+                    <MenuItem value="in_progress">In Progress</MenuItem>                  />
+
+                    <MenuItem value="completed">Completed</MenuItem>                </Box>
+
+                    <MenuItem value="cancelled">Cancelled</MenuItem>              )}
+
+                  </Select>
+
+                </FormControl>              <Box display="flex" alignItems="center" gap={1}>
+
+              </Grid>                {task.comments && task.comments.length > 0 && (
+
+              <Grid item xs={12} md={3}>                  <Badge badgeContent={task.comments.length} color="primary">
+
+                <FormControl fullWidth>                    <CommentIcon fontSize="small" />
+
+                  <InputLabel>Priority</InputLabel>                  </Badge>
+
+                  <Select                )}
+
+                    value={filterPriority}                {task.attachments && task.attachments.length > 0 && (
+
+                    onChange={(e) => setFilterPriority(e.target.value)}                  <Badge badgeContent={task.attachments.length} color="secondary">
+
+                    label="Priority"                    <AttachFileIcon fontSize="small" />
+
+                  >                  </Badge>
+
+                    <MenuItem value="all">All Priorities</MenuItem>                )}
+
+                    <MenuItem value="low">Low</MenuItem>              </Box>
+
+                    <MenuItem value="medium">Medium</MenuItem>            </Box>
+
+                    <MenuItem value="high">High</MenuItem>
+
+                    <MenuItem value="urgent">Urgent</MenuItem>            <IconButton onClick={handleMenuOpen}>
+
+                  </Select>              <MoreVertIcon />
+
+                </FormControl>            </IconButton>
+
+              </Grid>          </Box>
+
+              <Grid item xs={12} md={2}>
+
+                <Button          <Typography variant="caption" color="text.secondary">
+
+                  fullWidth            Created: {new Date(task.created_at).toLocaleDateString()}
+
+                  variant="contained"            {task.updated_at !== task.created_at && (
+
+                  startIcon={<AddIcon />}              <> • Updated: {new Date(task.updated_at).toLocaleDateString()}</>
+
+                  onClick={handleCreateTask}            )}
+
+                >          </Typography>
+
+                  Add Task        </CardContent>
+
+                </Button>      </Card>
+
+              </Grid>
+
+            </Grid>      <Menu
+
+          </CardContent>        anchorEl={anchorEl}
+
+        </Card>        open={Boolean(anchorEl)}
+
+        onClose={handleMenuClose}
+
+        {/* Tasks Grid */}      >
+
+        <Grid container spacing={3}>        <MenuList>
+
+          {filteredTasks.map((task) => (          <MenuItem onClick={() => { onEdit(task); handleMenuClose(); }}>
+
+            <Grid item xs={12} md={6} lg={4} key={task.id}>            <ListItemIcon><EditIcon /></ListItemIcon>
+
+              <Card>            Edit Task
+
+                <CardContent>          </MenuItem>
+
+                  <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>          <MenuItem onClick={() => setCommentDialogOpen(true)}>
+
+                    <Typography variant="h6" noWrap>            <ListItemIcon><CommentIcon /></ListItemIcon>
+
+                      {task.title}            Add Comment
+
+                    </Typography>          </MenuItem>
+
+                    <Box>          <Divider />
+
+                      <IconButton size="small" onClick={() => handleEditTask(task)}>          <MenuItem onClick={() => handleStatusChange('IN_PROGRESS')}>
+
+                        <EditIcon />            <ListItemIcon><PlayIcon /></ListItemIcon>
+
+                      </IconButton>            Start Task
+
+                      <IconButton size="small" onClick={() => handleDeleteTask(task.id)}>          </MenuItem>
+
+                        <DeleteIcon />          <MenuItem onClick={() => handleStatusChange('COMPLETED')}>
+
+                      </IconButton>            <ListItemIcon><CheckCircleIcon /></ListItemIcon>
+
+                    </Box>            Mark Complete
+
+                  </Box>          </MenuItem>
+
+          <MenuItem onClick={() => handleStatusChange('ON_HOLD')}>
+
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>            <ListItemIcon><PauseIcon /></ListItemIcon>
+
+                    {task.description}            Put on Hold
+
+                  </Typography>          </MenuItem>
+
+          <Divider />
+
+                  <Box display="flex" gap={1} mb={2}>          <MenuItem onClick={() => { onDelete(task.id); handleMenuClose(); }}>
+
+                    <Chip            <ListItemIcon><DeleteIcon /></ListItemIcon>
+
+                      label={task.status.replace('_', ' ')}            Delete Task
+
+                      color={getStatusColor(task.status) as any}          </MenuItem>
+
+                      size="small"        </MenuList>
+
+                    />      </Menu>
+
+                    <Chip
+
+                      label={task.priority}      <Dialog open={commentDialogOpen} onClose={() => setCommentDialogOpen(false)}>
+
+                      color={getPriorityColor(task.priority) as any}        <DialogTitle>Add Comment</DialogTitle>
+
+                      size="small"        <DialogContent>
+
+                      icon={<FlagIcon />}          <TextField
+
+                    />            fullWidth
+
+                    {task.category && (            multiline
+
+                      <Chip            rows={3}
+
+                        label={task.category}            label="Comment"
+
+                        size="small"            value={comment}
+
+                        variant="outlined"            onChange={(e) => setComment(e.target.value)}
+
+                      />            sx={{ mt: 1 }}
+
+                    )}          />
+
+                  </Box>        </DialogContent>
+
+        <DialogActions>
+
+                  <Box display="flex" alignItems="center" gap={2} mb={2}>          <Button onClick={() => setCommentDialogOpen(false)}>Cancel</Button>
+
+                    {(task.assigned_to_name || task.assigned_to) && (          <Button onClick={handleAddComment} variant="contained">
+
+                      <Box display="flex" alignItems="center" gap={1}>            Add Comment
+
+                        <PersonIcon fontSize="small" />          </Button>
+
+                        <Typography variant="body2">        </DialogActions>
+
+                          {task.assigned_to_name || task.assigned_to}      </Dialog>
+
+                        </Typography>    </>
+
+                      </Box>  );
+
+                    )}};
+
+                    {task.due_date && (
+
+                      <Typography variant="body2" color="text.secondary">// Task Form Dialog
+
+                        Due: {new Date(task.due_date).toLocaleDateString()}interface TaskFormDialogProps {
+
+                      </Typography>  open: boolean;
+
+                    )}  onClose: () => void;
+
+                  </Box>  task: Task | null;
+
+  onSave: (taskData: TaskFormData) => void;
+
+                  {(task.progress_percentage || 0) > 0 && (  users: User[];
+
+                    <Box>}
+
+                      <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+
+                        <Typography variant="body2">Progress</Typography>const TaskFormDialog: React.FC<TaskFormDialogProps> = ({ open, onClose, task, onSave, users = [] }) => {
+
+                        <Typography variant="body2">{task.progress_percentage || 0}%</Typography>  const [formData, setFormData] = useState<TaskFormData>({
+
+                      </Box>    title: '',
+
+                      <LinearProgress    description: '',
+
+                        variant="determinate"    assigned_to: '',
+
+                        value={task.progress_percentage || 0}    priority: 'MEDIUM',
+
+                        sx={{ mb: 2 }}    status: 'PENDING',
+
+                      />    task_type: 'TODO',
+
+                    </Box>    tags: [],
+
+                  )}    due_date: null,
+
+    estimated_hours: null
+
+                  <Box display="flex" gap={1} mb={2}>  });
+
+                    {task.tags && task.tags.length > 0 && (  const [saving, setSaving] = useState(false);
+
+                      <Badge badgeContent={task.tags.length} color="primary">
+
+                        <CommentIcon fontSize="small" />  useEffect(() => {
+
+                      </Badge>    if (task) {
+
+                    )}      setFormData({
+
+                    {task.attachments && task.attachments.length > 0 && (        title: task.title || '',
+
+                      <Badge badgeContent={task.attachments.length} color="secondary">        description: task.description || '',
+
+                        <AttachFileIcon fontSize="small" />        assigned_to: task.assigned_to || '',
+
+                      </Badge>        priority: task.priority || 'MEDIUM',
+
+                    )}        status: task.status || 'PENDING',
+
+                  </Box>        task_type: task.task_type || 'TODO',
+
+        tags: task.tags || [],
+
+                  {(task.created_at || task.updated_at) && (        due_date: task.due_date ? new Date(task.due_date) : null,
+
+                    <Typography variant="caption" color="text.secondary">        estimated_hours: task.estimated_hours || null
+
+                      {task.created_at && `Created: ${new Date(task.created_at).toLocaleDateString()}`}      });
+
+                      {task.updated_at && task.updated_at !== task.created_at && (    } else {
+
+                        <> • Updated: {new Date(task.updated_at).toLocaleDateString()}</>      setFormData({
+
+                      )}        title: '',
+
+                    </Typography>        description: '',
+
+                  )}        assigned_to: '',
+
+                </CardContent>        priority: 'MEDIUM',
+
+              </Card>        status: 'PENDING',
+
+            </Grid>        task_type: 'TODO',
+
+          ))}        tags: [],
+
+        </Grid>        due_date: null,
+
+        estimated_hours: null
+
+        {/* Task Form Dialog */}      });
+
+        <Dialog    }
+
+          open={isDialogOpen}  }, [task, open]);
+
+          onClose={() => setIsDialogOpen(false)}
+
+          maxWidth="md"  const handleSave = async () => {
+
+          fullWidth    try {
+
+        >      setSaving(true);
+
+          <DialogTitle>      const taskData = {
+
+            {editingTask ? 'Edit Task' : 'Create New Task'}        ...formData,
+
+          </DialogTitle>        due_date: formData.due_date ? formData.due_date.toISOString() : null
+
+          <DialogContent>      };
+
+            <Grid container spacing={2} sx={{ mt: 1 }}>      
+
+              <Grid item xs={12}>      if (task) {
+
+                <TextField        await api.put(`/task-management/tasks/${task.id}`, taskData);
+
+                  fullWidth      } else {
+
+                  label="Title"        await api.post('/task-management/tasks', taskData);
+
+                  value={formData.title}      }
+
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}      
+
+                  required      onSave(taskData);
+
+                />      onClose();
+
+              </Grid>    } catch (error) {
+
+              <Grid item xs={12}>      console.error('Error saving task:', error);
+
+                <TextField    } finally {
+
+                  fullWidth      setSaving(false);
+
+                  label="Description"    }
+
+                  multiline  };
+
+                  rows={3}
+
+                  value={formData.description}  return (
+
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+
+                />      <DialogTitle>
+
+              </Grid>        {task ? 'Edit Task' : 'Create New Task'}
+
+              <Grid item xs={12} md={6}>      </DialogTitle>
+
+                <FormControl fullWidth>      <DialogContent>
+
+                  <InputLabel>Status</InputLabel>        <Box sx={{ mt: 2 }}>
+
+                  <Select          <TextField
+
+                    value={formData.status}            fullWidth
+
+                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}            label="Task Title"
+
+                    label="Status"            value={formData.title}
+
+                  >            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+
+                    <MenuItem value="pending">Pending</MenuItem>            sx={{ mb: 3 }}
+
+                    <MenuItem value="in_progress">In Progress</MenuItem>            required
+
+                    <MenuItem value="completed">Completed</MenuItem>          />
+
+                    <MenuItem value="cancelled">Cancelled</MenuItem>          
+
+                  </Select>          <TextField
+
+                </FormControl>            fullWidth
+
+              </Grid>            label="Description"
+
+              <Grid item xs={12} md={6}>            multiline
+
+                <FormControl fullWidth>            rows={3}
+
+                  <InputLabel>Priority</InputLabel>            value={formData.description}
+
+                  <Select            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+
+                    value={formData.priority}            sx={{ mb: 3 }}
+
+                    onChange={(e) => setFormData({ ...formData, priority: e.target.value })}          />
+
+                    label="Priority"
+
+                  >          <Grid container spacing={2} sx={{ mb: 3 }}>
+
+                    <MenuItem value="low">Low</MenuItem>            <Grid item xs={12} sm={6}>
+
+                    <MenuItem value="medium">Medium</MenuItem>              <FormControl fullWidth>
+
+                    <MenuItem value="high">High</MenuItem>                <InputLabel>Assigned To</InputLabel>
+
+                    <MenuItem value="urgent">Urgent</MenuItem>                <Select
+
+                  </Select>                  value={formData.assigned_to}
+
+                </FormControl>                  onChange={(e) => setFormData({ ...formData, assigned_to: e.target.value })}
+
+              </Grid>                >
+
+              <Grid item xs={12} md={6}>                  {users.map((user) => (
+
+                <FormControl fullWidth>                    <MenuItem key={user.id} value={user.id}>
+
+                  <InputLabel>Assigned To</InputLabel>                      {user.first_name} {user.last_name}
+
+                  <Select                    </MenuItem>
+
+                    value={formData.assigned_to}                  ))}
+
+                    onChange={(e) => setFormData({ ...formData, assigned_to: e.target.value })}                </Select>
+
+                    label="Assigned To"              </FormControl>
+
+                  >            </Grid>
+
+                    {users.map((user) => (            <Grid item xs={12} sm={6}>
+
+                      <MenuItem key={user.id} value={user.id}>              <FormControl fullWidth>
+
+                        {user.name}                <InputLabel>Priority</InputLabel>
+
+                      </MenuItem>                <Select
+
+                    ))}                  value={formData.priority}
+
+                  </Select>                  onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+
+                </FormControl>                >
+
+              </Grid>                  <MenuItem value="LOW">Low</MenuItem>
+
+              <Grid item xs={12} md={6}>                  <MenuItem value="MEDIUM">Medium</MenuItem>
+
+                <TextField                  <MenuItem value="HIGH">High</MenuItem>
+
+                  fullWidth                  <MenuItem value="CRITICAL">Critical</MenuItem>
+
+                  label="Task Type"                </Select>
+
+                  value={formData.task_type}              </FormControl>
+
+                  onChange={(e) => setFormData({ ...formData, task_type: e.target.value })}            </Grid>
+
+                />          </Grid>
+
+              </Grid>
+
+              <Grid item xs={12} md={6}>          <Grid container spacing={2} sx={{ mb: 3 }}>
+
+                <DatePicker            <Grid item xs={12} sm={6}>
+
+                  label="Due Date"              <FormControl fullWidth>
+
+                  value={formData.due_date}                <InputLabel>Status</InputLabel>
+
+                  onChange={(date) => setFormData({ ...formData, due_date: date })}                <Select
+
+                  slotProps={{ textField: { fullWidth: true } }}                  value={formData.status}
+
+                />                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+
+              </Grid>                >
+
+              <Grid item xs={12} md={6}>                  <MenuItem value="PENDING">Pending</MenuItem>
+
+                <TextField                  <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
+
+                  fullWidth                  <MenuItem value="COMPLETED">Completed</MenuItem>
+
+                  label="Estimated Hours"                  <MenuItem value="ON_HOLD">On Hold</MenuItem>
+
+                  type="number"                  <MenuItem value="CANCELLED">Cancelled</MenuItem>
+
+                  value={formData.estimated_hours || ''}                </Select>
+
+                  onChange={(e) => setFormData({               </FormControl>
+
+                    ...formData,             </Grid>
+
+                    estimated_hours: e.target.value ? Number(e.target.value) : null             <Grid item xs={12} sm={6}>
+
+                  })}              <TextField
+
+                />                fullWidth
+
+              </Grid>                label="Category"
+
+            </Grid>                value={formData.category}
+
+          </DialogContent>                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+
+          <DialogActions>              />
+
+            <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>            </Grid>
+
+            <Button onClick={handleSaveTask} variant="contained">          </Grid>
+
+              {editingTask ? 'Update' : 'Create'}
+
+            </Button>          <Grid container spacing={2} sx={{ mb: 3 }}>
+
+          </DialogActions>            <Grid item xs={12} sm={6}>
+
+        </Dialog>              <TextField
+
+      </Box>                fullWidth
+
+    </LocalizationProvider>                label="Due Date (YYYY-MM-DD)"
+
+  );                type="date"
+
+};                value={formData.due_date ? formData.due_date.toISOString().split('T')[0] : ''}
+
+                onChange={(e) => setFormData({ ...formData, due_date: e.target.value ? new Date(e.target.value) : null })}
+
+export default TaskManagement;                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Estimated Hours"
+                type="number"
+                value={formData.estimated_hours || ''}
+                onChange={(e) => setFormData({ ...formData, estimated_hours: parseFloat(e.target.value) || null })}
+              />
+            </Grid>
+          </Grid>
+
+          <Autocomplete
+            multiple
+            freeSolo
+            options={[]}
+            value={formData.tags}
+            onChange={(event, newValue) => setFormData({ ...formData, tags: newValue })}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Tags"
+                placeholder="Add tags..."
+              />
+            )}
+          />
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button 
+          onClick={handleSave} 
+          variant="contained" 
+          disabled={saving || !formData.title || !formData.assigned_to}
+          startIcon={saving ? <CircularProgress size={20} /> : null}
+        >
+          {task ? 'Update' : 'Create'} Task
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+// Task Statistics Component
+interface TaskStatisticsProps {
+  stats: TaskStats;
+}
+
+const TaskStatistics: React.FC<TaskStatisticsProps> = ({ stats }) => {
+  return (
+    <Grid container spacing={3} sx={{ mb: 3 }}>
+      <Grid item xs={12} sm={6} md={3}>
+        <Card>
+          <CardContent>
+            <Typography color="text.secondary" gutterBottom>
+              Total Tasks
+            </Typography>
+            <Typography variant="h4">
+              {stats.total_tasks}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
+        <Card>
+          <CardContent>
+            <Typography color="text.secondary" gutterBottom>
+              In Progress
+            </Typography>
+            <Typography variant="h4" color="info.main">
+              {stats.in_progress_tasks}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
+        <Card>
+          <CardContent>
+            <Typography color="text.secondary" gutterBottom>
+              Completed
+            </Typography>
+            <Typography variant="h4" color="success.main">
+              {stats.completed_tasks}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
+        <Card>
+          <CardContent>
+            <Typography color="text.secondary" gutterBottom>
+              Overdue
+            </Typography>
+            <Typography variant="h4" color="error.main">
+              {stats.overdue_tasks}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
+  );
+};
+
+// Main Task Management Component
+const TaskManagement: React.FC = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [stats, setStats] = useState<TaskStats>({
+    total: 0,
+    completed: 0,
+    in_progress: 0,
+    pending: 0,
+    overdue: 0
+  });
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState(0);
+  const [taskDialogOpen, setTaskDialogOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [filters, setFilters] = useState({
+    status: [] as string[],
+    priority: [] as string[],
+    search: '',
+    assigned_to: ''
+  });
+
+  useEffect(() => {
+    fetchTasks();
+    fetchStats();
+    fetchUsers();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      
+      if (filters.status.length > 0) {
+        filters.status.forEach(status => params.append('status', status));
+      }
+      if (filters.priority.length > 0) {
+        filters.priority.forEach(priority => params.append('priority', priority));
+      }
+      if (filters.search) {
+        params.append('search', filters.search);
+      }
+      if (filters.assigned_to) {
+        params.append('assigned_to', filters.assigned_to);
+      }
+
+      const response = await api.get(`/task-management/tasks?${params.toString()}`);
+      setTasks(response.data);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await api.get('/task-management/tasks/stats');
+      setStats(response.data);
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      // This would fetch from user service
+      // For now, mock data
+      setUsers([
+        { id: 'user1', first_name: 'John', last_name: 'Doe' },
+        { id: 'user2', first_name: 'Jane', last_name: 'Smith' }
+      ]);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const handleCreateTask = () => {
+    setSelectedTask(null);
+    setTaskDialogOpen(true);
+  };
+
+  const handleEditTask = (task: Task) => {
+    setSelectedTask(task);
+    setTaskDialogOpen(true);
+  };
+
+  const handleDeleteTask = async (taskId: string) => {
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      try {
+        await api.delete(`/task-management/tasks/${taskId}`);
+        fetchTasks();
+        fetchStats();
+      } catch (error) {
+        console.error('Error deleting task:', error);
+      }
+    }
+  };
+
+  const handleStatusChange = async (taskId: string, newStatus: string) => {
+    try {
+      await api.put(`/task-management/tasks/${taskId}`, { status: newStatus });
+      fetchTasks();
+      fetchStats();
+    } catch (error) {
+      console.error('Error updating task status:', error);
+    }
+  };
+
+  const handleAddComment = async (taskId: string, comment: string) => {
+    try {
+      await api.post(`/task-management/tasks/${taskId}/comments`, { comment });
+      fetchTasks();
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
+
+  const handleSaveTask = (taskData: TaskFormData) => {
+    fetchTasks();
+    fetchStats();
+  };
+
+  const filteredTasks = tasks.filter(task => {
+    if (activeTab === 1) {
+      // My Tasks tab - filter by current user
+      return task.assigned_to === 'current-user-id'; // Replace with actual user ID
+    }
+    return true;
+  });
+
+  return (
+    <Box>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h4" component="h1">
+          Task Management
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleCreateTask}
+        >
+          Create Task
+        </Button>
+      </Box>
+
+      <TaskStatistics stats={stats} />
+
+      <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ mb: 3 }}>
+        <Tab label="All Tasks" />
+        <Tab label="My Tasks" />
+        <Tab label="Assigned by Me" />
+      </Tabs>
+
+      {/* Filters */}
+      <Card sx={{ mb: 3 }}>
+        <CardContent>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} sm={6} md={3}>
+              <TextField
+                fullWidth
+                placeholder="Search tasks..."
+                value={filters.search}
+                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                InputProps={{
+                  startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <FormControl fullWidth>
+                <InputLabel>Status</InputLabel>
+                <Select
+                  multiple
+                  value={filters.status}
+                  onChange={(e) => setFilters({ ...filters, status: typeof e.target.value === 'string' ? [e.target.value] : e.target.value })}
+                >
+                  <MenuItem value="PENDING">Pending</MenuItem>
+                  <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
+                  <MenuItem value="COMPLETED">Completed</MenuItem>
+                  <MenuItem value="ON_HOLD">On Hold</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <FormControl fullWidth>
+                <InputLabel>Priority</InputLabel>
+                <Select
+                  multiple
+                  value={filters.priority}
+                  onChange={(e) => setFilters({ ...filters, priority: typeof e.target.value === 'string' ? [e.target.value] : e.target.value })}
+                >
+                  <MenuItem value="LOW">Low</MenuItem>
+                  <MenuItem value="MEDIUM">Medium</MenuItem>
+                  <MenuItem value="HIGH">High</MenuItem>
+                  <MenuItem value="CRITICAL">Critical</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <FormControl fullWidth>
+                <InputLabel>Assigned To</InputLabel>
+                <Select
+                  value={filters.assigned_to}
+                  onChange={(e) => setFilters({ ...filters, assigned_to: e.target.value })}
+                >
+                  <MenuItem value="">All</MenuItem>
+                  {users.map((user) => (
+                    <MenuItem key={user.id} value={user.id}>
+                      {user.first_name} {user.last_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={fetchTasks}
+                startIcon={<FilterListIcon />}
+              >
+                Apply Filters
+              </Button>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+
+      {/* Task List */}
+      {loading ? (
+        <Box display="flex" justifyContent="center" p={4}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box>
+          {filteredTasks.length === 0 ? (
+            <Card>
+              <CardContent>
+                <Box textAlign="center" py={4}>
+                  <AssignmentIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
+                  <Typography variant="h6" color="text.secondary">
+                    No tasks found
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Create your first task to get started
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          ) : (
+            filteredTasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onEdit={handleEditTask}
+                onDelete={handleDeleteTask}
+                onStatusChange={handleStatusChange}
+                onAddComment={handleAddComment}
+              />
+            ))
+          )}
+        </Box>
+      )}
+
+      <TaskFormDialog
+        open={taskDialogOpen}
+        onClose={() => setTaskDialogOpen(false)}
+        task={selectedTask}
+        onSave={handleSaveTask}
+        users={users}
+      />
+    </Box>
+  );
+};
+
+export default TaskManagement;

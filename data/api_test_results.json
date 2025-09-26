@@ -1,0 +1,1224 @@
+{
+  "api_gateway": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2081.4,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/chat/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/chat/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "DELETE",
+      "path": "/email/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/email/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/email/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "PUT",
+      "path": "/email/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2022.6,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/metrics",
+      "http_status": 404,
+      "latency_ms": 2427.8,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/services",
+      "http_status": 200,
+      "latency_ms": 2050.8,
+      "error": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/tasks/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/tasks/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "PUT",
+      "path": "/tasks/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "DELETE",
+      "path": "/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "PATCH",
+      "path": "/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "PUT",
+      "path": "/{path}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    }
+  ],
+  "auth_service": [
+    {
+      "method": "POST",
+      "path": "/admin/approve-user",
+      "http_status": 422,
+      "latency_ms": 2101.2,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/admin/pending-users",
+      "http_status": 200,
+      "latency_ms": 2124.1,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/admin/permissions/initialize",
+      "http_status": 500,
+      "latency_ms": 2190.0,
+      "error": "Server error 500"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/permissions/update",
+      "http_status": 422,
+      "latency_ms": 2047.7,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/admin/permissions/{role}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/users",
+      "http_status": 200,
+      "latency_ms": 2053.9,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/change-password",
+      "http_status": 422,
+      "latency_ms": 2049.0,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 6091.9,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/login",
+      "http_status": 401,
+      "latency_ms": 2051.3,
+      "error": "Unauthorized 401"
+    },
+    {
+      "method": "POST",
+      "path": "/logout",
+      "http_status": 200,
+      "latency_ms": 6124.9,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/profile",
+      "http_status": 200,
+      "latency_ms": 2062.8,
+      "error": null
+    },
+    {
+      "method": "PUT",
+      "path": "/profile",
+      "http_status": 200,
+      "latency_ms": 2060.9,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/register",
+      "http_status": 422,
+      "latency_ms": 2047.3,
+      "error": null
+    }
+  ],
+  "document_service": [
+    {
+      "method": "GET",
+      "path": "/categories",
+      "http_status": 200,
+      "latency_ms": 2047.5,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/documents",
+      "http_status": 500,
+      "latency_ms": 2166.8,
+      "error": "Server error 500"
+    },
+    {
+      "method": "GET",
+      "path": "/documents/shared",
+      "http_status": 500,
+      "latency_ms": 2099.6,
+      "error": "Server error 500"
+    },
+    {
+      "method": "DELETE",
+      "path": "/documents/{document_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/documents/{document_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "PUT",
+      "path": "/documents/{document_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/documents/{document_id}/download",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/documents/{document_id}/share",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "DELETE",
+      "path": "/documents/{document_id}/share/{share_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/documents/{document_id}/versions",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/documents/{document_id}/versions/{version_number}/download",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2063.5,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/priorities",
+      "http_status": 200,
+      "latency_ms": 2037.9,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/search",
+      "http_status": 500,
+      "latency_ms": 2064.2,
+      "error": "Server error 500"
+    },
+    {
+      "method": "GET",
+      "path": "/stats",
+      "http_status": 500,
+      "latency_ms": 2081.7,
+      "error": "Server error 500"
+    },
+    {
+      "method": "POST",
+      "path": "/upload",
+      "http_status": 422,
+      "latency_ms": 2037.7,
+      "error": null
+    }
+  ],
+  "ocr_service": [
+    {
+      "method": "GET",
+      "path": "/capabilities",
+      "http_status": 500,
+      "latency_ms": 2209.7,
+      "error": "Server error 500"
+    },
+    {
+      "method": "POST",
+      "path": "/extract-text",
+      "http_status": 422,
+      "latency_ms": 2041.1,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2038.4,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/languages",
+      "http_status": 200,
+      "latency_ms": 2049.3,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/process-document",
+      "http_status": 422,
+      "latency_ms": 2118.9,
+      "error": null
+    }
+  ],
+  "ai_ml_service": [
+    {
+      "method": "POST",
+      "path": "/analyze-document",
+      "http_status": 422,
+      "latency_ms": 2551.1,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/analyze-text",
+      "http_status": 422,
+      "latency_ms": 2052.4,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/generate-embeddings",
+      "http_status": 422,
+      "latency_ms": 2028.4,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2043.8,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/models",
+      "http_status": 200,
+      "latency_ms": 2039.6,
+      "error": null
+    }
+  ],
+  "search_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2137.1,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2040.4,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/index-document",
+      "http_status": 422,
+      "latency_ms": 2045.9,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/index/stats",
+      "http_status": 200,
+      "latency_ms": 2036.2,
+      "error": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/index/{document_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/reindex",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/search",
+      "http_status": 200,
+      "latency_ms": 2333.3,
+      "error": null
+    }
+  ],
+  "notification_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2057.4,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/alerts/system",
+      "http_status": 422,
+      "latency_ms": 2038.0,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/broadcast",
+      "http_status": 422,
+      "latency_ms": 2059.6,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2055.5,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/notifications",
+      "http_status": 422,
+      "latency_ms": 2058.9,
+      "error": null
+    },
+    {
+      "method": "PUT",
+      "path": "/notifications/{notification_id}/read",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/notifications/{user_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "PUT",
+      "path": "/notifications/{user_id}/read-all",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/ws/stats",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    }
+  ],
+  "integration_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2059.6,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2037.4,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/integrations",
+      "http_status": 200,
+      "latency_ms": 2095.6,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/integrations",
+      "http_status": 422,
+      "latency_ms": 2064.3,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/integrations/google-drive/auth-url",
+      "http_status": 500,
+      "latency_ms": 2066.9,
+      "error": "Server error 500"
+    },
+    {
+      "method": "POST",
+      "path": "/integrations/google-drive/exchange-code",
+      "http_status": 422,
+      "latency_ms": 2039.8,
+      "error": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/integrations/{integration_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/integrations/{integration_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "PUT",
+      "path": "/integrations/{integration_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/integrations/{integration_id}/sync",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/integrations/{integration_id}/test",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/setup-automation",
+      "http_status": 200,
+      "latency_ms": 2069.0,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/webhooks/whatsapp",
+      "http_status": 422,
+      "latency_ms": 2044.4,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/webhooks/whatsapp",
+      "http_status": 200,
+      "latency_ms": 2049.6,
+      "error": null
+    }
+  ],
+  "analytics_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2073.4,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/dashboard",
+      "http_status": 200,
+      "latency_ms": 2355.9,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/events",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2044.4,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/metrics/{metric_type}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/reports/{report_type}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/search/analytics",
+      "http_status": 200,
+      "latency_ms": 2053.2,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/users/{user_id}/activity",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    }
+  ],
+  "model_downloader": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2058.2,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/cleanup",
+      "http_status": 200,
+      "latency_ms": 2070.8,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2041.6,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/models",
+      "http_status": 200,
+      "latency_ms": 2069.7,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/models/download-all",
+      "http_status": 200,
+      "latency_ms": 2045.6,
+      "error": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/models/{model_name}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/models/{model_name}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/models/{model_name}/download",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/models/{model_name}/download-status",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/models/{model_name}/use",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/storage",
+      "http_status": 500,
+      "latency_ms": 2059.5,
+      "error": "Server error 500"
+    }
+  ],
+  "task_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2085.6,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2065.0,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/tasks",
+      "http_status": 200,
+      "latency_ms": 2166.8,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/tasks",
+      "http_status": 422,
+      "latency_ms": 2083.5,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/categories",
+      "http_status": 500,
+      "latency_ms": 2068.0,
+      "error": "Server error 500"
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/my-tasks",
+      "http_status": 500,
+      "latency_ms": 2035.9,
+      "error": "Server error 500"
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/stats",
+      "http_status": 500,
+      "latency_ms": 2055.5,
+      "error": "Server error 500"
+    },
+    {
+      "method": "DELETE",
+      "path": "/tasks/{task_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/{task_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "PUT",
+      "path": "/tasks/{task_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/tasks/{task_id}/comments",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    }
+  ],
+  "realtime_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2047.2,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/broadcast/document/{document_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/broadcast/system",
+      "http_status": 422,
+      "latency_ms": 2050.2,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/broadcast/task/{task_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2013.8,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/online-users",
+      "http_status": 200,
+      "latency_ms": 2080.5,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/room/{room_id}/users",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/stats",
+      "http_status": 200,
+      "latency_ms": 2048.9,
+      "error": null
+    }
+  ],
+  "audit_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2138.5,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/audit/log",
+      "http_status": 422,
+      "latency_ms": 2599.7,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/audit/logs",
+      "http_status": 200,
+      "latency_ms": 2117.4,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/dashboard/stats",
+      "http_status": 500,
+      "latency_ms": 2244.7,
+      "error": "Server error 500"
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2025.2,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/metrics",
+      "http_status": 200,
+      "latency_ms": 2163.4,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/metrics/log",
+      "http_status": 422,
+      "latency_ms": 2065.9,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/performance/log",
+      "http_status": 422,
+      "latency_ms": 2069.8,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/security/alert",
+      "http_status": 422,
+      "latency_ms": 2034.1,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/security/alerts",
+      "http_status": 200,
+      "latency_ms": 2099.9,
+      "error": null
+    },
+    {
+      "method": "PUT",
+      "path": "/security/alerts/{alert_id}/resolve",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    }
+  ],
+  "workflow_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2243.1,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/documents/{document_id}/versions",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/documents/{document_id}/versions",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "PUT",
+      "path": "/documents/{document_id}/versions/{version_id}/publish",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2072.0,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/templates",
+      "http_status": 500,
+      "latency_ms": 2748.0,
+      "error": "Server error 500"
+    },
+    {
+      "method": "POST",
+      "path": "/templates",
+      "http_status": 422,
+      "latency_ms": 2092.8,
+      "error": null
+    },
+    {
+      "method": "PUT",
+      "path": "/templates/{template_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/workflows",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/workflows",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/workflows/{workflow_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/workflows/{workflow_id}/review",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    }
+  ],
+  "backup_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2105.5,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/backup-executions",
+      "http_status": 200,
+      "latency_ms": 2118.8,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/backup-jobs",
+      "http_status": 200,
+      "latency_ms": 2028.3,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/backup-jobs",
+      "http_status": 422,
+      "latency_ms": 2049.4,
+      "error": null
+    },
+    {
+      "method": "PUT",
+      "path": "/backup-jobs/{job_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/backup-jobs/{job_id}/execute",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/dashboard/stats",
+      "http_status": 200,
+      "latency_ms": 2101.5,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2054.4,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/recovery-jobs",
+      "http_status": 422,
+      "latency_ms": 2038.8,
+      "error": null
+    }
+  ],
+  "security_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2474.0,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/2fa/disable/{user_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/2fa/enable/{user_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/2fa/setup/{user_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/2fa/verify/{user_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/dashboard/stats",
+      "http_status": 500,
+      "latency_ms": 2083.5,
+      "error": "Server error 500"
+    },
+    {
+      "method": "GET",
+      "path": "/events/{user_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2022.5,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/password/change/{user_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "DELETE",
+      "path": "/sessions/{session_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/sessions/{user_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/sessions/{user_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    }
+  ],
+  "reporting_service": [
+    {
+      "method": "GET",
+      "path": "/",
+      "http_status": 200,
+      "latency_ms": 2151.1,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/analytics/quick-stats",
+      "http_status": 200,
+      "latency_ms": 2256.7,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/dashboards",
+      "http_status": 200,
+      "latency_ms": 2036.2,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/dashboards",
+      "http_status": 422,
+      "latency_ms": 2047.5,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/executions",
+      "http_status": 200,
+      "latency_ms": 2051.5,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/executions/{execution_id}",
+      "status": "skipped",
+      "reason": "destructive/streaming endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/generate",
+      "http_status": 422,
+      "latency_ms": 2029.8,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "latency_ms": 2036.3,
+      "error": null
+    },
+    {
+      "method": "GET",
+      "path": "/templates",
+      "http_status": 200,
+      "latency_ms": 2059.8,
+      "error": null
+    },
+    {
+      "method": "POST",
+      "path": "/templates",
+      "http_status": 422,
+      "latency_ms": 2024.7,
+      "error": null
+    }
+  ]
+}

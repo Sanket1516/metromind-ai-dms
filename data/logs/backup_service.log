@@ -1,0 +1,76 @@
+2025-09-16 14:37:08 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 18:47:38 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 18:54:18 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 18:54:18 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 18:56:35 - backup_service - INFO - Backup & Recovery service shutdown
+2025-09-16 19:05:33 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 19:05:33 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 19:28:40 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 19:28:40 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 19:43:52 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 19:43:52 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 19:44:06 - backup_service - INFO - Backup & Recovery service shutdown
+2025-09-16 19:45:00 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 19:45:01 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 19:55:15 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 19:55:15 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 20:00:51 - backup_service - INFO - Backup & Recovery service shutdown
+2025-09-16 20:01:55 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 20:01:56 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 20:08:46 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 20:08:47 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 20:26:31 - backup_service - INFO - Backup & Recovery service shutdown
+2025-09-16 20:30:04 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 20:30:04 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 21:31:24 - backup_service - INFO - Backup & Recovery service shutdown
+2025-09-16 22:57:30 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 22:57:30 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 22:59:41 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 22:59:41 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 23:41:31 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 23:41:31 - backup_service - INFO - Backup & Recovery service started
+2025-09-16 23:44:21 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-16 23:44:21 - backup_service - INFO - Backup & Recovery service started
+2025-09-17 00:17:34 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-17 00:17:34 - backup_service - INFO - Backup & Recovery service started
+2025-09-17 09:45:20 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-17 09:45:20 - backup_service - INFO - Backup & Recovery service started
+2025-09-17 10:04:46 - backup_service - ERROR - Error updating backup job: 
+2025-09-17 10:04:48 - backup_service - ERROR - Error executing backup job: 
+2025-09-17 10:12:24 - backup_service - ERROR - Error updating backup job: 
+2025-09-17 10:12:26 - backup_service - ERROR - Error executing backup job: 
+2025-09-17 10:19:59 - backup_service - ERROR - Error updating backup job: 
+2025-09-17 10:20:01 - backup_service - ERROR - Error executing backup job: 
+2025-09-17 11:38:21 - backup_service - ERROR - Scheduled backup error: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: could not fork new process for connection: Bad file descriptor
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-09-24 13:39:06 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-24 13:39:06 - backup_service - INFO - Backup & Recovery service started
+2025-09-24 13:42:10 - backup_service - ERROR - Scheduled backup error: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-09-24 15:13:59 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-24 15:13:59 - backup_service - INFO - Backup & Recovery service started
+2025-09-24 17:15:42 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-24 17:15:42 - backup_service - INFO - Backup & Recovery service started
+2025-09-24 17:26:44 - backup_service - INFO - Backup & Recovery service shutdown
+2025-09-24 17:36:22 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-24 17:36:22 - backup_service - INFO - Backup & Recovery service started
+2025-09-24 17:44:10 - backup_service - INFO - Backup & Recovery service shutdown
+2025-09-24 17:46:32 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-24 17:46:32 - backup_service - INFO - Backup & Recovery service started
+2025-09-25 16:50:19 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-25 16:50:19 - backup_service - INFO - Backup & Recovery service started
+2025-09-25 23:41:38 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-25 23:41:38 - backup_service - INFO - Backup & Recovery service started
+2025-09-26 16:37:11 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-26 16:37:11 - backup_service - INFO - Backup & Recovery service started
+2025-09-26 17:24:13 - backup_service - INFO - Backup & Recovery service shutdown
+2025-09-26 17:26:23 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-26 17:26:23 - backup_service - INFO - Backup & Recovery service started
+2025-09-26 18:16:53 - backup_service - INFO - Backup & Recovery service shutdown
+2025-09-26 18:24:15 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-26 18:24:15 - backup_service - INFO - Backup & Recovery service started
+2025-09-26 19:13:14 - backup_service - INFO - Backup & Recovery service shutdown

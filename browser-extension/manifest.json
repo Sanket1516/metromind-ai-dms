@@ -1,0 +1,95 @@
+{
+  "manifest_version": 3,
+  "name": "MetroMind Automation Assistant",
+  "version": "1.0.0",
+  "description": "Invisible automation ecosystem for document processing, task management, and intelligent workflows",
+  "author": "MetroMind Team",
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "tabs",
+    "contextMenus",
+    "notifications",
+    "background"
+  ],
+  
+  "host_permissions": [
+    "http://localhost:8010/*",
+    "https://*.metromind.com/*",
+    "<all_urls>"
+  ],
+  
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "content/content-script.js"
+      ],
+      "css": [
+        "content/content-styles.css"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "MetroMind Assistant",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  
+  "options_page": "options/options.html",
+  
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/*",
+        "content/overlay.html"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  
+  "commands": {
+    "quick_document_capture": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+D",
+        "mac": "Command+Shift+D"
+      },
+      "description": "Quick document capture from current page"
+    },
+    "create_task_from_selection": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+T",
+        "mac": "Command+Shift+T"
+      },
+      "description": "Create task from selected text"
+    },
+    "open_metromind_dashboard": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+M",
+        "mac": "Command+Shift+M"
+      },
+      "description": "Open MetroMind dashboard"
+    }
+  }
+}

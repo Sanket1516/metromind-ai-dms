@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MetroMind Extension Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <div class="logo-text">
+          <h1>MetroMind Extension Settings</h1>
+          <p>Configure your automation assistant</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- Connection Settings -->
+      <section class="section">
+        <h2>Connection</h2>
+        <div class="setting-item">
+          <label for="api-url">MetroMind API URL</label>
+          <input type="url" id="api-url" placeholder="http://localhost:8010">
+          <small>URL of your MetroMind instance</small>
+        </div>
+        
+        <div class="setting-item">
+          <label for="auth-token">Authentication Token</label>
+          <input type="password" id="auth-token" placeholder="Enter your access token">
+          <small>Your personal access token for MetroMind API</small>
+        </div>
+        
+        <div class="setting-item">
+          <button id="test-connection" class="btn btn-secondary">Test Connection</button>
+          <div id="connection-status" class="status"></div>
+        </div>
+      </section>
+
+      <!-- Automation Settings -->
+      <section class="section">
+        <h2>Automation</h2>
+        <div class="setting-item">
+          <label class="toggle-setting">
+            <input type="checkbox" id="auto-scan">
+            <span class="toggle"></span>
+            <div class="toggle-info">
+              <strong>Auto-scan pages</strong>
+              <small>Automatically detect automation opportunities on web pages</small>
+            </div>
+          </label>
+        </div>
+        
+        <div class="setting-item">
+          <label class="toggle-setting">
+            <input type="checkbox" id="smart-suggestions">
+            <span class="toggle"></span>
+            <div class="toggle-info">
+              <strong>Smart suggestions</strong>
+              <small>Show AI-powered suggestions for page automation</small>
+            </div>
+          </label>
+        </div>
+        
+        <div class="setting-item">
+          <label class="toggle-setting">
+            <input type="checkbox" id="form-assistance">
+            <span class="toggle"></span>
+            <div class="toggle-info">
+              <strong>Form assistance</strong>
+              <small>Highlight forms that can be automated</small>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- Notifications -->
+      <section class="section">
+        <h2>Notifications</h2>
+        <div class="setting-item">
+          <label class="toggle-setting">
+            <input type="checkbox" id="enable-notifications">
+            <span class="toggle"></span>
+            <div class="toggle-info">
+              <strong>Enable notifications</strong>
+              <small>Show desktop notifications for MetroMind actions</small>
+            </div>
+          </label>
+        </div>
+        
+        <div class="setting-item">
+          <label class="toggle-setting">
+            <input type="checkbox" id="sound-notifications">
+            <span class="toggle"></span>
+            <div class="toggle-info">
+              <strong>Sound notifications</strong>
+              <small>Play sound when actions are completed</small>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- Privacy & Security -->
+      <section class="section">
+        <h2>Privacy & Security</h2>
+        <div class="setting-item">
+          <label class="toggle-setting">
+            <input type="checkbox" id="secure-storage">
+            <span class="toggle"></span>
+            <div class="toggle-info">
+              <strong>Secure storage</strong>
+              <small>Encrypt sensitive data in local storage</small>
+            </div>
+          </label>
+        </div>
+        
+        <div class="setting-item">
+          <label class="toggle-setting">
+            <input type="checkbox" id="analytics">
+            <span class="toggle"></span>
+            <div class="toggle-info">
+              <strong>Usage analytics</strong>
+              <small>Help improve MetroMind by sharing anonymous usage data</small>
+            </div>
+          </label>
+        </div>
+        
+        <div class="setting-item">
+          <button id="clear-data" class="btn btn-danger">Clear Extension Data</button>
+          <small>Remove all stored settings and activity history</small>
+        </div>
+      </section>
+
+      <!-- Keyboard Shortcuts -->
+      <section class="section">
+        <h2>Keyboard Shortcuts</h2>
+        <div class="shortcuts-list">
+          <div class="shortcut-item">
+            <div class="shortcut-action">Toggle MetroMind overlay</div>
+            <div class="shortcut-keys">
+              <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd>
+            </div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-action">Quick document capture</div>
+            <div class="shortcut-keys">
+              <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd>
+            </div>
+          </div>
+          
+          <div class="shortcut-item">
+            <div class="shortcut-action">Create task from selection</div>
+            <div class="shortcut-keys">
+              <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd>
+            </div>
+          </div>
+        </div>
+        
+        <div class="setting-item">
+          <button id="customize-shortcuts" class="btn btn-secondary">Customize Shortcuts</button>
+          <small>Customize keyboard shortcuts in Chrome settings</small>
+        </div>
+      </section>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button id="save-settings" class="btn btn-primary">Save Settings</button>
+        <button id="reset-settings" class="btn btn-secondary">Reset to Defaults</button>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="version">MetroMind Extension v1.0.0</div>
+        <div class="links">
+          <a href="#" id="help-link">Help & Support</a>
+          <a href="#" id="feedback-link">Send Feedback</a>
+          <a href="#" id="privacy-link">Privacy Policy</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

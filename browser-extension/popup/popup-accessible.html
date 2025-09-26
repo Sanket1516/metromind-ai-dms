@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MetroMind - Invisible Automation Assistant</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Skip links for keyboard navigation -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <div class="popup-container" role="application" aria-label="MetroMind browser extension">
+    <!-- Header with improved accessibility -->
+    <header class="header" role="banner">
+      <div class="logo">
+        <div class="logo-icon" role="img" aria-label="MetroMind logo">M</div>
+        <div class="logo-text">
+          <h1 class="logo-title">MetroMind</h1>
+          <div class="logo-subtitle">Automation Assistant</div>
+        </div>
+      </div>
+      <div class="status-indicator" id="status-indicator" role="status" aria-live="polite">
+        <div class="status-dot" aria-hidden="true"></div>
+        <span class="status-text" id="status-text">Connected</span>
+      </div>
+    </header>
+
+    <!-- Main content area -->
+    <main id="main-content" class="main-content">
+      <!-- Quick Actions Section -->
+      <section class="section" aria-labelledby="actions-heading">
+        <h2 id="actions-heading" class="section-title">Quick Actions</h2>
+        <div class="action-grid" role="group" aria-labelledby="actions-heading">
+          <button class="action-btn" id="capture-document" 
+                  aria-describedby="capture-desc"
+                  type="button">
+            <div class="action-icon" aria-hidden="true">📄</div>
+            <div class="action-text">
+              <div class="action-title">Capture Page</div>
+              <div class="action-subtitle">Save to MetroMind</div>
+            </div>
+          </button>
+          <p id="capture-desc" class="sr-only">
+            Capture the current page content and save it to your MetroMind document library for processing
+          </p>
+          
+          <button class="action-btn" id="create-task" 
+                  aria-describedby="task-desc"
+                  type="button">
+            <div class="action-icon" aria-hidden="true">✅</div>
+            <div class="action-text">
+              <div class="action-title">Create Task</div>
+              <div class="action-subtitle">From selection</div>
+            </div>
+          </button>
+          <p id="task-desc" class="sr-only">
+            Create a new task in MetroMind based on the current page or selected content
+          </p>
+          
+          <button class="action-btn" id="analyze-page" 
+                  aria-describedby="analyze-desc"
+                  type="button">
+            <div class="action-icon" aria-hidden="true">🧠</div>
+            <div class="action-text">
+              <div class="action-title">AI Analysis</div>
+              <div class="action-subtitle">Understand content</div>
+            </div>
+          </button>
+          <p id="analyze-desc" class="sr-only">
+            Use AI to analyze the current page content and extract insights or patterns
+          </p>
+          
+          <button class="action-btn" id="smart-fill" 
+                  aria-describedby="fill-desc"
+                  type="button"
+                  disabled>
+            <div class="action-icon" aria-hidden="true">✨</div>
+            <div class="action-text">
+              <div class="action-title">Smart Fill</div>
+              <div class="action-subtitle">Auto-complete</div>
+            </div>
+          </button>
+          <p id="fill-desc" class="sr-only">
+            Automatically fill forms on this page using saved data. Currently unavailable for this page.
+          </p>
+        </div>
+      </section>
+
+      <!-- Page Insights Section -->
+      <section class="section" aria-labelledby="insights-heading">
+        <h2 id="insights-heading" class="section-title">Page Insights</h2>
+        <div class="insights-container" role="region" aria-live="polite">
+          <div class="insight-item">
+            <span class="insight-label">Content Type:</span>
+            <span class="insight-value" id="content-type">Analyzing...</span>
+          </div>
+          <div class="insight-item">
+            <span class="insight-label">Forms Detected:</span>
+            <span class="insight-value" id="forms-count">0</span>
+          </div>
+          <div class="insight-item">
+            <span class="insight-label">Data Tables:</span>
+            <span class="insight-value" id="tables-count">0</span>
+          </div>
+          <div class="insight-item">
+            <span class="insight-label">Automation Score:</span>
+            <span class="insight-value" id="automation-score">—</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Smart Suggestions Section -->
+      <section class="section" aria-labelledby="suggestions-heading">
+        <h2 id="suggestions-heading" class="section-title">Smart Suggestions</h2>
+        <div id="suggestions-container" class="suggestions-container" 
+             role="list" aria-live="polite">
+          <div class="suggestion-placeholder" role="listitem">
+            <span class="suggestion-text">Analyzing page for automation opportunities...</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings and Tools -->
+      <section class="section" aria-labelledby="tools-heading">
+        <h2 id="tools-heading" class="section-title">Tools & Settings</h2>
+        <div class="tools-grid" role="group" aria-labelledby="tools-heading">
+          <button class="tool-btn" id="toggle-overlay" 
+                  aria-describedby="overlay-desc" 
+                  aria-pressed="false"
+                  type="button">
+            <span class="tool-icon" aria-hidden="true">👁️</span>
+            <span class="tool-text">Toggle Overlay</span>
+          </button>
+          <p id="overlay-desc" class="sr-only">
+            Show or hide the automation overlay on the current page
+          </p>
+
+          <button class="tool-btn" id="accessibility-mode" 
+                  aria-describedby="a11y-desc" 
+                  aria-pressed="false"
+                  type="button">
+            <span class="tool-icon" aria-hidden="true">♿</span>
+            <span class="tool-text">High Contrast</span>
+          </button>
+          <p id="a11y-desc" class="sr-only">
+            Toggle high contrast mode for better visibility
+          </p>
+
+          <button class="tool-btn" id="keyboard-shortcuts" 
+                  aria-describedby="shortcuts-desc"
+                  type="button">
+            <span class="tool-icon" aria-hidden="true">⌨️</span>
+            <span class="tool-text">Shortcuts</span>
+          </button>
+          <p id="shortcuts-desc" class="sr-only">
+            View available keyboard shortcuts for quick actions
+          </p>
+
+          <a href="options.html" target="_blank" class="tool-btn" 
+             aria-describedby="settings-desc">
+            <span class="tool-icon" aria-hidden="true">⚙️</span>
+            <span class="tool-text">Settings</span>
+          </a>
+          <p id="settings-desc" class="sr-only">
+            Open extension settings and configuration page
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer with help and info -->
+    <footer class="footer" role="contentinfo">
+      <div class="footer-content">
+        <div class="version-info">
+          <span class="version-text">v1.0.0</span>
+          <span class="connection-status" id="connection-status" aria-live="polite">
+            Connected to MetroMind API
+          </span>
+        </div>
+        <div class="help-links">
+          <button class="help-btn" id="show-help" 
+                  aria-describedby="help-desc"
+                  type="button">
+            <span aria-hidden="true">?</span>
+            <span class="sr-only">Help</span>
+          </button>
+          <p id="help-desc" class="sr-only">
+            Show keyboard shortcuts and usage help
+          </p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Loading indicator -->
+  <div id="loading-overlay" class="loading-overlay" 
+       role="status" aria-live="polite" aria-hidden="true">
+    <div class="loading-spinner" aria-hidden="true"></div>
+    <div class="loading-text">Processing...</div>
+  </div>
+
+  <!-- Keyboard shortcuts help modal -->
+  <div id="help-modal" class="help-modal" role="dialog" 
+       aria-modal="true" aria-labelledby="help-title" 
+       aria-hidden="true">
+    <div class="help-content">
+      <header class="help-header">
+        <h2 id="help-title">Keyboard Shortcuts</h2>
+        <button class="help-close" id="help-close" 
+                aria-label="Close help dialog" type="button">
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
+      <main class="help-body">
+        <div class="shortcut-list">
+          <div class="shortcut-item">
+            <kbd>Alt + M</kbd>
+            <span>Open MetroMind extension</span>
+          </div>
+          <div class="shortcut-item">
+            <kbd>Alt + C</kbd>
+            <span>Capture current page</span>
+          </div>
+          <div class="shortcut-item">
+            <kbd>Alt + T</kbd>
+            <span>Create task from selection</span>
+          </div>
+          <div class="shortcut-item">
+            <kbd>Alt + A</kbd>
+            <span>Analyze page with AI</span>
+          </div>
+          <div class="shortcut-item">
+            <kbd>Alt + O</kbd>
+            <span>Toggle automation overlay</span>
+          </div>
+          <div class="shortcut-item">
+            <kbd>Esc</kbd>
+            <span>Close dialogs and overlays</span>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Screen reader announcements -->
+  <div id="sr-announcements" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

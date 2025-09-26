@@ -1,0 +1,44 @@
+2025-09-16 14:30:05 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 14:37:06 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 18:47:36 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 18:54:15 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 18:57:07 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 19:05:32 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 19:28:38 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 19:43:50 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 19:44:59 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 19:55:11 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 20:01:53 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 20:08:44 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 20:26:49 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 20:30:01 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 21:31:37 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 22:57:27 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 22:59:39 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 23:41:30 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-16 23:44:16 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-17 00:17:28 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-17 09:45:15 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-17 10:04:23 - workflow_service - ERROR - Error getting document versions: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 10:04:31 - workflow_service - ERROR - Error getting workflow templates: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 10:04:35 - workflow_service - ERROR - Error updating workflow template: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 10:12:01 - workflow_service - ERROR - Error getting document versions: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 10:12:09 - workflow_service - ERROR - Error getting workflow templates: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 10:12:13 - workflow_service - ERROR - Error updating workflow template: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 10:19:36 - workflow_service - ERROR - Error getting document versions: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 10:19:44 - workflow_service - ERROR - Error getting workflow templates: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 10:19:48 - workflow_service - ERROR - Error updating workflow template: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 11:02:28 - workflow_service - ERROR - Error getting workflow templates: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 11:25:53 - workflow_service - ERROR - Error getting workflow templates: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-17 11:33:47 - workflow_service - ERROR - Error getting workflow templates: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[Document(documents)]'. Original exception was: Multiple classes found for path "DocumentVersion" in the registry of this declarative base. Please use a fully module-qualified path.
+2025-09-24 13:39:00 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-24 13:47:47 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-24 15:13:54 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-24 17:15:38 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-24 17:36:18 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-24 17:46:28 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-25 16:50:15 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-25 23:41:34 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-26 16:37:06 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-26 17:26:19 - workflow_service - INFO - Starting Document Workflow service on port 8023
+2025-09-26 18:24:11 - workflow_service - INFO - Starting Document Workflow service on port 8023

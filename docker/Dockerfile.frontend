@@ -1,0 +1,66 @@
+# MetroMind Frontend Production Dockerfile
+# Multi-stage build for optimized production deployment
+
+# Build stage
+FROM node:18-alpine as builder
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies first (for better caching)
+COPY package*.json ./
+RUN npm ci --only=production --silent
+
+# Copy source code
+COPY . .
+
+# Build the application
+ENV NODE_ENV=production
+ENV GENERATE_SOURCEMAP=false
+ENV INLINE_RUNTIME_CHUNK=false
+
+RUN npm run build
+
+# Production stage with nginx
+FROM nginx:alpine as production
+
+# Install security updates
+RUN apk update && apk upgrade && apk add --no-cache curl
+
+# Create non-root user
+RUN addgroup -g 1001 -S metromind && \
+    adduser -S metromind -u 1001
+
+# Copy built assets from builder stage
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/default.conf /etc/nginx/conf.d/default.conf
+
+# Create nginx cache directories
+RUN mkdir -p /var/cache/nginx/client_temp && \
+    mkdir -p /var/cache/nginx/proxy_temp && \
+    mkdir -p /var/cache/nginx/fastcgi_temp && \
+    mkdir -p /var/cache/nginx/uwsgi_temp && \
+    mkdir -p /var/cache/nginx/scgi_temp && \
+    chown -R metromind:metromind /var/cache/nginx && \
+    chown -R metromind:metromind /usr/share/nginx/html && \
+    chown -R metromind:metromind /var/log/nginx
+
+# Create PID directory
+RUN mkdir -p /var/run/nginx && \
+    chown -R metromind:metromind /var/run/nginx
+
+# Switch to non-root user
+USER metromind
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]

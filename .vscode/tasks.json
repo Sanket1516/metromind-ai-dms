@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run API endpoint tests",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"-m",
+				"scripts.test_api_endpoints"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

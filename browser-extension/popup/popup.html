@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MetroMind Assistant</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <div class="logo-text">
+          <div class="logo-title">MetroMind</div>
+          <div class="logo-subtitle">Automation Assistant</div>
+        </div>
+      </div>
+      <div class="status-indicator" id="status-indicator">
+        <div class="status-dot"></div>
+        <span class="status-text">Connected</span>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section">
+      <h3 class="section-title">Quick Actions</h3>
+      <div class="action-grid">
+        <button class="action-btn" id="capture-document">
+          <div class="action-icon">📄</div>
+          <div class="action-text">
+            <div class="action-title">Capture Page</div>
+            <div class="action-subtitle">Save to MetroMind</div>
+          </div>
+        </button>
+        
+        <button class="action-btn" id="create-task">
+          <div class="action-icon">✅</div>
+          <div class="action-text">
+            <div class="action-title">Create Task</div>
+            <div class="action-subtitle">From selection</div>
+          </div>
+        </button>
+        
+        <button class="action-btn" id="analyze-page">
+          <div class="action-icon">🧠</div>
+          <div class="action-text">
+            <div class="action-title">AI Analysis</div>
+            <div class="action-subtitle">Understand content</div>
+          </div>
+        </button>
+        
+        <button class="action-btn" id="open-dashboard">
+          <div class="action-icon">🏠</div>
+          <div class="action-text">
+            <div class="action-title">Dashboard</div>
+            <div class="action-subtitle">Open MetroMind</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Page Insights -->
+    <div class="section">
+      <h3 class="section-title">Page Insights</h3>
+      <div class="insights-container" id="insights-container">
+        <div class="insight-item">
+          <div class="insight-icon">📋</div>
+          <div class="insight-text">
+            <div class="insight-title">Forms Detected</div>
+            <div class="insight-value" id="forms-count">Scanning...</div>
+          </div>
+        </div>
+        
+        <div class="insight-item">
+          <div class="insight-icon">📊</div>
+          <div class="insight-text">
+            <div class="insight-title">Data Tables</div>
+            <div class="insight-value" id="tables-count">Scanning...</div>
+          </div>
+        </div>
+        
+        <div class="insight-item">
+          <div class="insight-icon">📎</div>
+          <div class="insight-text">
+            <div class="insight-title">File Links</div>
+            <div class="insight-value" id="files-count">Scanning...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="section">
+      <h3 class="section-title">Recent Activity</h3>
+      <div class="activity-list" id="activity-list">
+        <div class="activity-item">
+          <div class="activity-icon">📄</div>
+          <div class="activity-text">
+            <div class="activity-title">Document captured</div>
+            <div class="activity-time">2 minutes ago</div>
+          </div>
+        </div>
+        
+        <div class="activity-item">
+          <div class="activity-icon">✅</div>
+          <div class="activity-text">
+            <div class="activity-title">Task created</div>
+            <div class="activity-time">1 hour ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="section">
+      <div class="settings-row">
+        <label class="toggle">
+          <input type="checkbox" id="auto-scan-toggle" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-text">Auto-scan pages</span>
+        </label>
+        
+        <button class="settings-btn" id="open-settings">
+          <div class="settings-icon">⚙️</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="keyboard-shortcuts">
+        <div class="shortcut">
+          <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> - Toggle overlay
+        </div>
+        <div class="shortcut">
+          <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd> - Quick capture
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
