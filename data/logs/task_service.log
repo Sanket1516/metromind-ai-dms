@@ -345,3 +345,24 @@ LINE 1: ...ID, '58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f'::UUID, 'admin-use...
 2025-09-27 09:04:24 - task_service - INFO - Task created: de7c85f4-2762-4bbe-b3d4-582d0c9328f2 - hiihgjj,hbb
 2025-09-27 09:06:12 - task_service - INFO - Task created: e5bd55da-16d9-48ca-97ea-d0d2ff9c9273 - jghhmvvhjgh
 2025-09-27 09:15:53 - task_service - INFO - Starting Task Management service on port 8020
+2025-09-27 09:18:55 - task_service - INFO - Task created: fe75a0fe-d017-451c-ab5a-17409a43923c - jghhmvvhjgh
+2025-09-27 09:27:27 - task_service - INFO - Starting Task Management service on port 8020
+2025-09-27 09:31:24 - task_service - INFO - Task created: 231c79e4-c916-4f2a-b3b8-5d6e044a940f - sfgdsgdf
+2025-09-27 09:38:46 - task_service - INFO - Task updated: 231c79e4-c916-4f2a-b3b8-5d6e044a940f
+2025-09-27 09:38:50 - task_service - INFO - Task updated: fe75a0fe-d017-451c-ab5a-17409a43923c
+2025-09-27 09:38:56 - task_service - ERROR - Error deleting task de7c85f4-2762-4bbe-b3d4-582d0c9328f2: (psycopg2.errors.InvalidTextRepresentation) invalid input syntax for type uuid: "admin-user-id"
+LINE 3: WHERE users.id = 'admin-user-id'::UUID 
+                         ^
+
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_hash AS users_password_hash, users.first_name AS users_first_name, users.last_name AS users_last_name, users.department AS users_department, users.role AS users_role, users.status AS users_status, users.phone AS users_phone, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login AS users_last_login, users.login_attempts AS users_login_attempts, users.locked_until AS users_locked_until, users.preferences AS users_preferences, users.avatar_url AS users_avatar_url 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s]
+[parameters: {'id_1': 'admin-user-id', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)
+2025-09-27 09:39:40 - task_service - INFO - Task updated: a8b82db2-2b16-42e5-b6d7-f30ad48913b0
+2025-09-27 09:41:57 - task_service - INFO - Starting Task Management service on port 8020
+2025-09-27 09:43:01 - task_service - INFO - Task created: 54c59f0b-daab-42f9-aff4-0469f4ca5d07 - delete task
+2025-09-27 09:43:05 - task_service - INFO - Task deleted: 54c59f0b-daab-42f9-aff4-0469f4ca5d07
+2025-09-27 09:43:10 - task_service - INFO - Task deleted: d867c65d-31d1-4e49-82b1-3f4b141a31d4
+2025-09-27 09:43:13 - task_service - INFO - Task deleted: 63f0b421-d53c-49d4-b70a-9ead14a41eae

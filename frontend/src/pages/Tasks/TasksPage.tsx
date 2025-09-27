@@ -19,6 +19,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Menu,
+  ListItemIcon,
   Tabs,
   Tab,
   Paper,
@@ -44,7 +46,11 @@ import {
   Search as SearchIcon,
   Flag as FlagIcon,
   AttachFile as AttachFileIcon,
-  Comment as CommentIcon
+  Comment as CommentIcon,
+  PlayArrow as PlayIcon,
+  CheckCircle as CheckIcon,
+  Visibility as VisibilityIcon,
+  Delete as DeleteIcon
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { apiClient } from '../../services/api';
@@ -173,7 +179,30 @@ const TasksPage: React.FC = () => {
     });
   }, [tasks, searchTerm]);
 
-  const TaskCard: React.FC<{ task: Task }> = ({ task }) => (
+  interface TaskCardProps {
+    task: Task;
+    onChangeStatus: (id: string, status: Task['status']) => void;
+    onDelete: (id: string) => void;
+  }
+
+  const TaskCard: React.FC<TaskCardProps> = ({ task, onChangeStatus, onDelete }) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+
+    const handleMenuOpen = (e: React.MouseEvent<HTMLElement>) => setAnchorEl(e.currentTarget);
+    const handleMenuClose = () => setAnchorEl(null);
+
+    const moveTo = (status: Task['status']) => {
+      onChangeStatus(task.id, status);
+      handleMenuClose();
+    };
+
+    const remove = () => {
+      onDelete(task.id);
+      handleMenuClose();
+    };
+
+    return (
     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ duration: 0.2 }}>
       <Card
         sx={{
@@ -190,9 +219,27 @@ const TasksPage: React.FC = () => {
             <Typography variant="h6" sx={{ fontSize: '0.9rem', fontWeight: 600 }}>
               {task.title}
             </Typography>
-            <IconButton size="small">
+            <IconButton size="small" onClick={handleMenuOpen} aria-haspopup="true" aria-controls={open ? `task-menu-${task.id}` : undefined} aria-expanded={open ? 'true' : undefined}>
               <MoreVertIcon fontSize="small" />
             </IconButton>
+            <Menu id={`task-menu-${task.id}`} anchorEl={anchorEl} open={open} onClose={handleMenuClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
+              <MenuItem onClick={() => moveTo('in-progress')}>
+                <ListItemIcon><PlayIcon fontSize="small" /></ListItemIcon>
+                Move to In Progress
+              </MenuItem>
+              <MenuItem onClick={() => moveTo('review')}>
+                <ListItemIcon><VisibilityIcon fontSize="small" /></ListItemIcon>
+                Move to Review
+              </MenuItem>
+              <MenuItem onClick={() => moveTo('done')}>
+                <ListItemIcon><CheckIcon fontSize="small" /></ListItemIcon>
+                Mark as Done
+              </MenuItem>
+              <MenuItem onClick={remove}>
+                <ListItemIcon><DeleteIcon fontSize="small" /></ListItemIcon>
+                Delete Task
+              </MenuItem>
+            </Menu>
           </Box>
 
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -273,7 +320,36 @@ const TasksPage: React.FC = () => {
         </CardContent>
       </Card>
     </motion.div>
-  );
+    );
+  };
+
+  const mapUiToBackendStatus = (s: Task['status']): string => {
+    switch (s) {
+      case 'todo': return 'PENDING';
+      case 'in-progress': return 'IN_PROGRESS';
+      case 'review': return 'REVIEW_REQUIRED';
+      case 'done': return 'COMPLETED';
+      default: return 'PENDING';
+    }
+  };
+
+  const handleChangeStatus = async (taskId: string, status: Task['status']) => {
+    try {
+      await apiClient.put(`/tasks/${taskId}`, { status: mapUiToBackendStatus(status) });
+      setTasks(prev => prev.map(t => (t.id === taskId ? { ...t, status } : t)));
+    } catch (e) {
+      console.error('Failed to change status', e);
+    }
+  };
+
+  const handleDeleteTask = async (taskId: string) => {
+    try {
+      await apiClient.delete(`/tasks/${taskId}`);
+      setTasks(prev => prev.filter(t => t.id !== taskId));
+    } catch (e) {
+      console.error('Failed to delete task', e);
+    }
+  };
 
   const KanbanBoard = () => (
     <Grid container spacing={2}>
@@ -302,7 +378,7 @@ const TasksPage: React.FC = () => {
               {filteredTasks
                 .filter(task => task.status === status)
                 .map(task => (
-                  <TaskCard key={task.id} task={task} />
+                  <TaskCard key={task.id} task={task} onChangeStatus={handleChangeStatus} onDelete={handleDeleteTask} />
                 ))}
             </Box>
           </Paper>

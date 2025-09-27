@@ -371,8 +371,8 @@ async def add_task_comment(
         if not task:
             raise HTTPException(status_code=404, detail="Task not found")
         
-        # Get user info for comment
-        user = db.query(User).filter(User.id == current_user).first()
+        # Get user info for comment (only if current_user is a valid UUID)
+        user = db.query(User).filter(User.id == current_user).first() if _is_valid_uuid(current_user) else None
         user_name = f"{user.first_name} {user.last_name}" if user else "Unknown User"
         
         comment = {
@@ -416,7 +416,7 @@ async def delete_task(
             raise HTTPException(status_code=404, detail="Task not found")
         
         # Check permissions - only admin or task creator can delete
-        user = db.query(User).filter(User.id == current_user).first()
+        user = db.query(User).filter(User.id == current_user).first() if _is_valid_uuid(current_user) else None
         if user and user.role != UserRole.ADMIN and task.assigned_by != current_user:
             raise HTTPException(status_code=403, detail="Not authorized to delete this task")
         
