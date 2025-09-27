@@ -57,7 +57,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useAuth } from '../../contexts/AuthContext';
-import { api } from '../../services/api';
+import { api, taskAPI } from '../../services/api';
 
 // TypeScript Interfaces
 interface User {
@@ -651,7 +651,60 @@ const TaskManagement: React.FC = () => {
       setLoading(true);
       setError(null);
       const response = await api.get('/tasks');
-      setTasks(response.data);
+  
+      // Normalize backend payload to UI Task interface
+      const priorityNumToStr: Record<number | string, Task['priority']> = {
+        1: 'low',
+        2: 'medium',
+        3: 'high',
+        4: 'urgent',
+        LOW: 'low',
+        MEDIUM: 'medium',
+        HIGH: 'high',
+        CRITICAL: 'urgent',
+      };
+  
+      const statusStrToUi = (s: string): Task['status'] => {
+        const key = String(s || '').toUpperCase();
+        switch (key) {
+          case 'PENDING': return 'pending';
+          case 'IN_PROGRESS': return 'in_progress';
+          case 'COMPLETED': return 'completed';
+          case 'CANCELLED': return 'cancelled';
+          default: return 'pending';
+        }
+      };
+  
+      const mapped: Task[] = (response.data || []).map((t: any) => ({
+        id: t.id,
+        title: t.title,
+        description: t.description || '',
+        status: statusStrToUi(t.status),
+        priority: priorityNumToStr[t.priority] || 'medium',
+        assigned_to: t.assigned_to,
+        assigned_to_name: t.assigned_to_name,
+        created_by: t.assigned_by,
+        created_by_name: t.assigned_by_name,
+        due_date: t.due_date || '',
+        created_at: t.created_at,
+        updated_at: t.updated_at,
+        tags: Array.isArray(t.tags) ? t.tags : [],
+        comments: Array.isArray(t.comments)
+          ? t.comments.map((c: any) => ({
+              id: c.id || '',
+              task_id: t.id,
+              user_id: c.user_id || '',
+              user_name: c.user_name || 'Unknown User',
+              content: c.comment || '',
+              created_at: c.created_at || t.created_at,
+            }))
+          : [],
+        progress: typeof t.progress_percentage === 'number' ? t.progress_percentage : 0,
+        estimated_hours: t.estimated_hours,
+        actual_hours: t.actual_hours,
+      }));
+  
+      setTasks(mapped);
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Failed to load tasks');
     } finally {
@@ -680,13 +733,68 @@ const TaskManagement: React.FC = () => {
   const handleCreateTask = async (taskData: TaskFormData) => {
     try {
       setLoading(true);
+      // Map UI priority string -> backend numeric enum (1..4)
+      const priorityMap: Record<string, number> = { low: 1, medium: 2, high: 3, urgent: 4 };
       const payload = {
-        ...taskData,
+        title: taskData.title,
+        description: taskData.description || undefined,
+        assigned_to: taskData.assigned_to,
+        priority: priorityMap[String(taskData.priority || 'medium').toLowerCase()] ?? 2,
+        status: 'PENDING',
+        category: 'general',
+        tags: taskData.tags || [],
         due_date: taskData.due_date?.toISOString(),
-        created_by: user?.id
+        estimated_hours: taskData.estimated_hours,
+        task_type: 'TODO',
       };
       const response = await api.post('/tasks', payload);
-      setTasks(prev => [...prev, response.data]);
+  
+      // Normalize the created task to UI shape and append
+      const created = response.data;
+      const priorityNumToStr: Record<number | string, Task['priority']> = {
+        1: 'low', 2: 'medium', 3: 'high', 4: 'urgent',
+        LOW: 'low', MEDIUM: 'medium', HIGH: 'high', CRITICAL: 'urgent'
+      };
+      const statusStrToUi = (s: string): Task['status'] => {
+        const key = String(s || '').toUpperCase();
+        switch (key) {
+          case 'PENDING': return 'pending';
+          case 'IN_PROGRESS': return 'in_progress';
+          case 'COMPLETED': return 'completed';
+          case 'CANCELLED': return 'cancelled';
+          default: return 'pending';
+        }
+      };
+      const createdMapped: Task = {
+        id: created.id,
+        title: created.title,
+        description: created.description || '',
+        status: statusStrToUi(created.status),
+        priority: priorityNumToStr[created.priority] || 'medium',
+        assigned_to: created.assigned_to,
+        assigned_to_name: created.assigned_to_name,
+        created_by: created.assigned_by,
+        created_by_name: created.assigned_by_name,
+        due_date: created.due_date || '',
+        created_at: created.created_at,
+        updated_at: created.updated_at,
+        tags: Array.isArray(created.tags) ? created.tags : [],
+        comments: Array.isArray(created.comments)
+          ? created.comments.map((c: any) => ({
+              id: c.id || '',
+              task_id: created.id,
+              user_id: c.user_id || '',
+              user_name: c.user_name || 'Unknown User',
+              content: c.comment || '',
+              created_at: c.created_at || created.created_at,
+            }))
+          : [],
+        progress: typeof created.progress_percentage === 'number' ? created.progress_percentage : 0,
+        estimated_hours: created.estimated_hours,
+        actual_hours: created.actual_hours,
+      };
+  
+      setTasks(prev => [...prev, createdMapped]);
       loadStats();
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Failed to create task');
@@ -747,12 +855,25 @@ const TaskManagement: React.FC = () => {
 
   const handleAddComment = async (taskId: string, comment: string) => {
     try {
-      const response = await api.post(`/tasks/${taskId}/comments`, {
-        content: comment
-      });
+      // Backend expects { comment, attachments }
+      await taskAPI.addComment(taskId, comment);
+      // Optimistic UI update
       setTasks(prev => prev.map(task => 
         task.id === taskId 
-          ? { ...task, comments: [...task.comments, response.data] }
+          ? { 
+              ...task, 
+              comments: [
+                ...task.comments, 
+                { 
+                  id: (window.crypto?.randomUUID?.() || String(Date.now())), 
+                  task_id: taskId, 
+                  user_id: '', 
+                  user_name: 'You', 
+                  content: comment, 
+                  created_at: new Date().toISOString() 
+                }
+              ] 
+            }
           : task
       ));
     } catch (err: any) {
@@ -780,8 +901,10 @@ const TaskManagement: React.FC = () => {
   };
 
   const filteredTasks = tasks.filter(task => {
-    const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         task.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const titleText = (task.title || '').toLowerCase();
+    const descText = (task.description || '').toLowerCase();
+    const term = (searchTerm || '').toLowerCase();
+    const matchesSearch = titleText.includes(term) || descText.includes(term);
     const matchesStatus = filterStatus === 'all' || task.status === filterStatus;
     const matchesPriority = filterPriority === 'all' || task.priority === filterPriority;
     

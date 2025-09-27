@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   Card,
@@ -28,11 +28,11 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   LinearProgress,
-  Stack,
   Badge,
   Tooltip,
   useTheme,
-  alpha
+  alpha,
+  Stack
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -42,16 +42,12 @@ import {
   Dashboard as BoardIcon,
   FilterList as FilterIcon,
   Search as SearchIcon,
-  PlayArrow as PlayIcon,
-  Pause as PauseIcon,
-  CheckCircle as CheckIcon,
-  Schedule as ScheduleIcon,
-  Person as PersonIcon,
   Flag as FlagIcon,
   AttachFile as AttachFileIcon,
   Comment as CommentIcon
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
+import { apiClient } from '../../services/api';
 
 interface Task {
   id: string;
@@ -76,67 +72,16 @@ const TasksPage: React.FC = () => {
   const [openNewTask, setOpenNewTask] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Sample task data - will be replaced with API data
-  const tasks: Task[] = [
-    {
-      id: '1',
-      title: 'Document Processing Enhancement',
-      description: 'Improve OCR accuracy and document classification',
-      status: 'in-progress',
-      priority: 'high',
-      assignee: { name: 'John Doe', avatar: '/avatars/john.jpg' },
-      dueDate: '2024-12-30',
-      tags: ['OCR', 'AI', 'Backend'],
-      comments: 5,
-      attachments: 3,
-      progress: 60
-    },
-    {
-      id: '2',
-      title: 'User Authentication Upgrade',
-      description: 'Implement multi-factor authentication',
-      status: 'todo',
-      priority: 'medium',
-      assignee: { name: 'Jane Smith', avatar: '/avatars/jane.jpg' },
-      dueDate: '2024-12-28',
-      tags: ['Security', 'Frontend'],
-      comments: 2,
-      attachments: 1,
-      progress: 0
-    },
-    {
-      id: '3',
-      title: 'Analytics Dashboard',
-      description: 'Create comprehensive analytics dashboard',
-      status: 'review',
-      priority: 'high',
-      assignee: { name: 'Mike Johnson', avatar: '/avatars/mike.jpg' },
-      dueDate: '2024-12-25',
-      tags: ['Analytics', 'UI/UX'],
-      comments: 8,
-      attachments: 5,
-      progress: 85
-    },
-    {
-      id: '4',
-      title: 'API Integration Testing',
-      description: 'Test all third-party API integrations',
-      status: 'done',
-      priority: 'medium',
-      assignee: { name: 'Sarah Wilson', avatar: '/avatars/sarah.jpg' },
-      dueDate: '2024-12-20',
-      tags: ['Testing', 'Integration'],
-      comments: 3,
-      attachments: 2,
-      progress: 100
-    }
-  ];
+  // Tasks loaded from backend
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const columns = {
-    todo: { title: 'To Do', color: theme.palette.grey[500] },
+  // Column definitions
+  const columns: Record<Task['status'], { title: string; color: string }> = {
+    'todo': { title: 'To Do', color: theme.palette.grey[500] },
     'in-progress': { title: 'In Progress', color: theme.palette.warning.main },
-    review: { title: 'Review', color: theme.palette.info.main },
-    done: { title: 'Done', color: theme.palette.success.main }
+    'review': { title: 'Review', color: theme.palette.info.main },
+    'done': { title: 'Done', color: theme.palette.success.main }
   };
 
   const priorityColors = {
@@ -146,7 +91,7 @@ const TasksPage: React.FC = () => {
     urgent: theme.palette.error.dark
   };
 
-  const getPriorityIcon = (priority: string) => {
+  const getPriorityIcon = (priority: Task['priority']) => {
     switch (priority) {
       case 'urgent': return <FlagIcon sx={{ color: priorityColors.urgent }} />;
       case 'high': return <FlagIcon sx={{ color: priorityColors.high }} />;
@@ -155,12 +100,81 @@ const TasksPage: React.FC = () => {
     }
   };
 
+  // Load tasks on mount
+  useEffect(() => {
+    const loadTasks = async () => {
+      try {
+        setLoading(true);
+        const res = await apiClient.get('/tasks');
+        const data = res.data || [];
+
+        const mapStatus = (s: string): Task['status'] => {
+          const key = String(s || '').toUpperCase();
+          switch (key) {
+            case 'PENDING': return 'todo';
+            case 'IN_PROGRESS': return 'in-progress';
+            case 'REVIEW_REQUIRED': return 'review';
+            case 'COMPLETED': return 'done';
+            case 'APPROVED': return 'done';
+            case 'REJECTED': return 'review';
+            case 'CANCELLED': return 'done';
+            default: return 'todo';
+          }
+        };
+
+        const priorityNumToStr: Record<number | string, Task['priority']> = {
+          1: 'low',
+          2: 'medium',
+          3: 'high',
+          4: 'urgent',
+          LOW: 'low',
+          MEDIUM: 'medium',
+          HIGH: 'high',
+          CRITICAL: 'urgent',
+        };
+
+        const mapped: Task[] = data.map((t: any) => ({
+          id: t.id,
+          title: t.title,
+          description: t.description || '',
+          status: mapStatus(t.status),
+          priority: priorityNumToStr[t.priority] || 'medium',
+          assignee: {
+            name: t.assigned_to_name || 'Unassigned',
+            avatar: ''
+          },
+          dueDate: t.due_date || new Date().toISOString(),
+          tags: Array.isArray(t.tags) ? t.tags : [],
+          comments: Array.isArray(t.comments) ? t.comments.length : 0,
+          attachments: Array.isArray(t.attachments) ? t.attachments.length : 0,
+          progress: typeof t.progress_percentage === 'number' ? t.progress_percentage : 0,
+        }));
+
+        setTasks(mapped);
+      } catch (e) {
+        console.error('Failed to load tasks', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTasks();
+  }, []);
+
+  // Apply search filter
+  const filteredTasks = useMemo(() => {
+    const term = (searchTerm || '').toLowerCase();
+    if (!term) return tasks;
+    return tasks.filter((t) => {
+      const title = (t.title || '').toLowerCase();
+      const desc = (t.description || '').toLowerCase();
+      const tagHit = (t.tags || []).some(tag => String(tag).toLowerCase().includes(term));
+      return title.includes(term) || desc.includes(term) || tagHit;
+    });
+  }, [tasks, searchTerm]);
+
   const TaskCard: React.FC<{ task: Task }> = ({ task }) => (
-    <motion.div
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ duration: 0.2 }}
-    >
+    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ duration: 0.2 }}>
       <Card
         sx={{
           mb: 2,
@@ -185,21 +199,23 @@ const TasksPage: React.FC = () => {
             {task.description}
           </Typography>
 
-          <Box display="flex" gap={0.5} mb={2} flexWrap="wrap">
-            {task.tags.map((tag) => (
-              <Chip
-                key={tag}
-                label={tag}
-                size="small"
-                sx={{ 
-                  fontSize: '0.7rem',
-                  height: 24,
-                  bgcolor: alpha(theme.palette.primary.main, 0.1),
-                  color: theme.palette.primary.main
-                }}
-              />
-            ))}
-          </Box>
+          {task.tags?.length > 0 && (
+            <Box display="flex" gap={0.5} mb={2} flexWrap="wrap">
+              {task.tags.map((tag) => (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  size="small"
+                  sx={{
+                    fontSize: '0.7rem',
+                    height: 24,
+                    bgcolor: alpha(theme.palette.primary.main, 0.1),
+                    color: theme.palette.primary.main
+                  }}
+                />
+              ))}
+            </Box>
+          )}
 
           {task.progress > 0 && task.status !== 'done' && (
             <Box mb={2}>
@@ -211,11 +227,11 @@ const TasksPage: React.FC = () => {
                   {task.progress}%
                 </Typography>
               </Box>
-              <LinearProgress 
-                variant="determinate" 
+              <LinearProgress
+                variant="determinate"
                 value={task.progress}
-                sx={{ 
-                  height: 6, 
+                sx={{
+                  height: 6,
                   borderRadius: 3,
                   bgcolor: alpha(theme.palette.primary.main, 0.1)
                 }}
@@ -225,10 +241,7 @@ const TasksPage: React.FC = () => {
 
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Box display="flex" alignItems="center" gap={1}>
-              <Avatar
-                src={task.assignee.avatar}
-                sx={{ width: 28, height: 28 }}
-              >
+              <Avatar src={task.assignee.avatar} sx={{ width: 28, height: 28 }}>
                 {task.assignee.name.charAt(0)}
               </Avatar>
               <Typography variant="caption" color="text.secondary">
@@ -279,14 +292,14 @@ const TasksPage: React.FC = () => {
                 {column.title}
               </Typography>
               <Chip
-                label={tasks.filter(task => task.status === status).length}
+                label={filteredTasks.filter(task => task.status === status).length}
                 size="small"
                 sx={{ bgcolor: column.color, color: 'white' }}
               />
             </Box>
-            
+
             <Box>
-              {tasks
+              {filteredTasks
                 .filter(task => task.status === status)
                 .map(task => (
                   <TaskCard key={task.id} task={task} />
@@ -301,12 +314,12 @@ const TasksPage: React.FC = () => {
   const ListView = () => (
     <Paper sx={{ p: 2 }}>
       <List>
-        {tasks.map((task, index) => (
+        {filteredTasks.map((task, index) => (
           <motion.div
             key={task.id}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
+            transition={{ delay: index * 0.05 }}
           >
             <ListItem
               sx={{
@@ -321,7 +334,7 @@ const TasksPage: React.FC = () => {
                   {task.assignee.name.charAt(0)}
                 </Avatar>
               </ListItemAvatar>
-              
+
               <ListItemText
                 primary={
                   <Box display="flex" alignItems="center" gap={1}>
@@ -331,7 +344,7 @@ const TasksPage: React.FC = () => {
                     <Chip
                       label={task.status.replace('-', ' ')}
                       size="small"
-                      sx={{ 
+                      sx={{
                         bgcolor: columns[task.status].color,
                         color: 'white',
                         textTransform: 'capitalize'
@@ -345,7 +358,7 @@ const TasksPage: React.FC = () => {
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                       {task.description}
                     </Typography>
-                    <Box display="flex" gap={0.5}>
+                    <Stack direction="row" spacing={0.5} flexWrap="wrap">
                       {task.tags.map((tag) => (
                         <Chip
                           key={tag}
@@ -355,11 +368,11 @@ const TasksPage: React.FC = () => {
                           sx={{ fontSize: '0.7rem', height: 20 }}
                         />
                       ))}
-                    </Box>
+                    </Stack>
                   </Box>
                 }
               />
-              
+
               <ListItemSecondaryAction>
                 <Typography variant="caption" color="text.secondary">
                   Due: {new Date(task.dueDate).toLocaleDateString()}
@@ -384,7 +397,7 @@ const TasksPage: React.FC = () => {
             Organize and track your team's work efficiently
           </Typography>
         </Box>
-        
+
         <Fab
           color="primary"
           onClick={() => setOpenNewTask(true)}
@@ -400,24 +413,9 @@ const TasksPage: React.FC = () => {
       <Paper sx={{ p: 2, mb: 3, bgcolor: alpha(theme.palette.background.paper, 0.8) }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={2}>
           <Tabs value={view} onChange={(_, newValue) => setView(newValue)}>
-            <Tab
-              icon={<BoardIcon />}
-              iconPosition="start"
-              label="Board"
-              value="board"
-            />
-            <Tab
-              icon={<AssignmentIcon />}
-              iconPosition="start"
-              label="List"
-              value="list"
-            />
-            <Tab
-              icon={<CalendarIcon />}
-              iconPosition="start"
-              label="Calendar"
-              value="calendar"
-            />
+            <Tab icon={<BoardIcon />} iconPosition="start" label="Board" value="board" />
+            <Tab icon={<AssignmentIcon />} iconPosition="start" label="List" value="list" />
+            <Tab icon={<CalendarIcon />} iconPosition="start" label="Calendar" value="calendar" />
           </Tabs>
 
           <Box display="flex" gap={2} alignItems="center">
@@ -429,7 +427,7 @@ const TasksPage: React.FC = () => {
               InputProps={{
                 startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />
               }}
-              sx={{ minWidth: 200 }}
+              sx={{ minWidth: 220 }}
             />
             <IconButton>
               <FilterIcon />
@@ -460,31 +458,16 @@ const TasksPage: React.FC = () => {
         )}
       </motion.div>
 
-      {/* New Task Dialog */}
-      <Dialog
-        open={openNewTask}
-        onClose={() => setOpenNewTask(false)}
-        maxWidth="md"
-        fullWidth
-      >
+      {/* New Task Dialog (UI only) */}
+      <Dialog open={openNewTask} onClose={() => setOpenNewTask(false)} maxWidth="md" fullWidth>
         <DialogTitle>Create New Task</DialogTitle>
         <DialogContent>
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Task Title"
-                variant="outlined"
-              />
+              <TextField fullWidth label="Task Title" variant="outlined" />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Description"
-                multiline
-                rows={3}
-                variant="outlined"
-              />
+              <TextField fullWidth label="Description" multiline rows={3} variant="outlined" />
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -498,12 +481,7 @@ const TasksPage: React.FC = () => {
               </FormControl>
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="Due Date"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-              />
+              <TextField fullWidth label="Due Date" type="date" InputLabelProps={{ shrink: true }} />
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -517,12 +495,7 @@ const TasksPage: React.FC = () => {
               </FormControl>
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="Tags"
-                placeholder="e.g., Frontend, API, Testing"
-                helperText="Separate with commas"
-              />
+              <TextField fullWidth label="Tags" placeholder="e.g., Frontend, API, Testing" helperText="Separate with commas" />
             </Grid>
           </Grid>
         </DialogContent>
@@ -531,14 +504,18 @@ const TasksPage: React.FC = () => {
           <Button
             variant="contained"
             onClick={() => setOpenNewTask(false)}
-            sx={{
-              background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`
-            }}
+            sx={{ background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})` }}
           >
             Create Task
           </Button>
         </DialogActions>
       </Dialog>
+
+      {loading && (
+        <Box mt={2} textAlign="center">
+          <Typography variant="body2" color="text.secondary">Loading tasks...</Typography>
+        </Box>
+      )}
     </Box>
   );
 };

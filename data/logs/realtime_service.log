@@ -82,3 +82,9 @@
 2025-09-27 00:10:50 - realtime_service - INFO - Starting Real-time Communication service on port 8021
 2025-09-27 00:26:22 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
 2025-09-27 00:26:22 - realtime_service - INFO - Starting Real-time Communication service on port 8021
+2025-09-27 08:38:46 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-27 08:38:46 - realtime_service - INFO - Starting Real-time Communication service on port 8021
+2025-09-27 09:02:03 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-27 09:02:03 - realtime_service - INFO - Starting Real-time Communication service on port 8021
+2025-09-27 09:16:35 - realtime_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-27 09:16:36 - realtime_service - INFO - Starting Real-time Communication service on port 8021

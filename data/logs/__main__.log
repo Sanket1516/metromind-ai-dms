@@ -8512,3 +8512,201 @@ WHERE users.role IN (%(role_1_1)s, %(role_1_2)s) AND users.status = %(status_1)s
 2025-09-27 00:29:25 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 500
 2025-09-27 00:29:38 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
 2025-09-27 00:31:30 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
+2025-09-27 00:33:04 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
+2025-09-27 08:36:02 - __main__ - INFO - Starting Authentication Service on port 8011
+2025-09-27 08:36:09 - __main__ - INFO - Starting Document Service on port 8012
+2025-09-27 08:36:28 - __main__ - INFO - EasyOCR initialized with multi-language support
+2025-09-27 08:36:28 - __main__ - INFO - OCR Processor initialized - Tesseract: True, EasyOCR: True
+2025-09-27 08:36:29 - __main__ - INFO - Starting OCR Service on port 8013
+2025-09-27 08:36:29 - __main__ - INFO - Tesseract available: True
+2025-09-27 08:36:29 - __main__ - INFO - EasyOCR available: True
+2025-09-27 08:37:31 - __main__ - INFO - Pre-loading essential AI/ML models...
+2025-09-27 08:37:31 - __main__ - INFO - Loading sentence transformer: all-MiniLM-L6-v2...
+2025-09-27 08:37:36 - __main__ - INFO - Successfully loaded model: sentence_transformer
+2025-09-27 08:37:36 - __main__ - INFO - Loading spaCy English model...
+2025-09-27 08:37:38 - __main__ - INFO - Successfully loaded model: spacy_en
+2025-09-27 08:37:38 - __main__ - INFO - Essential models pre-loaded.
+2025-09-27 08:37:38 - __main__ - INFO - Starting AI/ML Service on port 8014
+2025-09-27 08:37:38 - __main__ - INFO - Models available: ['sentence_transformer', 'spacy_en']
+2025-09-27 08:37:52 - __main__ - INFO - Starting Vector Search service on port 8015
+2025-09-27 08:37:52 - __main__ - INFO - Initializing vector search engine...
+2025-09-27 08:37:58 - __main__ - INFO - Loaded sentence transformer model
+2025-09-27 08:37:58 - __main__ - INFO - FAISS index initialized
+2025-09-27 08:37:59 - __main__ - INFO - ChromaDB initialized
+2025-09-27 08:37:59 - __main__ - INFO - Vector search engine initialized successfully
+2025-09-27 08:37:59 - __main__ - INFO - Vector search service started
+2025-09-27 08:38:05 - __main__ - INFO - Starting Notification service on port 8016
+2025-09-27 08:38:05 - __main__ - WARNING - Redis not available: 'NotificationConfig' object has no attribute 'redis_host'
+2025-09-27 08:38:05 - __main__ - INFO - Notification processor started
+2025-09-27 08:38:05 - __main__ - INFO - Notification service started
+2025-09-27 08:38:09 - __main__ - INFO - Starting Integration service on port 8017
+2025-09-27 08:38:09 - __main__ - INFO - Sync scheduler started
+2025-09-27 08:38:09 - __main__ - INFO - Integration service started
+2025-09-27 08:38:16 - __main__ - INFO - Starting Analytics service on port 8018
+2025-09-27 08:38:16 - __main__ - INFO - Analytics service started
+2025-09-27 08:38:45 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 08:38:47 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 08:38:48 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 08:38:51 - __main__ - INFO - Starting API Gateway on port 8010
+2025-09-27 08:38:51 - __main__ - INFO - Registered services: ['auth', 'documents', 'ocr', 'ai', 'search', 'notifications', 'integrations', 'analytics', 'tasks']
+2025-09-27 08:38:51 - __main__ - INFO - API Gateway started with service health monitoring
+2025-09-27 08:39:01 - __main__ - ERROR - Failed to store session in Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-27 08:39:01 - __main__ - INFO - User logged in: admin
+2025-09-27 08:39:01 - __main__ - INFO - Proxied POST http://localhost:8011/login -> 200
+2025-09-27 08:39:01 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 08:39:01 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 08:39:03 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 08:39:13 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
+2025-09-27 08:39:27 - __main__ - ERROR - Error creating task for document 5d6798ac-b2d1-4e68-9413-5bf660570d4a: 'ServiceConfig' object has no attribute 'get'
+2025-09-27 08:39:27 - __main__ - INFO - Document uploaded: E265_MTT1_IVRAR.docx by admin
+2025-09-27 08:39:28 - __main__ - INFO - Document 5d6798ac-b2d1-4e68-9413-5bf660570d4a processed successfully
+2025-09-27 08:39:28 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 200
+2025-09-27 08:39:38 - __main__ - INFO - Loaded model registry with 4 models
+2025-09-27 08:39:39 - __main__ - INFO - Starting Model Downloader service on port 8019
+2025-09-27 08:39:39 - __main__ - INFO - Initializing model downloader...
+2025-09-27 08:39:39 - __main__ - INFO - Model downloader initialized
+2025-09-27 08:39:39 - __main__ - INFO - Model downloader service started
+2025-09-27 08:39:44 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
+2025-09-27 08:53:37 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-27 08:54:51 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-27 08:58:33 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 08:58:33 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 08:58:33 - __main__ - INFO - API Gateway shutdown
+2025-09-27 08:58:33 - __main__ - INFO - Analytics service shutdown
+2025-09-27 08:58:33 - __main__ - INFO - Notification service shutdown
+2025-09-27 08:58:33 - __main__ - INFO - Model downloader service shutdown
+2025-09-27 08:58:33 - __main__ - INFO - Vector search service shutdown
+2025-09-27 08:58:33 - __main__ - INFO - Sync scheduler stopped
+2025-09-27 08:58:33 - __main__ - INFO - Integration service shutdown
+2025-09-27 08:58:42 - __main__ - INFO - Starting Authentication Service on port 8011
+2025-09-27 08:58:53 - __main__ - INFO - Starting Document Service on port 8012
+2025-09-27 08:59:36 - __main__ - INFO - EasyOCR initialized with multi-language support
+2025-09-27 08:59:36 - __main__ - INFO - OCR Processor initialized - Tesseract: True, EasyOCR: True
+2025-09-27 08:59:36 - __main__ - INFO - Starting OCR Service on port 8013
+2025-09-27 08:59:36 - __main__ - INFO - Tesseract available: True
+2025-09-27 08:59:36 - __main__ - INFO - EasyOCR available: True
+2025-09-27 09:00:46 - __main__ - INFO - Pre-loading essential AI/ML models...
+2025-09-27 09:00:46 - __main__ - INFO - Loading sentence transformer: all-MiniLM-L6-v2...
+2025-09-27 09:00:53 - __main__ - INFO - Successfully loaded model: sentence_transformer
+2025-09-27 09:00:53 - __main__ - INFO - Loading spaCy English model...
+2025-09-27 09:00:55 - __main__ - INFO - Successfully loaded model: spacy_en
+2025-09-27 09:00:55 - __main__ - INFO - Essential models pre-loaded.
+2025-09-27 09:00:55 - __main__ - INFO - Starting AI/ML Service on port 8014
+2025-09-27 09:00:55 - __main__ - INFO - Models available: ['sentence_transformer', 'spacy_en']
+2025-09-27 09:01:10 - __main__ - INFO - Starting Vector Search service on port 8015
+2025-09-27 09:01:10 - __main__ - INFO - Initializing vector search engine...
+2025-09-27 09:01:16 - __main__ - INFO - Loaded sentence transformer model
+2025-09-27 09:01:16 - __main__ - INFO - FAISS index initialized
+2025-09-27 09:01:17 - __main__ - INFO - ChromaDB initialized
+2025-09-27 09:01:17 - __main__ - INFO - Vector search engine initialized successfully
+2025-09-27 09:01:17 - __main__ - INFO - Vector search service started
+2025-09-27 09:01:22 - __main__ - INFO - Starting Notification service on port 8016
+2025-09-27 09:01:22 - __main__ - WARNING - Redis not available: 'NotificationConfig' object has no attribute 'redis_host'
+2025-09-27 09:01:22 - __main__ - INFO - Notification processor started
+2025-09-27 09:01:22 - __main__ - INFO - Notification service started
+2025-09-27 09:01:26 - __main__ - INFO - Starting Integration service on port 8017
+2025-09-27 09:01:26 - __main__ - INFO - Sync scheduler started
+2025-09-27 09:01:26 - __main__ - INFO - Integration service started
+2025-09-27 09:01:33 - __main__ - INFO - Starting Analytics service on port 8018
+2025-09-27 09:01:33 - __main__ - INFO - Analytics service started
+2025-09-27 09:02:08 - __main__ - INFO - Starting API Gateway on port 8010
+2025-09-27 09:02:08 - __main__ - INFO - Registered services: ['auth', 'documents', 'ocr', 'ai', 'search', 'notifications', 'integrations', 'analytics', 'tasks']
+2025-09-27 09:02:08 - __main__ - INFO - API Gateway started with service health monitoring
+2025-09-27 09:02:42 - __main__ - INFO - Loaded model registry with 4 models
+2025-09-27 09:02:42 - __main__ - INFO - Starting Model Downloader service on port 8019
+2025-09-27 09:02:42 - __main__ - INFO - Initializing model downloader...
+2025-09-27 09:02:42 - __main__ - INFO - Model downloader initialized
+2025-09-27 09:02:42 - __main__ - INFO - Model downloader service started
+2025-09-27 09:03:53 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:03:54 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-27 09:03:54 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-27 09:03:54 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:03:55 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:03:56 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:03:56 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:04:24 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
+2025-09-27 09:04:36 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:04:36 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:04:36 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:04:37 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:04:39 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-27 09:04:39 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-27 09:04:39 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:04:39 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:04:40 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:04:40 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:06:12 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
+2025-09-27 09:12:17 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:12:17 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:12:17 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:14:23 - __main__ - INFO - Notification service shutdown
+2025-09-27 09:14:23 - __main__ - INFO - Analytics service shutdown
+2025-09-27 09:14:23 - __main__ - INFO - Sync scheduler stopped
+2025-09-27 09:14:23 - __main__ - INFO - Integration service shutdown
+2025-09-27 09:14:23 - __main__ - INFO - Vector search service shutdown
+2025-09-27 09:14:24 - __main__ - INFO - Model downloader service shutdown
+2025-09-27 09:14:24 - __main__ - INFO - API Gateway shutdown
+2025-09-27 09:14:24 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-27 09:14:24 - __main__ - WARNING - Health check failed for http://localhost:8012: Cannot send a request, as the client has been closed.
+2025-09-27 09:14:24 - __main__ - WARNING - Health check failed for http://localhost:8013: Cannot send a request, as the client has been closed.
+2025-09-27 09:14:24 - __main__ - WARNING - Health check failed for http://localhost:8014: Cannot send a request, as the client has been closed.
+2025-09-27 09:14:24 - __main__ - WARNING - Health check failed for http://localhost:8015: Cannot send a request, as the client has been closed.
+2025-09-27 09:14:24 - __main__ - WARNING - Health check failed for http://localhost:8016: Cannot send a request, as the client has been closed.
+2025-09-27 09:14:24 - __main__ - WARNING - Health check failed for http://localhost:8017: Cannot send a request, as the client has been closed.
+2025-09-27 09:14:24 - __main__ - WARNING - Health check failed for http://localhost:8018: Cannot send a request, as the client has been closed.
+2025-09-27 09:14:24 - __main__ - WARNING - Health check failed for http://localhost:8020: Cannot send a request, as the client has been closed.
+2025-09-27 09:14:36 - __main__ - INFO - Starting Authentication Service on port 8011
+2025-09-27 09:14:43 - __main__ - INFO - Starting Document Service on port 8012
+2025-09-27 09:14:59 - __main__ - INFO - EasyOCR initialized with multi-language support
+2025-09-27 09:14:59 - __main__ - INFO - OCR Processor initialized - Tesseract: True, EasyOCR: True
+2025-09-27 09:14:59 - __main__ - INFO - Starting OCR Service on port 8013
+2025-09-27 09:14:59 - __main__ - INFO - Tesseract available: True
+2025-09-27 09:14:59 - __main__ - INFO - EasyOCR available: True
+2025-09-27 09:15:20 - __main__ - INFO - Pre-loading essential AI/ML models...
+2025-09-27 09:15:20 - __main__ - INFO - Loading sentence transformer: all-MiniLM-L6-v2...
+2025-09-27 09:15:26 - __main__ - INFO - Successfully loaded model: sentence_transformer
+2025-09-27 09:15:26 - __main__ - INFO - Loading spaCy English model...
+2025-09-27 09:15:27 - __main__ - INFO - Successfully loaded model: spacy_en
+2025-09-27 09:15:27 - __main__ - INFO - Essential models pre-loaded.
+2025-09-27 09:15:27 - __main__ - INFO - Starting AI/ML Service on port 8014
+2025-09-27 09:15:27 - __main__ - INFO - Models available: ['sentence_transformer', 'spacy_en']
+2025-09-27 09:15:42 - __main__ - INFO - Starting Vector Search service on port 8015
+2025-09-27 09:15:42 - __main__ - INFO - Initializing vector search engine...
+2025-09-27 09:15:48 - __main__ - INFO - Loaded sentence transformer model
+2025-09-27 09:15:48 - __main__ - INFO - FAISS index initialized
+2025-09-27 09:15:49 - __main__ - INFO - ChromaDB initialized
+2025-09-27 09:15:49 - __main__ - INFO - Vector search engine initialized successfully
+2025-09-27 09:15:49 - __main__ - INFO - Vector search service started
+2025-09-27 09:15:56 - __main__ - INFO - Starting Notification service on port 8016
+2025-09-27 09:15:56 - __main__ - WARNING - Redis not available: 'NotificationConfig' object has no attribute 'redis_host'
+2025-09-27 09:15:56 - __main__ - INFO - Notification processor started
+2025-09-27 09:15:56 - __main__ - INFO - Notification service started
+2025-09-27 09:16:00 - __main__ - INFO - Starting Integration service on port 8017
+2025-09-27 09:16:00 - __main__ - INFO - Sync scheduler started
+2025-09-27 09:16:00 - __main__ - INFO - Integration service started
+2025-09-27 09:16:05 - __main__ - INFO - Starting Analytics service on port 8018
+2025-09-27 09:16:05 - __main__ - INFO - Analytics service started
+2025-09-27 09:16:41 - __main__ - INFO - Starting API Gateway on port 8010
+2025-09-27 09:16:41 - __main__ - INFO - Registered services: ['auth', 'documents', 'ocr', 'ai', 'search', 'notifications', 'integrations', 'analytics', 'tasks']
+2025-09-27 09:16:41 - __main__ - INFO - API Gateway started with service health monitoring
+2025-09-27 09:17:13 - __main__ - INFO - Loaded model registry with 4 models
+2025-09-27 09:17:14 - __main__ - INFO - Starting Model Downloader service on port 8019
+2025-09-27 09:17:14 - __main__ - INFO - Initializing model downloader...
+2025-09-27 09:17:14 - __main__ - INFO - Model downloader initialized
+2025-09-27 09:17:14 - __main__ - INFO - Model downloader service started
+2025-09-27 09:18:45 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:18:46 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-27 09:18:46 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-27 09:18:46 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:18:46 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:18:46 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:18:46 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:18:47 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:18:47 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:18:55 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
+2025-09-27 09:18:55 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-27 09:18:55 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-27 09:20:03 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 500
+2025-09-27 09:20:04 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 500
+2025-09-27 09:20:04 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-27 09:20:04 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200

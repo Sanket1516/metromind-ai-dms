@@ -89,3 +89,9 @@
 2025-09-27 00:11:03 - security_service - INFO - Starting Enhanced Security service on port 8025
 2025-09-27 00:26:36 - security_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
 2025-09-27 00:26:36 - security_service - INFO - Starting Enhanced Security service on port 8025
+2025-09-27 08:39:00 - security_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-27 08:39:01 - security_service - INFO - Starting Enhanced Security service on port 8025
+2025-09-27 09:02:17 - security_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-27 09:02:17 - security_service - INFO - Starting Enhanced Security service on port 8025
+2025-09-27 09:16:50 - security_service - ERROR - Failed to connect to Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-27 09:16:50 - security_service - INFO - Starting Enhanced Security service on port 8025
