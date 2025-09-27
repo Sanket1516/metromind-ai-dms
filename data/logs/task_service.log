@@ -366,3 +366,5 @@ WHERE users.id = %(id_1)s::UUID
 2025-09-27 09:43:05 - task_service - INFO - Task deleted: 54c59f0b-daab-42f9-aff4-0469f4ca5d07
 2025-09-27 09:43:10 - task_service - INFO - Task deleted: d867c65d-31d1-4e49-82b1-3f4b141a31d4
 2025-09-27 09:43:13 - task_service - INFO - Task deleted: 63f0b421-d53c-49d4-b70a-9ead14a41eae
+2025-09-27 09:48:50 - task_service - INFO - Task updated: e5bd55da-16d9-48ca-97ea-d0d2ff9c9273
+2025-09-27 09:48:58 - task_service - INFO - Task updated: 62503ea3-18e0-4412-b8db-b92a39eea495

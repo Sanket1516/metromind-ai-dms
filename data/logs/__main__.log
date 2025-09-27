@@ -8893,3 +8893,21 @@ fastapi.exceptions.HTTPException
 2025-09-27 09:43:03 - __main__ - INFO - Model downloader service started
 2025-09-27 09:43:05 - __main__ - INFO - Proxied DELETE http://localhost:8020/tasks/54c59f0b-daab-42f9-aff4-0469f4ca5d07 -> 200
 2025-09-27 09:43:10 - __main__ - INFO - Proxied DELETE http://localhost:8020/tasks/d867c65d-31d1-4e49-82b1-3f4b141a31d4 -> 200
+2025-09-27 09:43:13 - __main__ - INFO - Proxied DELETE http://localhost:8020/tasks/63f0b421-d53c-49d4-b70a-9ead14a41eae -> 200
+2025-09-27 09:46:11 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-27 09:46:11 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-27 09:48:38 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-27 09:48:41 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:48:41 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:48:41 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:48:42 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:48:45 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-27 09:48:45 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-27 09:48:45 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:48:45 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-27 09:48:45 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-27 09:48:45 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:48:46 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:48:46 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-27 09:48:50 - __main__ - INFO - Proxied PUT http://localhost:8020/tasks/e5bd55da-16d9-48ca-97ea-d0d2ff9c9273 -> 200
+2025-09-27 09:48:58 - __main__ - INFO - Proxied PUT http://localhost:8020/tasks/62503ea3-18e0-4412-b8db-b92a39eea495 -> 200

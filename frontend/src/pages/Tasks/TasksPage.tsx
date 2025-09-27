@@ -81,6 +81,7 @@ const TasksPage: React.FC = () => {
   // Tasks loaded from backend
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
 
   // Column definitions
   const columns: Record<Task['status'], { title: string; color: string }> = {
@@ -202,6 +203,14 @@ const TasksPage: React.FC = () => {
       handleMenuClose();
     };
 
+    const handleDragStart = (e: React.DragEvent) => {
+      setDraggingId(task.id);
+      e.dataTransfer.setData('text/plain', task.id);
+      e.dataTransfer.effectAllowed = 'move';
+    };
+
+    const handleDragEnd = () => setDraggingId(null);
+
     return (
     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ duration: 0.2 }}>
       <Card
@@ -213,6 +222,9 @@ const TasksPage: React.FC = () => {
             bgcolor: alpha(theme.palette.primary.main, 0.02)
           }
         }}
+        draggable
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
       >
         <CardContent sx={{ pb: 2 }}>
           <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={1}>
@@ -360,7 +372,23 @@ const TasksPage: React.FC = () => {
               p: 2,
               bgcolor: alpha(column.color, 0.05),
               border: `2px solid ${alpha(column.color, 0.2)}`,
-              minHeight: '70vh'
+              minHeight: '70vh',
+              transition: 'background-color 0.15s ease',
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.dataTransfer.dropEffect = 'move';
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              const id = e.dataTransfer.getData('text/plain');
+              if (!id) return;
+              const newStatus = status as Task['status'];
+              const task = tasks.find(t => t.id === id);
+              if (task && task.status !== newStatus) {
+                handleChangeStatus(id, newStatus);
+              }
+              setDraggingId(null);
             }}
           >
             <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
@@ -373,12 +401,17 @@ const TasksPage: React.FC = () => {
                 sx={{ bgcolor: column.color, color: 'white' }}
               />
             </Box>
-
+  
             <Box>
               {filteredTasks
                 .filter(task => task.status === status)
                 .map(task => (
-                  <TaskCard key={task.id} task={task} onChangeStatus={handleChangeStatus} onDelete={handleDeleteTask} />
+                  <TaskCard
+                    key={task.id}
+                    task={task}
+                    onChangeStatus={handleChangeStatus}
+                    onDelete={handleDeleteTask}
+                  />
                 ))}
             </Box>
           </Paper>
