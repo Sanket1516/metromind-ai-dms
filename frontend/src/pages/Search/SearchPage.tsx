@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiClient, toErrorMessage, downloadFile } from '../../services/api';
 import {
   Box,
   Container,
@@ -167,41 +168,55 @@ const SearchPage: React.FC = () => {
   const performSearch = async () => {
     setLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
+      const params: any = { q: query, sort: sortBy, limit: 50 };
+      if (filters.type?.length) params.type = filters.type;
+      if (filters.dateRange?.start) params.date_from = filters.dateRange.start;
+      if (filters.dateRange?.end) params.date_to = filters.dateRange.end;
+      if (filters.author?.length) params.author = filters.author;
+      if (filters.tags?.length) params.tags = filters.tags;
+      if (filters.score > 0) params.min_score = filters.score / 100;
+  
+      // Call search via API Gateway
+      const resp = await apiClient.get('/search', { params });
+      const data = Array.isArray(resp.data) ? resp.data : (resp.data?.results || []);
+  
+      const mapped: SearchResult[] = data.map((r: any) => ({
+        id: String(r.id ?? r.document_id ?? r.doc_id ?? ''),
+        title: String(r.title ?? r.filename ?? r.name ?? 'Untitled'),
+        content: String(r.snippet ?? r.excerpt ?? r.content ?? ''),
+        type: (r.type ?? r.kind ?? 'document') as SearchResult['type'],
+        size: r.file_size ? `${(Number(r.file_size) / 1024 / 1024).toFixed(1)} MB` : undefined,
+        date: String(r.created_at ?? r.date ?? new Date().toISOString()),
+        author: String(r.uploaded_by ?? r.author ?? 'Unknown'),
+        tags: Array.isArray(r.tags) ? r.tags : [],
+        score: typeof r.score === 'number' ? r.score : (typeof r.relevance === 'number' ? r.relevance : 0.5),
+        url: r.url,
+        thumbnail: r.thumbnail,
+        description: r.description,
+      }));
+  
+      setResults(mapped);
+    } catch (error) {
+      console.warn('API search failed, falling back to mock:', toErrorMessage(error));
+  
+      // Fallback to mock
       let filteredResults = mockResults.filter(result =>
         result.title.toLowerCase().includes(query.toLowerCase()) ||
         result.content.toLowerCase().includes(query.toLowerCase()) ||
         result.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
       );
-
-      // Apply filters
       if (filters.type.length > 0) {
-        filteredResults = filteredResults.filter(result => 
-          filters.type.includes(result.type)
-        );
+        filteredResults = filteredResults.filter(result => filters.type.includes(result.type));
       }
-
       if (filters.author.length > 0) {
-        filteredResults = filteredResults.filter(result =>
-          filters.author.includes(result.author)
-        );
+        filteredResults = filteredResults.filter(result => filters.author.includes(result.author));
       }
-
       if (filters.tags.length > 0) {
-        filteredResults = filteredResults.filter(result =>
-          filters.tags.some(tag => result.tags.includes(tag))
-        );
+        filteredResults = filteredResults.filter(result => filters.tags.some(tag => result.tags.includes(tag)));
       }
-
       if (filters.score > 0) {
-        filteredResults = filteredResults.filter(result =>
-          result.score >= filters.score / 100
-        );
+        filteredResults = filteredResults.filter(result => result.score >= filters.score / 100);
       }
-
-      // Apply sorting
       switch (sortBy) {
         case 'date':
           filteredResults.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -216,12 +231,8 @@ const SearchPage: React.FC = () => {
         case 'relevance':
         default:
           filteredResults.sort((a, b) => b.score - a.score);
-          break;
       }
-
       setResults(filteredResults);
-    } catch (error) {
-      console.error('Search failed:', error);
     } finally {
       setLoading(false);
     }
@@ -254,13 +265,12 @@ const SearchPage: React.FC = () => {
     }
   };
 
-  const handleDownloadResult = (result: SearchResult) => {
-    const link = document.createElement('a');
-    link.href = `/api/search/download/${result.id}`;
-    link.download = result.title;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownloadResult = async (result: SearchResult) => {
+    try {
+      await downloadFile(`/search/download/${result.id}`, result.title);
+    } catch (e) {
+      console.error('Download failed', e);
+    }
   };
 
   const handleShareResult = (result: SearchResult) => {

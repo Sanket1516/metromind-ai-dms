@@ -18,6 +18,17 @@ import LoadingSpinner from './components/Common/LoadingSpinner';
 import ErrorFallback from './components/Common/ErrorFallback';
 import RequireAuth from './components/Auth/RequireAuth';
 import ErrorBoundary from './components/ErrorBoundary';
+import UnauthorizedPage from './pages/Auth/UnauthorizedPage';
+import UsersPage from './pages/Users/UsersPage';
+import SettingsPage from './pages/Settings/SettingsPage';
+import ProfilePage from './pages/Profile/ProfilePage';
+import NotificationsPage from './pages/Notifications/NotificationsPage';
+import AuditPage from './pages/Audit/AuditPage';
+import BackupPage from './pages/Backup/BackupPage';
+import SecurityPage from './pages/Security/SecurityPage';
+import { AIDashboardPage, AIInsightsPage, AIProcessingPage } from './pages/AI';
+import { Role } from './types/auth';
+import './App.css';
 
 // API Error Handling
 import { setErrorHandler } from './services/api';
@@ -27,33 +38,18 @@ import LoginPage from './pages/Auth/LoginPage';
 import RegisterPage from './pages/Auth/RegisterPage';
 import DashboardPage from './pages/Dashboard/DashboardPage';
 import DocumentsPage from './pages/Documents/DocumentsPage';
+import SharedDocumentsPage from './pages/Documents/SharedDocumentsPage';
 import AutoCollectedDocsPage from './pages/Documents/AutoCollectedDocsPage';
 import TasksPage from './pages/Tasks/TasksPage';
 import SearchPage from './pages/Search/SearchPage';
 import AnalyticsPage from './pages/Analytics/AnalyticsPage';
 import IntegrationsPage from './pages/Integrations/IntegrationsPage';
-import UsersPage from './pages/Users/UsersPage';
-import SettingsPage from './pages/Settings/SettingsPage';
-import ProfilePage from './pages/Profile/ProfilePage';
-import NotificationsPage from './pages/Notifications/NotificationsPage';
-import UnauthorizedPage from './pages/Auth/UnauthorizedPage';
-import { AIDashboardPage, AIInsightsPage, AIProcessingPage } from './pages/AI';
-import AuditPage from './pages/Audit/AuditPage';
-import BackupPage from './pages/Backup/BackupPage';
-import SecurityPage from './pages/Security/SecurityPage';
-
-// Types
-import { Role } from './types/auth';
-
-// Styles
-import './App.css';
 
 // Component to set up API error handler
 const APIErrorHandlerSetup: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const toast = useToast();
 
   useEffect(() => {
-    // Set up the API error handler to use our toast system
     setErrorHandler((message, type = 'error') => {
       switch (type) {
         case 'error':
@@ -82,8 +78,8 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 3,
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      cacheTime: 10 * 60 * 1000, // 10 minutes
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     },
   },
 });
@@ -121,13 +117,14 @@ const AppContent: React.FC = () => {
               <Routes>
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/documents" element={<DocumentsPage />} />
+                <Route path="/documents/shared" element={<SharedDocumentsPage />} />
                 <Route path="/documents/auto-collected" element={<AutoCollectedDocsPage />} />
+                
                 <Route path="/tasks" element={<TasksPage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/analytics" element={<AnalyticsPage />} />
                 <Route path="/integrations" element={<IntegrationsPage />} />
                 <Route path="/reports" element={<AnalyticsPage />} />
-                
                 {/* AI Features */}
                 <Route path="/ai" element={<AIDashboardPage />} />
                 <Route path="/ai/insights" element={<AIInsightsPage />} />

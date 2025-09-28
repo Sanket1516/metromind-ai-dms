@@ -9191,3 +9191,242 @@ fastapi.exceptions.HTTPException
 2025-09-28 19:40:28 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
 2025-09-28 19:40:28 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
 2025-09-28 19:40:29 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 19:45:27 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 19:45:27 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:45:27 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:45:27 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 19:45:27 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 19:45:33 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:45:33 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:45:56 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:45:58 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:46:02 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:46:33 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:46:40 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 19:46:41 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:46:41 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:47:03 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 19:47:14 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:47:41 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:47:55 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 19:47:58 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:47:58 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:47:58 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:47:59 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:48:29 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:48:39 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:48:39 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:48:46 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:48:47 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:49:08 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:49:29 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:49:58 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:51:03 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:51:19 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:51:19 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:51:19 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 19:51:19 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 19:58:23 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 19:58:27 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:58:27 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:58:29 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 19:58:29 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 19:58:32 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:58:32 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 19:58:36 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 19:58:36 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:00:04 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:01:07 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:01:07 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:01:07 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:01:07 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:01:10 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:01:11 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:01:13 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:01:13 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:05:40 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 20:06:54 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 20:12:25 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 20:14:27 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:14:27 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:14:27 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:14:27 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:17:05 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:17:05 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:17:14 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:17:14 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:17:17 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:17:17 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:17:47 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:18:23 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 20:18:23 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 20:18:32 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 20:18:32 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 20:18:42 - __main__ - WARNING - Health check failed for http://localhost:8015: 
+2025-09-28 20:18:50 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 20:18:51 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 20:19:01 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:19:02 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:20:52 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 403
+2025-09-28 20:20:58 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 403
+2025-09-28 20:21:02 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:21:02 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:21:19 - __main__ - INFO - Proxied POST http://localhost:8012/hghghf/share -> 404
+2025-09-28 20:21:22 - __main__ - INFO - Proxied POST http://localhost:8012/hghghf/share -> 404
+2025-09-28 20:22:39 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 20:22:39 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 20:22:44 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 20:22:44 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 20:23:42 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 20:23:42 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 20:23:48 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:23:52 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:24:18 - __main__ - ERROR - Error creating task for document 5a6b7b80-6c73-443e-beaa-ef2d28b1e619: 'ServiceConfig' object has no attribute 'get'
+2025-09-28 20:24:18 - __main__ - INFO - Document uploaded: 2_Experiment_OOP_JAVA.docx by admin
+2025-09-28 20:24:38 - __main__ - WARNING - Health check failed for http://localhost:8012: 
+2025-09-28 20:24:45 - __main__ - INFO - Document 5a6b7b80-6c73-443e-beaa-ef2d28b1e619 processed successfully
+2025-09-28 20:24:45 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 200
+2025-09-28 20:26:53 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 20:26:53 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 20:26:59 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:27:00 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:27:02 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:27:02 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:27:26 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:27:26 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:27:28 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:27:47 - __main__ - INFO - Proxied POST http://localhost:8012/5a6b7b80-6c73-443e-beaa-ef2d28b1e619/share -> 404
+2025-09-28 20:30:18 - __main__ - INFO - Proxied POST http://localhost:8012/5a6b7b80-6c73-443e-beaa-ef2d28b1e619/share -> 404
+2025-09-28 20:30:34 - __main__ - INFO - Proxied POST http://localhost:8012/442304f0-937b-4621-baf8-ab7968e2c8fa/share -> 404
+2025-09-28 20:32:57 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:32:57 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:32:59 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:33:13 - __main__ - INFO - Proxied POST http://localhost:8012/b332ad3e-528b-4d5e-a320-cb4ebb808516/share -> 404
+2025-09-28 20:33:39 - __main__ - INFO - Proxied POST http://localhost:8012/b332ad3e-528b-4d5e-a320-cb4ebb808516/share -> 404
+2025-09-28 20:36:54 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:37:42 - __main__ - INFO - Proxied POST http://localhost:8012/72f73c31-637e-4149-bb48-ef44b926ce73/share -> 404
+2025-09-28 20:37:42 - __main__ - ERROR - Error sharing document: You must set the config attribute `from_attributes=True` to use from_orm
+2025-09-28 20:37:42 - __main__ - INFO - Proxied POST http://localhost:8012/documents/72f73c31-637e-4149-bb48-ef44b926ce73/share -> 500
+2025-09-28 20:37:50 - __main__ - INFO - Proxied POST http://localhost:8012/72f73c31-637e-4149-bb48-ef44b926ce73/share -> 404
+2025-09-28 20:37:50 - __main__ - INFO - Proxied POST http://localhost:8012/documents/72f73c31-637e-4149-bb48-ef44b926ce73/share -> 400
+2025-09-28 20:37:59 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:37:59 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:37:59 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:37:59 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:38:00 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:38:15 - __main__ - INFO - Proxied POST http://localhost:8012/72f73c31-637e-4149-bb48-ef44b926ce73/share -> 404
+2025-09-28 20:38:15 - __main__ - ERROR - Error sharing document: You must set the config attribute `from_attributes=True` to use from_orm
+2025-09-28 20:38:15 - __main__ - INFO - Proxied POST http://localhost:8012/documents/72f73c31-637e-4149-bb48-ef44b926ce73/share -> 500
+2025-09-28 20:40:23 - __main__ - INFO - Proxied POST http://localhost:8012/72f73c31-637e-4149-bb48-ef44b926ce73/share -> 404
+2025-09-28 20:40:23 - __main__ - INFO - Proxied POST http://localhost:8012/documents/72f73c31-637e-4149-bb48-ef44b926ce73/share -> 400
+2025-09-28 20:41:10 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 20:41:58 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:42:23 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 20:44:33 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:44:33 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:47:33 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:47:33 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:47:33 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:47:33 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:47:36 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:47:36 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:48:02 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:48:02 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:48:04 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:48:31 - __main__ - INFO - Proxied POST http://localhost:8012/b332ad3e-528b-4d5e-a320-cb4ebb808516/share -> 404
+2025-09-28 20:48:31 - __main__ - ERROR - Error sharing document: You must set the config attribute `from_attributes=True` to use from_orm
+2025-09-28 20:48:31 - __main__ - INFO - Proxied POST http://localhost:8012/documents/b332ad3e-528b-4d5e-a320-cb4ebb808516/share -> 500
+2025-09-28 20:51:48 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:51:48 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:51:48 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:51:48 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:52:12 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:52:12 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:52:13 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:52:13 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:54:30 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:54:30 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 20:54:30 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:54:30 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 20:54:34 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:54:35 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 20:54:49 - __main__ - ERROR - Error creating task for document 5047c82d-5ac4-4074-bfbc-1e714aee6e71: 'ServiceConfig' object has no attribute 'get'
+2025-09-28 20:54:49 - __main__ - INFO - Document uploaded: image3.png by admin
+2025-09-28 20:54:49 - __main__ - INFO - Document 5047c82d-5ac4-4074-bfbc-1e714aee6e71 processed successfully
+2025-09-28 20:54:49 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 200
+2025-09-28 21:00:03 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 21:01:17 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 21:13:01 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 21:13:01 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 21:19:44 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 21:19:44 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 21:19:47 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 21:19:47 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 21:20:10 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 21:21:24 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 21:22:54 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 21:22:54 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 21:23:27 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 21:23:27 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 21:23:37 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 21:23:37 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 21:25:25 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 21:25:25 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 21:25:26 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 21:25:31 - __main__ - INFO - Proxied POST http://localhost:8012/644ed8ae-bf75-4ce6-a942-a5c71e47988e/share -> 404
+2025-09-28 21:25:31 - __main__ - ERROR - Error sharing document: You must set the config attribute `from_attributes=True` to use from_orm
+2025-09-28 21:25:31 - __main__ - INFO - Proxied POST http://localhost:8012/documents/644ed8ae-bf75-4ce6-a942-a5c71e47988e/share -> 500
+2025-09-28 21:25:49 - __main__ - INFO - Proxied POST http://localhost:8012/ae116767-c206-4543-b9ec-ee9e8c926930/share -> 404
+2025-09-28 21:25:49 - __main__ - ERROR - Error sharing document: You must set the config attribute `from_attributes=True` to use from_orm
+2025-09-28 21:25:49 - __main__ - INFO - Proxied POST http://localhost:8012/documents/ae116767-c206-4543-b9ec-ee9e8c926930/share -> 500
+2025-09-28 21:32:46 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 21:32:46 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 21:32:46 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 21:32:46 - __main__ - INFO - Proxied GET http://localhost:8012/shared -> 404
+2025-09-28 21:32:50 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200
+2025-09-28 21:32:50 - __main__ - INFO - Proxied GET http://localhost:8012/documents -> 200

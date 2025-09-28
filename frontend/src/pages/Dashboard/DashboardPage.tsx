@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import { useToast } from '../../contexts/ToastContext';
 import { useAccessibility } from '../../utils/accessibility';
+import { useAuth } from '../../contexts/AuthContext';
+import { apiClient, toErrorMessage } from '../../services/api';
+
 import {
   Box,
   Grid,
@@ -27,26 +30,22 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
+
 import {
   TrendingUp,
   Description,
   People,
   CloudUpload,
   Analytics,
-  Notifications,
   CheckCircle,
   Schedule,
-  Warning,
   MoreVert,
   Add,
   FileUpload,
   Search,
   TaskAlt,
-  Accessibility,
-  Language,
+  Visibility,
 } from '@mui/icons-material';
-import { useAuth } from '../../contexts/AuthContext';
-import { apiClient, toErrorMessage } from '../../services/api';
 
 interface StatCardProps {
   title: string;
@@ -59,8 +58,7 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, change, icon, color, trend }) => {
   const theme = useTheme();
-  const { translate } = useAccessibility();
-  
+
   return (
     <Card
       role="article"
@@ -85,27 +83,27 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, change, icon, color, 
       <CardContent sx={{ p: 3 }}>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box>
-            <Typography 
+            <Typography
               id={`stat-${title.replace(/\s+/g, '-').toLowerCase()}`}
-              variant="body2" 
-              color="text.secondary" 
+              variant="body2"
+              color="text.secondary"
               sx={{ mb: 1 }}
               component="h3"
             >
               {title}
             </Typography>
-            <Typography 
-              variant="h4" 
+            <Typography
+              variant="h4"
               sx={{ fontWeight: 700, color: color }}
               aria-label={`${title}: ${value}`}
             >
               {value}
             </Typography>
             {change && (
-              <Box 
+              <Box
                 id={`stat-change-${title.replace(/\s+/g, '-').toLowerCase()}`}
-                display="flex" 
-                alignItems="center" 
+                display="flex"
+                alignItems="center"
                 mt={1}
                 aria-label={`Change: ${change}`}
               >
@@ -142,9 +140,9 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, change, icon, color, 
               justifyContent: 'center',
             }}
           >
-            {React.cloneElement(icon, { 
+            {React.cloneElement(icon, {
               'aria-hidden': 'true',
-              sx: { fontSize: 28, color } 
+              sx: { fontSize: 28, color },
             })}
           </Box>
         </Box>
@@ -169,80 +167,53 @@ const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const { announce, announceSuccess, announceError, registerShortcut, unregisterShortcut, translate } = useAccessibility();
-  
+
   // Refs for accessibility
   const mainContentRef = useRef<HTMLElement>(null);
   const uploadButtonRef = useRef<HTMLButtonElement>(null);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
   const taskButtonRef = useRef<HTMLButtonElement>(null);
-  
+
   // State for upload dialog
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
-  
+
   // State for create task dialog
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskDescription, setNewTaskDescription] = useState('');
   const [newTaskPriority, setNewTaskPriority] = useState('medium');
-  
+
   const [recentActivity] = useState<RecentActivityItem[]>([
-    {
-      id: '1',
-      user: 'John Doe',
-      action: 'uploaded',
-      target: 'Annual Report 2024.pdf',
-      time: '2 minutes ago',
-      type: 'upload',
-    },
-    {
-      id: '2',
-      user: 'Sarah Wilson',
-      action: 'approved',
-      target: 'Budget Proposal',
-      time: '15 minutes ago',
-      type: 'approval',
-    },
-    {
-      id: '3',
-      user: 'Mike Johnson',
-      action: 'completed task',
-      target: 'Document Review',
-      time: '1 hour ago',
-      type: 'task',
-    },
-    {
-      id: '4',
-      user: 'System',
-      action: 'integrated',
-      target: 'Google Drive sync',
-      time: '2 hours ago',
-      type: 'integration',
-    },
+    { id: '1', user: 'John Doe', action: 'uploaded', target: 'Annual Report 2024.pdf', time: '2 minutes ago', type: 'upload' },
+    { id: '2', user: 'Sarah Wilson', action: 'approved', target: 'Budget Proposal', time: '15 minutes ago', type: 'approval' },
+    { id: '3', user: 'Mike Johnson', action: 'completed task', target: 'Document Review', time: '1 hour ago', type: 'task' },
+    { id: '4', user: 'System', action: 'integrated', target: 'Google Drive sync', time: '2 hours ago', type: 'integration' },
   ]);
 
   // Initialize accessibility features
   useEffect(() => {
     // Announce page load
     announce(translate('dashboard') + ' page loaded');
-    
+
     // Register keyboard shortcuts
     registerShortcut('Ctrl+U', handleUploadClick);
     registerShortcut('Ctrl+T', handleCreateTaskClick);
     registerShortcut('Ctrl+/', handleSearchClick);
-    
+
     // Focus main content on load
     if (mainContentRef.current) {
       mainContentRef.current.focus();
     }
-    
+
     // Cleanup shortcuts on unmount
     return () => {
       unregisterShortcut('Ctrl+U');
       unregisterShortcut('Ctrl+T');
       unregisterShortcut('Ctrl+/');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getActionIcon = (type: string) => {
@@ -265,7 +236,7 @@ const DashboardPage: React.FC = () => {
     }
   };
 
-  // Handler functions with accessibility announcements
+  // Handlers
   const handleUploadClick = () => {
     announce('Opening upload dialog');
     setUploadDialogOpen(true);
@@ -273,7 +244,7 @@ const DashboardPage: React.FC = () => {
 
   const handleSearchClick = () => {
     announce('Navigating to search page');
-    navigate('../Search/SearchPage.tsx');
+    navigate('/search');
   };
 
   const handleCreateTaskClick = () => {
@@ -283,14 +254,8 @@ const DashboardPage: React.FC = () => {
 
   const handleViewReportsClick = () => {
     announce('Navigating to reports page');
-    navigate('../Analytics/AnalyticsPage.tsx');
+    navigate('/analytics');
   };
-
-  // Legacy handler names for backward compatibility
-  const handleUploadDocument = handleUploadClick;
-  const handleSearchDocuments = handleSearchClick;
-  const handleCreateTask = handleCreateTaskClick;
-  const handleViewReports = handleViewReportsClick;
 
   // File upload handlers
   const onDrop = (acceptedFiles: File[]) => {
@@ -307,87 +272,85 @@ const DashboardPage: React.FC = () => {
       'video/*': ['.mp4', '.avi', '.mov'],
     },
   });
+const handleFileUpload = async () => {
+  if (selectedFiles.length === 0) {
+    announceError('Please select files to upload');
+    return;
+  }
 
-  const handleFileUpload = async () => {
-    if (selectedFiles.length === 0) {
-      announceError('Please select files to upload');
-      return;
+  announce('Starting file upload');
+  setUploading(true);
+
+  try {
+    for (const file of selectedFiles) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('title', file.name);
+      formData.append('description', `Uploaded from dashboard by ${user?.email}`);
+      formData.append('category', 'general');
+      formData.append('priority', 'medium');
+
+      await apiClient.post('/documents/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
     }
 
-    announce('Starting file upload');
-    setUploading(true);
-    
-    try {
-      for (const file of selectedFiles) {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('title', file.name);
-        formData.append('description', `Uploaded from dashboard by ${user?.email}`);
-        formData.append('category', 'general');
-        formData.append('priority', 'medium');
+    setUploadDialogOpen(false);
+    setSelectedFiles([]);
 
-        await apiClient.post('/documents/upload', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
-      }
+    const successMessage = `${selectedFiles.length} file${selectedFiles.length > 1 ? 's' : ''} uploaded successfully! Processing tasks created.`;
+    toast.showSuccess(successMessage);
+    announceSuccess(successMessage);
 
-      setUploadDialogOpen(false);
-      setSelectedFiles([]);
-      
-      const successMessage = `${selectedFiles.length} file${selectedFiles.length > 1 ? 's' : ''} uploaded successfully! Processing tasks created.`;
-      toast.showSuccess(successMessage);
-      announceSuccess(successMessage);
-      
-      // Navigate to documents page to see uploaded files
-      navigate('../Documents/DocumentsPage.tsx');
-    } catch (error) {
-      console.error('Upload failed:', error);
-      const errorMessage = toErrorMessage(error) || 'Upload failed. Please try again.';
-      toast.showError(errorMessage);
-      announceError(errorMessage);
-    } finally {
-      setUploading(false);
-    }
-  };
+    // Navigate to documents page to see uploaded files
+    navigate('/documents');
+  } catch (error) {
+    console.error('Upload failed:', error);
+    const errorMessage = toErrorMessage(error) || 'Upload failed. Please try again.';
+    toast.showError(errorMessage);
+    announceError(errorMessage);
+  } finally {
+    setUploading(false);
+  }
+};
 
   const handleTaskCreate = async () => {
     if (!newTaskTitle.trim()) {
       announceError('Task title is required');
       return;
     }
-  
+
     announce('Creating new task');
-  
+
     try {
       // Map UI priority to backend numeric enum (1..4)
-const priorityMap: Record<string, number> = {
-  low: 1,       // LOW
-  medium: 2,    // MEDIUM
-  high: 3,      // HIGH
-  urgent: 4,    // CRITICAL
-};
-const priorityEnum =
-  priorityMap[String(newTaskPriority || 'medium').toLowerCase()] ?? 2; // default MEDIUM
-  
-  await apiClient.post('/tasks', {
-    title: newTaskTitle.trim(),
-    description: newTaskDescription?.trim() || undefined,
-    assigned_to: user?.id,          // must be UUID
-    priority: priorityEnum,         // numeric enum: 1 | 2 | 3 | 4
-    status: 'PENDING',              // string enum is fine (PENDING / IN_PROGRESS / COMPLETED / CANCELLED)
-    category: 'general',
-    task_type: 'TODO'
-  });
-  
+      const priorityMap: Record<string, number> = {
+        low: 1,
+        medium: 2,
+        high: 3,
+        urgent: 4,
+      };
+      const priorityEnum = priorityMap[String(newTaskPriority || 'medium').toLowerCase()] ?? 2;
+
+      await apiClient.post('/tasks', {
+        title: newTaskTitle.trim(),
+        description: newTaskDescription?.trim() || undefined,
+        assigned_to: user?.id,
+        priority: priorityEnum,
+        status: 'PENDING',
+        category: 'general',
+        task_type: 'TODO',
+      });
+
       setTaskDialogOpen(false);
       setNewTaskTitle('');
       setNewTaskDescription('');
       setNewTaskPriority('medium');
-  
+
       const successMessage = 'Task created successfully!';
       toast.showSuccess(successMessage);
       announceSuccess(successMessage);
-  
+
       // Navigate to tasks page to see the new task
       navigate('/tasks');
     } catch (error) {
@@ -430,7 +393,7 @@ const priorityEnum =
             fullWidth
             variant="contained"
             startIcon={<FileUpload aria-hidden="true" />}
-            onClick={handleUploadDocument}
+            onClick={handleUploadClick}
             aria-label={`${translate('upload')} document (keyboard shortcut: Ctrl+U)`}
             aria-describedby="upload-help"
             sx={{
@@ -453,7 +416,7 @@ const priorityEnum =
             fullWidth
             variant="outlined"
             startIcon={<Search aria-hidden="true" />}
-            onClick={handleSearchDocuments}
+            onClick={handleSearchClick}
             aria-label={`${translate('search')} documents (keyboard shortcut: Ctrl+/)`}
             aria-describedby="search-help"
             sx={{ py: 2 }}
@@ -470,7 +433,7 @@ const priorityEnum =
             fullWidth
             variant="outlined"
             startIcon={<Add aria-hidden="true" />}
-            onClick={handleCreateTask}
+            onClick={handleCreateTaskClick}
             aria-label={`Create new task (keyboard shortcut: Ctrl+T)`}
             aria-describedby="task-help"
             sx={{ py: 2 }}
@@ -486,7 +449,7 @@ const priorityEnum =
             fullWidth
             variant="outlined"
             startIcon={<Analytics aria-hidden="true" />}
-            onClick={handleViewReports}
+            onClick={handleViewReportsClick}
             aria-label="View analytics reports and insights"
             aria-describedby="reports-help"
             sx={{ py: 2 }}
@@ -556,7 +519,7 @@ const priorityEnum =
                   <MoreVert />
                 </IconButton>
               </Box>
-              
+
               <Box>
                 {recentActivity.map((activity, index) => (
                   <Box
@@ -565,7 +528,8 @@ const priorityEnum =
                     alignItems="center"
                     py={2}
                     sx={{
-                      borderBottom: index < recentActivity.length - 1 ? `1px solid ${theme.palette.divider}` : 'none',
+                      borderBottom:
+                        index < recentActivity.length - 1 ? `1px solid ${theme.palette.divider}` : 'none',
                     }}
                   >
                     <Avatar
@@ -588,6 +552,11 @@ const priorityEnum =
                         {activity.time}
                       </Typography>
                     </Box>
+                    <Tooltip title="View">
+                      <IconButton size="small">
+                        <Visibility />
+                      </IconButton>
+                    </Tooltip>
                   </Box>
                 ))}
               </Box>
@@ -602,7 +571,7 @@ const priorityEnum =
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 3 }}>
                 Task Progress
               </Typography>
-              
+
               <Box mb={3}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                   <Typography variant="body2" sx={{ fontWeight: 500 }}>
@@ -700,9 +669,7 @@ const priorityEnum =
         aria-labelledby="upload-dialog-title"
         aria-describedby="upload-dialog-description"
       >
-        <DialogTitle id="upload-dialog-title">
-          {translate('upload')} Documents
-        </DialogTitle>
+        <DialogTitle id="upload-dialog-title">Upload Documents</DialogTitle>
         <DialogContent>
           <Typography id="upload-dialog-description" className="sr-only">
             Upload documents by dragging and dropping files or clicking to browse. Supports PDF, DOC, DOCX, Images, and Videos.
@@ -729,10 +696,7 @@ const priorityEnum =
             }}
           >
             <input {...getInputProps()} aria-hidden="true" />
-            <CloudUpload 
-              aria-hidden="true"
-              sx={{ fontSize: 48, color: theme.palette.grey[400], mb: 2 }} 
-            />
+            <CloudUpload aria-hidden="true" sx={{ fontSize: 48, color: theme.palette.grey[400], mb: 2 }} />
             <Typography variant="h6" mb={1}>
               {isDragActive ? 'Drop files here' : 'Drag & drop files here'}
             </Typography>
@@ -781,7 +745,7 @@ const priorityEnum =
                       setSelectedFiles(files => files.filter((_, i) => i !== index));
                     }}
                   >
-                    <Warning aria-hidden="true" />
+                    <MoreVert aria-hidden="true" />
                   </IconButton>
                 </Box>
               ))}
@@ -789,7 +753,7 @@ const priorityEnum =
           )}
         </DialogContent>
         <DialogActions>
-          <Button 
+          <Button
             onClick={() => {
               announce('Upload dialog cancelled');
               setUploadDialogOpen(false);
@@ -840,13 +804,13 @@ const priorityEnum =
               aria-invalid={!newTaskTitle.trim() && newTaskTitle.length > 0}
               inputProps={{
                 'aria-label': 'Task title, required field',
-                maxLength: 200
+                maxLength: 200,
               }}
             />
             <Typography id="task-title-help" className="sr-only">
               Enter a clear, descriptive title for your task. This field is required.
             </Typography>
-            
+
             <TextField
               label="Description"
               value={newTaskDescription}
@@ -857,13 +821,13 @@ const priorityEnum =
               aria-describedby="task-description-help"
               inputProps={{
                 'aria-label': 'Task description, optional field',
-                maxLength: 1000
+                maxLength: 1000,
               }}
             />
             <Typography id="task-description-help" className="sr-only">
               Provide additional details about the task. This field is optional.
             </Typography>
-            
+
             <FormControl fullWidth>
               <InputLabel id="priority-label">Priority</InputLabel>
               <Select
@@ -872,9 +836,7 @@ const priorityEnum =
                 onChange={(e) => setNewTaskPriority(e.target.value)}
                 label="Priority"
                 aria-describedby="priority-help"
-                inputProps={{
-                  'aria-label': 'Task priority level'
-                }}
+                inputProps={{ 'aria-label': 'Task priority level' }}
               >
                 <MenuItem value="low">Low</MenuItem>
                 <MenuItem value="medium">Medium</MenuItem>
@@ -888,7 +850,7 @@ const priorityEnum =
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button 
+          <Button
             onClick={() => {
               announce('Task creation cancelled');
               setTaskDialogOpen(false);
@@ -902,18 +864,12 @@ const priorityEnum =
             onClick={handleTaskCreate}
             disabled={!newTaskTitle.trim()}
             aria-label={`Create new task${newTaskTitle.trim() ? ': ' + newTaskTitle.trim() : ''}`}
-            aria-describedby={!newTaskTitle.trim() ? 'create-task-error' : undefined}
             sx={{
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             }}
           >
             Create Task
           </Button>
-          {!newTaskTitle.trim() && (
-            <Typography id="create-task-error" className="sr-only">
-              Task title is required to create a task
-            </Typography>
-          )}
         </DialogActions>
       </Dialog>
     </Box>

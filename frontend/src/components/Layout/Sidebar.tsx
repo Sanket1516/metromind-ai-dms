@@ -11,21 +11,24 @@ import {
   Chip,
   useTheme,
   alpha,
+  Tooltip,
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
   Description as DocumentsIcon,
   Search as SearchIcon,
-  Analytics as AnalyticsIcon,
   IntegrationInstructions as IntegrationsIcon,
   People as UsersIcon,
   Settings as SettingsIcon,
-  Task as TaskIcon,
+  TaskAlt as TaskAltIcon,
   Assessment as ReportsIcon,
   Security as SecurityIcon,
   Backup as BackupIcon,
   History as AuditIcon,
   BusinessCenter,
+  FolderShared as SharedIcon,
+  CloudSync as AutoCollectedIcon,
+  Insights as InsightsIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -36,6 +39,7 @@ interface SidebarItem {
   path: string;
   badge?: string | number;
   roles?: string[];
+  color?: string;
 }
 
 const Sidebar: React.FC = () => {
@@ -49,38 +53,45 @@ const Sidebar: React.FC = () => {
       title: 'Dashboard',
       icon: <DashboardIcon />,
       path: '/dashboard',
+      color: theme.palette.primary.main,
     },
     {
       title: 'Documents',
       icon: <DocumentsIcon />,
       path: '/documents',
       badge: '12',
+      color: theme.palette.info.main,
     },
     {
       title: 'Auto-Collected',
-      icon: <DocumentsIcon />,
+      icon: <AutoCollectedIcon />,
       path: '/documents/auto-collected',
+      color: theme.palette.secondary.main,
+    },
+    {
+      title: 'Shared',
+      icon: <SharedIcon />,
+      path: '/documents/shared',
+      color: theme.palette.success.main,
     },
     {
       title: 'Search',
       icon: <SearchIcon />,
       path: '/search',
+      color: theme.palette.text.secondary,
     },
     {
       title: 'Tasks',
-      icon: <TaskIcon />,
+      icon: <TaskAltIcon />,
       path: '/tasks',
       badge: '5',
+      color: theme.palette.warning.main,
     },
     {
       title: 'Analytics',
-      icon: <AnalyticsIcon />,
+      icon: <InsightsIcon />,
       path: '/analytics',
-    },
-    {
-      title: 'Reports',
-      icon: <ReportsIcon />,
-      path: '/reports',
+      color: theme.palette.success.main,
     },
   ];
 
@@ -138,6 +149,7 @@ const Sidebar: React.FC = () => {
 
     return (
       <ListItem key={item.path} disablePadding sx={{ mb: 0.5 }}>
+        <Tooltip title={item.title} placement="right">
         <ListItemButton
           onClick={() => navigate(item.path)}
           sx={{
@@ -160,8 +172,8 @@ const Sidebar: React.FC = () => {
           <ListItemIcon
             sx={{
               color: active
-                ? theme.palette.primary.main
-                : theme.palette.text.secondary,
+                ? (item.color || theme.palette.primary.main)
+                : (item.color || theme.palette.text.secondary),
               minWidth: 40,
             }}
           >
@@ -192,6 +204,7 @@ const Sidebar: React.FC = () => {
             />
           )}
         </ListItemButton>
+        </Tooltip>
       </ListItem>
     );
   };
