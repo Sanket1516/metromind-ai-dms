@@ -7,6 +7,7 @@ from fastapi import FastAPI, HTTPException, Depends, UploadFile, File, Form, Req
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, field_validator
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any, Union
@@ -25,7 +26,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import (
     get_db, Document, User, AuditLog, Notification, DocumentStatus, 
-    DocumentCategory, Priority, NotificationType, Permission, UserRole
+    DocumentCategory, Priority, NotificationType, Permission, UserRole,SharedDocument,DocumentVersion
 )
 from config import service_config, app_config, ai_config
 from utils.logging_utils import setup_logger
@@ -693,7 +694,7 @@ async def list_documents(
                 title=document.title,
                 description=document.description,
                 category=document.category.value,
-                priority=document.priority.value,
+                priority=document.priority,
                 status=document.status.value,
                 uploaded_by=f"{uploader.first_name} {uploader.last_name}" if uploader else "Unknown",
                 created_at=document.created_at,
@@ -705,6 +706,84 @@ async def list_documents(
             ))
     
     return result
+@app.get("/documents/shared", response_model=SharedDocumentsList)
+@require_permission(Permission.READ_DOCUMENT)
+async def list_shared_documents(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """List documents shared by and with the current user"""
+    
+    # Get documents shared by the user
+    shared_by_me = db.query(SharedDocument).join(
+        Document, SharedDocument.document_id == Document.id
+    ).filter(
+        SharedDocument.shared_by == current_user.id,
+        (SharedDocument.expires_at.is_(None) | (SharedDocument.expires_at > datetime.now(timezone.utc)))
+    ).all()
+    
+    # Get documents shared with the user (directly or via department)
+    shared_with_me = db.query(SharedDocument).join(
+        Document, SharedDocument.document_id == Document.id
+    ).filter(
+        (
+            (SharedDocument.shared_with_user == current_user.id) |
+            (SharedDocument.shared_with_department == current_user.department)
+        ),
+        (SharedDocument.expires_at.is_(None) | (SharedDocument.expires_at > datetime.now(timezone.utc)))
+    ).all()
+    
+    # Convert to response model
+    shared_by_me_info = []
+    shared_with_me_info = []
+    
+    for share in shared_by_me:
+        doc = share.document
+        shared_with_name = None
+        if share.shared_with_user:
+            user = db.query(User).filter_by(id=share.shared_with_user).first()
+            if user:
+                shared_with_name = f"{user.first_name} {user.last_name}"
+                
+        shared_by_me_info.append(SharedDocumentInfo(
+            id=str(share.id),
+            document_id=str(doc.id),
+            document_title=doc.title,
+            document_filename=doc.filename,
+            shared_by=str(share.shared_by),
+            shared_by_name=f"{current_user.first_name} {current_user.last_name}",
+            shared_with_user=str(share.shared_with_user) if share.shared_with_user else None,
+            shared_with_user_name=shared_with_name,
+            shared_with_department=share.shared_with_department,
+            can_edit=share.can_edit,
+            created_at=share.created_at,
+            expires_at=share.expires_at
+        ))
+    
+    for share in shared_with_me:
+        doc = share.document
+        shared_by_user = db.query(User).filter_by(id=share.shared_by).first()
+        shared_by_name = f"{shared_by_user.first_name} {shared_by_user.last_name}" if shared_by_user else "Unknown"
+        
+        shared_with_me_info.append(SharedDocumentInfo(
+            id=str(share.id),
+            document_id=str(doc.id),
+            document_title=doc.title,
+            document_filename=doc.filename,
+            shared_by=str(share.shared_by),
+            shared_by_name=shared_by_name,
+            shared_with_user=str(current_user.id),
+            shared_with_user_name=f"{current_user.first_name} {current_user.last_name}",
+            shared_with_department=share.shared_with_department,
+            can_edit=share.can_edit,
+            created_at=share.created_at,
+            expires_at=share.expires_at
+        ))
+    
+    return SharedDocumentsList(
+        shared_by_me=shared_by_me_info,
+        shared_with_me=shared_with_me_info
+    )
 
 @app.get("/documents/{document_id}", response_model=DocumentInfo)
 @require_permission(Permission.READ_DOCUMENT)
@@ -734,7 +813,7 @@ async def get_document(
         title=document.title,
         description=document.description,
         category=document.category.value,
-        priority=document.priority.value,
+        priority=document.priority,
         status=document.status.value,
         uploaded_by=f"{uploader.first_name} {uploader.last_name}" if uploader else "Unknown",
         created_at=document.created_at,
@@ -1027,84 +1106,6 @@ async def share_document(
         logger.error(f"Error sharing document: {e}")
         raise HTTPException(status_code=500, detail="Failed to share document")
 
-@app.get("/documents/shared", response_model=SharedDocumentsList)
-@require_permission(Permission.READ_DOCUMENT)
-async def list_shared_documents(
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """List documents shared by and with the current user"""
-    
-    # Get documents shared by the user
-    shared_by_me = db.query(SharedDocument).join(
-        Document, SharedDocument.document_id == Document.id
-    ).filter(
-        SharedDocument.shared_by == current_user.id,
-        (SharedDocument.expires_at.is_(None) | (SharedDocument.expires_at > datetime.now(timezone.utc)))
-    ).all()
-    
-    # Get documents shared with the user (directly or via department)
-    shared_with_me = db.query(SharedDocument).join(
-        Document, SharedDocument.document_id == Document.id
-    ).filter(
-        (
-            (SharedDocument.shared_with_user == current_user.id) |
-            (SharedDocument.shared_with_department == current_user.department)
-        ),
-        (SharedDocument.expires_at.is_(None) | (SharedDocument.expires_at > datetime.now(timezone.utc)))
-    ).all()
-    
-    # Convert to response model
-    shared_by_me_info = []
-    shared_with_me_info = []
-    
-    for share in shared_by_me:
-        doc = share.document
-        shared_with_name = None
-        if share.shared_with_user:
-            user = db.query(User).filter_by(id=share.shared_with_user).first()
-            if user:
-                shared_with_name = f"{user.first_name} {user.last_name}"
-                
-        shared_by_me_info.append(SharedDocumentInfo(
-            id=str(share.id),
-            document_id=str(doc.id),
-            document_title=doc.title,
-            document_filename=doc.filename,
-            shared_by=str(share.shared_by),
-            shared_by_name=f"{current_user.first_name} {current_user.last_name}",
-            shared_with_user=str(share.shared_with_user) if share.shared_with_user else None,
-            shared_with_user_name=shared_with_name,
-            shared_with_department=share.shared_with_department,
-            can_edit=share.can_edit,
-            created_at=share.created_at,
-            expires_at=share.expires_at
-        ))
-    
-    for share in shared_with_me:
-        doc = share.document
-        shared_by_user = db.query(User).filter_by(id=share.shared_by).first()
-        shared_by_name = f"{shared_by_user.first_name} {shared_by_user.last_name}" if shared_by_user else "Unknown"
-        
-        shared_with_me_info.append(SharedDocumentInfo(
-            id=str(share.id),
-            document_id=str(doc.id),
-            document_title=doc.title,
-            document_filename=doc.filename,
-            shared_by=str(share.shared_by),
-            shared_by_name=shared_by_name,
-            shared_with_user=str(current_user.id),
-            shared_with_user_name=f"{current_user.first_name} {current_user.last_name}",
-            shared_with_department=share.shared_with_department,
-            can_edit=share.can_edit,
-            created_at=share.created_at,
-            expires_at=share.expires_at
-        ))
-    
-    return SharedDocumentsList(
-        shared_by_me=shared_by_me_info,
-        shared_with_me=shared_with_me_info
-    )
 
 @app.delete("/documents/{document_id}/share/{share_id}")
 @require_permission(Permission.SHARE_DOCUMENT)
@@ -1315,7 +1316,7 @@ async def search_documents(
                 title=doc.title,
                 description=doc.description,
                 category=doc.category.value,
-                priority=doc.priority.value,
+                priority=doc.priority,
                 status=doc.status.value,
                 uploaded_by=f"{uploader.first_name} {uploader.last_name}" if uploader else "Unknown",
                 created_at=doc.created_at,

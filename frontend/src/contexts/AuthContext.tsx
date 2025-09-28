@@ -87,7 +87,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       setLoading(true);
       
-      const response = await apiClient.post('/auth/login', {
+      const response = await apiClient.post('/login', {
         email,
         password,
       });
@@ -122,7 +122,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       setLoading(true);
       
-      const response = await apiClient.post('/auth/register', userData);
+      const response = await apiClient.post('/register', userData);
       
       toast.success('Registration successful! Please wait for admin approval.');
       
@@ -146,7 +146,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = async () => {
     try {
       // Call logout endpoint to invalidate server-side session
-      await apiClient.post('/auth/logout');
+      await apiClient.post('/logout');
       
       // Clear local storage
       localStorage.removeItem('token');
@@ -170,7 +170,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Refresh user data
   const refreshUser = async (): Promise<void> => {
     try {
-      const response = await apiClient.get('/auth/profile');
+      const response = await apiClient.get('/profile');
       const userData = response.data;
       
       setUser(userData);
@@ -184,7 +184,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Update user profile
   const updateProfile = async (data: UserUpdateData): Promise<void> => {
     try {
-      const response = await apiClient.put('/auth/profile', data);
+      const response = await apiClient.put('/profile', data);
       const updatedUser = response.data;
       setUser(prevUser => ({ ...prevUser, ...updatedUser }));
       localStorage.setItem('user', JSON.stringify({ ...user, ...updatedUser }));
@@ -235,7 +235,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       setLoading(true);
       
-      await apiClient.post('/auth/change-password', {
+      await apiClient.post('/change-password', {
         current_password: currentPassword,
         new_password: newPassword
       });

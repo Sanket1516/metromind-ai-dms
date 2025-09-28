@@ -8911,3 +8911,283 @@ fastapi.exceptions.HTTPException
 2025-09-27 09:48:46 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
 2025-09-27 09:48:50 - __main__ - INFO - Proxied PUT http://localhost:8020/tasks/e5bd55da-16d9-48ca-97ea-d0d2ff9c9273 -> 200
 2025-09-27 09:48:58 - __main__ - INFO - Proxied PUT http://localhost:8020/tasks/62503ea3-18e0-4412-b8db-b92a39eea495 -> 200
+2025-09-28 12:02:03 - __main__ - INFO - Starting Authentication Service on port 8011
+2025-09-28 12:02:12 - __main__ - INFO - Starting Document Service on port 8012
+2025-09-28 12:02:46 - __main__ - INFO - EasyOCR initialized with multi-language support
+2025-09-28 12:02:46 - __main__ - INFO - OCR Processor initialized - Tesseract: True, EasyOCR: True
+2025-09-28 12:02:46 - __main__ - INFO - Starting OCR Service on port 8013
+2025-09-28 12:02:46 - __main__ - INFO - Tesseract available: True
+2025-09-28 12:02:46 - __main__ - INFO - EasyOCR available: True
+2025-09-28 12:10:29 - __main__ - INFO - Starting Authentication Service on port 8011
+2025-09-28 12:10:36 - __main__ - INFO - Starting Document Service on port 8012
+2025-09-28 12:11:09 - __main__ - INFO - EasyOCR initialized with multi-language support
+2025-09-28 12:11:10 - __main__ - INFO - OCR Processor initialized - Tesseract: True, EasyOCR: True
+2025-09-28 12:11:10 - __main__ - INFO - Starting OCR Service on port 8013
+2025-09-28 12:11:10 - __main__ - INFO - Tesseract available: True
+2025-09-28 12:11:10 - __main__ - INFO - EasyOCR available: True
+2025-09-28 12:13:13 - __main__ - INFO - Pre-loading essential AI/ML models...
+2025-09-28 12:13:13 - __main__ - INFO - Loading sentence transformer: all-MiniLM-L6-v2...
+2025-09-28 12:13:22 - __main__ - INFO - Successfully loaded model: sentence_transformer
+2025-09-28 12:13:22 - __main__ - INFO - Loading spaCy English model...
+2025-09-28 12:13:27 - __main__ - INFO - Successfully loaded model: spacy_en
+2025-09-28 12:13:27 - __main__ - INFO - Essential models pre-loaded.
+2025-09-28 12:13:27 - __main__ - INFO - Starting AI/ML Service on port 8014
+2025-09-28 12:13:27 - __main__ - INFO - Models available: ['sentence_transformer', 'spacy_en']
+2025-09-28 12:14:11 - __main__ - INFO - Starting Vector Search service on port 8015
+2025-09-28 12:14:12 - __main__ - INFO - Initializing vector search engine...
+2025-09-28 12:14:19 - __main__ - INFO - Loaded sentence transformer model
+2025-09-28 12:14:19 - __main__ - INFO - FAISS index initialized
+2025-09-28 12:14:21 - __main__ - INFO - ChromaDB initialized
+2025-09-28 12:14:21 - __main__ - INFO - Vector search engine initialized successfully
+2025-09-28 12:14:21 - __main__ - INFO - Vector search service started
+2025-09-28 12:14:28 - __main__ - INFO - Starting Notification service on port 8016
+2025-09-28 12:14:28 - __main__ - WARNING - Redis not available: 'NotificationConfig' object has no attribute 'redis_host'
+2025-09-28 12:14:28 - __main__ - INFO - Notification processor started
+2025-09-28 12:14:28 - __main__ - INFO - Notification service started
+2025-09-28 12:14:33 - __main__ - INFO - Starting Integration service on port 8017
+2025-09-28 12:14:33 - __main__ - INFO - Sync scheduler started
+2025-09-28 12:14:33 - __main__ - INFO - Integration service started
+2025-09-28 12:14:43 - __main__ - INFO - Starting Analytics service on port 8018
+2025-09-28 12:14:43 - __main__ - INFO - Analytics service started
+2025-09-28 12:15:18 - __main__ - INFO - Starting API Gateway on port 8010
+2025-09-28 12:15:18 - __main__ - INFO - Registered services: ['auth', 'documents', 'ocr', 'ai', 'search', 'notifications', 'integrations', 'analytics', 'tasks']
+2025-09-28 12:15:18 - __main__ - INFO - API Gateway started with service health monitoring
+2025-09-28 12:15:55 - __main__ - INFO - Loaded model registry with 4 models
+2025-09-28 12:15:55 - __main__ - INFO - Starting Model Downloader service on port 8019
+2025-09-28 12:15:55 - __main__ - INFO - Initializing model downloader...
+2025-09-28 12:15:55 - __main__ - INFO - Model downloader initialized
+2025-09-28 12:15:55 - __main__ - INFO - Model downloader service started
+2025-09-28 12:17:07 - __main__ - ERROR - Failed to store session in Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-28 12:17:07 - __main__ - INFO - User logged in: admin
+2025-09-28 12:17:07 - __main__ - INFO - Proxied POST http://localhost:8011/login -> 200
+2025-09-28 12:17:07 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-28 12:17:20 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 498, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 12:17:20 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 12:17:22 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 498, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 12:17:22 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 12:17:24 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 498, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 12:17:24 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 12:18:00 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
+2025-09-28 12:18:00 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 12:18:00 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 12:18:16 - __main__ - ERROR - Error creating task for document b332ad3e-528b-4d5e-a320-cb4ebb808516: 'ServiceConfig' object has no attribute 'get'
+2025-09-28 12:18:16 - __main__ - INFO - Document uploaded: SIH IMP DOC.docx by admin
+2025-09-28 12:18:17 - __main__ - INFO - Document b332ad3e-528b-4d5e-a320-cb4ebb808516 processed successfully
+2025-09-28 12:18:17 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 200
+2025-09-28 12:18:28 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-28 12:18:29 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-28 12:18:29 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 12:18:29 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 12:18:29 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-28 12:18:29 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-28 12:18:30 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-28 12:18:30 - __main__ - INFO - WebSocket connected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-28 12:18:41 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 12:18:41 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 12:18:45 - __main__ - INFO - Proxied PUT http://localhost:8020/tasks/31bb5d50-637f-444e-bc63-3887e7b2d0b0 -> 200
+2025-09-28 12:18:49 - __main__ - INFO - Proxied PUT http://localhost:8020/tasks/31bb5d50-637f-444e-bc63-3887e7b2d0b0 -> 200
+2025-09-28 12:18:53 - __main__ - INFO - Proxied DELETE http://localhost:8020/tasks/231c79e4-c916-4f2a-b3b8-5d6e044a940f -> 200
+2025-09-28 12:19:06 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-28 12:19:06 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-28 12:19:06 - __main__ - INFO - WebSocket disconnected for user 58e571e2-5f2a-4ac2-b4d8-4f2c6a0fdd6f
+2025-09-28 12:19:06 - __main__ - INFO - Sync scheduler stopped
+2025-09-28 12:19:06 - __main__ - INFO - Integration service shutdown
+2025-09-28 12:19:06 - __main__ - INFO - API Gateway shutdown
+2025-09-28 12:19:06 - __main__ - INFO - Model downloader service shutdown
+2025-09-28 12:19:06 - __main__ - INFO - Notification service shutdown
+2025-09-28 12:19:06 - __main__ - INFO - Analytics service shutdown
+2025-09-28 12:19:06 - __main__ - INFO - Vector search service shutdown
+2025-09-28 18:55:08 - __main__ - INFO - Starting Authentication Service on port 8011
+2025-09-28 18:55:14 - __main__ - INFO - Starting Document Service on port 8012
+2025-09-28 18:55:41 - __main__ - INFO - EasyOCR initialized with multi-language support
+2025-09-28 18:55:41 - __main__ - INFO - OCR Processor initialized - Tesseract: True, EasyOCR: True
+2025-09-28 18:55:41 - __main__ - INFO - Starting OCR Service on port 8013
+2025-09-28 18:55:41 - __main__ - INFO - Tesseract available: True
+2025-09-28 18:55:41 - __main__ - INFO - EasyOCR available: True
+2025-09-28 18:56:34 - __main__ - INFO - Pre-loading essential AI/ML models...
+2025-09-28 18:56:34 - __main__ - INFO - Loading sentence transformer: all-MiniLM-L6-v2...
+2025-09-28 18:56:40 - __main__ - INFO - Successfully loaded model: sentence_transformer
+2025-09-28 18:56:40 - __main__ - INFO - Loading spaCy English model...
+2025-09-28 18:56:41 - __main__ - INFO - Successfully loaded model: spacy_en
+2025-09-28 18:56:41 - __main__ - INFO - Essential models pre-loaded.
+2025-09-28 18:56:41 - __main__ - INFO - Starting AI/ML Service on port 8014
+2025-09-28 18:56:41 - __main__ - INFO - Models available: ['sentence_transformer', 'spacy_en']
+2025-09-28 18:56:52 - __main__ - INFO - Starting Vector Search service on port 8015
+2025-09-28 18:56:52 - __main__ - INFO - Initializing vector search engine...
+2025-09-28 18:56:59 - __main__ - INFO - Loaded sentence transformer model
+2025-09-28 18:56:59 - __main__ - INFO - FAISS index initialized
+2025-09-28 18:57:00 - __main__ - INFO - ChromaDB initialized
+2025-09-28 18:57:00 - __main__ - INFO - Vector search engine initialized successfully
+2025-09-28 18:57:00 - __main__ - INFO - Vector search service started
+2025-09-28 18:57:03 - __main__ - INFO - Starting Notification service on port 8016
+2025-09-28 18:57:04 - __main__ - WARNING - Redis not available: 'NotificationConfig' object has no attribute 'redis_host'
+2025-09-28 18:57:04 - __main__ - INFO - Notification processor started
+2025-09-28 18:57:04 - __main__ - INFO - Notification service started
+2025-09-28 18:57:06 - __main__ - INFO - Starting Integration service on port 8017
+2025-09-28 18:57:06 - __main__ - INFO - Sync scheduler started
+2025-09-28 18:57:06 - __main__ - INFO - Integration service started
+2025-09-28 18:57:10 - __main__ - INFO - Starting Analytics service on port 8018
+2025-09-28 18:57:10 - __main__ - INFO - Analytics service started
+2025-09-28 18:57:39 - __main__ - INFO - Starting API Gateway on port 8010
+2025-09-28 18:57:39 - __main__ - INFO - Registered services: ['auth', 'documents', 'ocr', 'ai', 'search', 'notifications', 'integrations', 'analytics', 'tasks']
+2025-09-28 18:57:40 - __main__ - INFO - API Gateway started with service health monitoring
+2025-09-28 18:58:02 - __main__ - INFO - Loaded model registry with 4 models
+2025-09-28 18:58:02 - __main__ - INFO - Starting Model Downloader service on port 8019
+2025-09-28 18:58:02 - __main__ - INFO - Initializing model downloader...
+2025-09-28 18:58:02 - __main__ - INFO - Model downloader initialized
+2025-09-28 18:58:02 - __main__ - INFO - Model downloader service started
+2025-09-28 18:58:57 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 18:58:57 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 18:59:16 - __main__ - ERROR - Failed to store session in Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-28 18:59:16 - __main__ - INFO - User logged in: admin
+2025-09-28 18:59:16 - __main__ - INFO - Proxied POST http://localhost:8011/login -> 200
+2025-09-28 18:59:48 - __main__ - ERROR - Failed to store session in Redis: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2025-09-28 18:59:48 - __main__ - INFO - User logged in: admin
+2025-09-28 18:59:48 - __main__ - INFO - Proxied POST http://localhost:8011/login -> 200
+2025-09-28 19:01:47 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:01:47 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:01:50 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:01:50 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:01:59 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:01:59 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:02:28 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:02:28 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:05:30 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:05:30 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:05:41 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
+2025-09-28 19:05:42 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 19:05:42 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 19:05:53 - __main__ - INFO - Proxied PUT http://localhost:8020/tasks/0a4e7067-eb65-4e58-9b60-c89f36abeddb -> 200
+2025-09-28 19:08:43 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 19:08:51 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:08:51 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:09:14 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 422
+2025-09-28 19:09:38 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 422
+2025-09-28 19:09:57 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 19:10:20 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 422
+2025-09-28 19:10:44 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 422
+2025-09-28 19:11:09 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 422
+2025-09-28 19:12:51 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:27:36 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 19:28:22 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:28:22 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:28:50 - __main__ - WARNING - Health check failed for http://localhost:8011: 
+2025-09-28 19:28:53 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:28:53 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:30:22 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:30:22 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:30:41 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:30:41 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:34:38 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:35:07 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:35:07 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:35:24 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:35:24 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:35:31 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:35:31 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:35:34 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:35:34 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:35:35 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:35:40 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:35:41 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:35:42 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:35:42 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:35:42 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:35:43 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:35:43 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:35:44 - __main__ - ERROR - Error uploading document: 
+Traceback (most recent call last):
+  File "C:\Drive D\SIH FINAL 2\sih_mvp\services\document_service.py", line 499, in upload_document
+    raise HTTPException(
+fastapi.exceptions.HTTPException
+
+2025-09-28 19:35:45 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 500
+2025-09-28 19:37:27 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:37:27 - __main__ - INFO - Proxied GET http://localhost:8011/profile -> 200
+2025-09-28 19:38:21 - __main__ - ERROR - Error creating task for document ae116767-c206-4543-b9ec-ee9e8c926930: 'ServiceConfig' object has no attribute 'get'
+2025-09-28 19:38:21 - __main__ - INFO - Document uploaded: ChatGPT Image Apr 4, 2025, 09_19_33 PM.png by admin
+2025-09-28 19:38:21 - __main__ - INFO - Document ae116767-c206-4543-b9ec-ee9e8c926930 processed successfully
+2025-09-28 19:38:21 - __main__ - INFO - Proxied POST http://localhost:8012/upload -> 200
+2025-09-28 19:40:28 - __main__ - INFO - Proxied POST http://localhost:8020/tasks -> 200
+2025-09-28 19:40:28 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200
+2025-09-28 19:40:29 - __main__ - INFO - Proxied GET http://localhost:8020/tasks -> 200

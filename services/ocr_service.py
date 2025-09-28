@@ -112,9 +112,7 @@ class OCRProcessor:
     def __init__(self):
         self.tesseract_available = self._check_tesseract()
         self.easyocr_available = EASYOCR_AVAILABLE and EASYOCR_READER is not None
-        
-        # Configure Tesseract path if needed (Windows)
-        if os.name == 'nt':  # Windows
+        if os.name == 'nt':
             tesseract_paths = [
                 r'C:\Program Files\Tesseract-OCR\tesseract.exe',
                 r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe',
@@ -124,8 +122,18 @@ class OCRProcessor:
                 if os.path.exists(path):
                     pytesseract.pytesseract.tesseract_cmd = path
                     break
-        
         logger.info(f"OCR Processor initialized - Tesseract: {self.tesseract_available}, EasyOCR: {self.easyocr_available}")
+        # For spellchecking and language detection
+        try:
+            from langdetect import detect as langdetect_detect
+            self.langdetect_detect = langdetect_detect
+        except ImportError:
+            self.langdetect_detect = None
+        try:
+            from spellchecker import SpellChecker
+            self.spellchecker = SpellChecker()
+        except ImportError:
+            self.spellchecker = None
     
     def _check_tesseract(self) -> bool:
         """Check if Tesseract is available"""
@@ -137,51 +145,35 @@ class OCRProcessor:
             return False
     
     async def preprocess_image(self, image: np.ndarray, enhance: bool = True) -> np.ndarray:
-        """Preprocess image for better OCR results"""
+        """Preprocess image for better OCR results (adaptive, robust)"""
         try:
-            # Convert to PIL Image for enhancement
             pil_image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-            
             if enhance:
-                # Enhance contrast
                 enhancer = ImageEnhance.Contrast(pil_image)
-                pil_image = enhancer.enhance(1.5)
-                
-                # Enhance sharpness
+                pil_image = enhancer.enhance(1.7)
                 enhancer = ImageEnhance.Sharpness(pil_image)
-                pil_image = enhancer.enhance(1.2)
-                
-                # Apply slight blur to reduce noise
+                pil_image = enhancer.enhance(1.3)
                 pil_image = pil_image.filter(ImageFilter.MedianFilter())
-            
-            # Convert back to OpenCV format
             processed = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
-            
-            # Convert to grayscale
             if len(processed.shape) == 3:
                 processed = cv2.cvtColor(processed, cv2.COLOR_BGR2GRAY)
-            
-            # Apply adaptive thresholding
+            # Adaptive thresholding (auto block size)
+            h, w = processed.shape
+            block_size = max(11, (min(h, w) // 20) | 1)  # must be odd
             processed = cv2.adaptiveThreshold(
-                processed, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
+                processed, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, block_size, 2
             )
-            
-            # Morphological operations to clean up
             kernel = np.ones((1, 1), np.uint8)
             processed = cv2.morphologyEx(processed, cv2.MORPH_CLOSE, kernel)
             processed = cv2.morphologyEx(processed, cv2.MORPH_OPEN, kernel)
-            
             return processed
-            
         except Exception as e:
             logger.error(f"Image preprocessing failed: {e}")
-            # Return original image as grayscale if preprocessing fails
             if len(image.shape) == 3:
                 return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             return image
     
-    async def extract_text_tesseract(self, image: np.ndarray, languages: List[str], 
-                                   config: str = '') -> Tuple[str, float, List[Dict]]:
+    async def extract_text_tesseract(self, image: np.ndarray, languages: List[str], config: str = '') -> Tuple[str, float, List[Dict]]:
         """Extract text using Tesseract OCR"""
         if not self.tesseract_available:
             raise Exception("Tesseract OCR is not available")
@@ -194,42 +186,42 @@ class OCRProcessor:
                     tesseract_langs.append(SUPPORTED_LANGUAGES[lang])
                 else:
                     tesseract_langs.append('eng')  # Default to English
-            
             lang_string = '+'.join(tesseract_langs)
-            
-            # Default config for better results
-            if not config:
-                config = '--oem 3 --psm 6'
-            
             # Extract text
             text = pytesseract.image_to_string(
-                image, 
-                lang=lang_string, 
+                image,
+                lang=lang_string,
                 config=config
             ).strip()
-            
             # Get detailed data for confidence scores
             data = pytesseract.image_to_data(
-                image, 
-                lang=lang_string, 
+                image,
+                lang=lang_string,
                 config=config,
                 output_type=pytesseract.Output.DICT
             )
-            
-            # Calculate average confidence
-            confidences = [int(conf) for conf in data['conf'] if int(conf) > 0]
-            avg_confidence = sum(confidences) / len(confidences) if confidences else 0
-            
+            confidences = []
+            for conf in data['conf']:
+                try:
+                    val = float(conf)
+                    if val > 0:
+                        confidences.append(val)
+                except Exception:
+                    continue
+            avg_confidence = sum(confidences) / len(confidences) if confidences else 0.0
             # Extract line-level information
             lines = []
             current_line = []
             current_line_num = -1
-            
             for i in range(len(data['text'])):
-                if int(data['conf'][i]) > 0:
+                try:
+                    conf_val = float(data['conf'][i])
+                except Exception:
+                    conf_val = 0.0
+                if conf_val > 0 and data['text'][i].strip():
                     word_info = {
                         'text': data['text'][i],
-                        'confidence': int(data['conf'][i]),
+                        'confidence': conf_val,
                         'bbox': {
                             'left': int(data['left'][i]),
                             'top': int(data['top'][i]),
@@ -237,7 +229,6 @@ class OCRProcessor:
                             'height': int(data['height'][i])
                         }
                     }
-                    
                     if data['line_num'][i] != current_line_num:
                         if current_line:
                             lines.append({
@@ -249,15 +240,14 @@ class OCRProcessor:
                         current_line_num = data['line_num'][i]
                     else:
                         current_line.append(word_info)
-            
-            # Add the last line
             if current_line:
                 lines.append({
                     'line_text': ' '.join([w['text'] for w in current_line]),
                     'words': current_line,
                     'avg_confidence': sum([w['confidence'] for w in current_line]) / len(current_line)
                 })
-            
+            # Text cleanup: remove extra whitespace, fix common OCR errors
+            text = self._clean_text(text)
             return text, avg_confidence / 100.0, lines
             
         except Exception as e:
@@ -281,26 +271,26 @@ class OCRProcessor:
             
             # Perform OCR
             results = EASYOCR_READER.readtext(image, detail=1)
-            
-            # Process results
             text_parts = []
             lines = []
-            total_confidence = 0
-            
+            total_confidence = 0.0
+            valid_results = 0
             for (bbox, text, confidence) in results:
-                if confidence > 0.3:  # Filter low-confidence results
+                try:
+                    conf_val = float(confidence)
+                except Exception:
+                    conf_val = 0.0
+                if conf_val > 0.5 and text.strip():  # Stricter filter
                     text_parts.append(text)
-                    total_confidence += confidence
-                    
-                    # Convert bbox to our format
+                    total_confidence += conf_val
+                    valid_results += 1
                     x_coords = [point[0] for point in bbox]
                     y_coords = [point[1] for point in bbox]
-                    
                     lines.append({
                         'line_text': text,
                         'words': [{
                             'text': text,
-                            'confidence': int(confidence * 100),
+                            'confidence': conf_val * 100,
                             'bbox': {
                                 'left': int(min(x_coords)),
                                 'top': int(min(y_coords)),
@@ -308,12 +298,12 @@ class OCRProcessor:
                                 'height': int(max(y_coords) - min(y_coords))
                             }
                         }],
-                        'avg_confidence': confidence * 100
+                        'avg_confidence': conf_val * 100
                     })
-            
             extracted_text = '\n'.join(text_parts)
-            avg_confidence = total_confidence / len(results) if results else 0
-            
+            avg_confidence = total_confidence / valid_results if valid_results else 0.0
+            # Text cleanup
+            extracted_text = self._clean_text(extracted_text)
             return extracted_text, avg_confidence, lines
             
         except Exception as e:
@@ -321,52 +311,90 @@ class OCRProcessor:
             raise
     
     async def extract_text_hybrid(self, image: np.ndarray, languages: List[str]) -> Tuple[str, float, List[Dict]]:
-        """Use both Tesseract and EasyOCR and combine results"""
-        tesseract_text = tesseract_conf = tesseract_lines = ""
-        easyocr_text = easyocr_conf = easyocr_lines = ""
-        
+        """Use both Tesseract and EasyOCR and combine results, with auto language detection and text cleanup"""
+        tesseract_text = ""
+        tesseract_conf = 0.0
+        tesseract_lines = []
+        easyocr_text = ""
+        easyocr_conf = 0.0
+        easyocr_lines = []
         # Try Tesseract first
         if self.tesseract_available:
             try:
                 tesseract_text, tesseract_conf, tesseract_lines = await self.extract_text_tesseract(image, languages)
             except Exception as e:
                 logger.warning(f"Tesseract failed: {e}")
-        
         # Try EasyOCR
         if self.easyocr_available:
             try:
                 easyocr_text, easyocr_conf, easyocr_lines = await self.extract_text_easyocr(image, languages)
             except Exception as e:
                 logger.warning(f"EasyOCR failed: {e}")
-        
+        logger.debug(f"[extract_text_hybrid] tesseract_conf: {tesseract_conf} (type: {type(tesseract_conf)}), easyocr_conf: {easyocr_conf} (type: {type(easyocr_conf)})")
+        logger.debug(f"[extract_text_hybrid] tesseract_text: '{tesseract_text[:50]}' easyocr_text: '{easyocr_text[:50]}'")
+        try:
+            tesseract_conf = float(tesseract_conf) if tesseract_conf not in [None, ""] else 0.0
+        except Exception as e:
+            logger.error(f"[extract_text_hybrid] Could not cast tesseract_conf to float: {e}")
+            tesseract_conf = 0.0
+        try:
+            easyocr_conf = float(easyocr_conf) if easyocr_conf not in [None, ""] else 0.0
+        except Exception as e:
+            logger.error(f"[extract_text_hybrid] Could not cast easyocr_conf to float: {e}")
+            easyocr_conf = 0.0
         # Choose the better result or combine
-        if tesseract_conf > easyocr_conf and len(tesseract_text.strip()) > len(easyocr_text.strip()) / 2:
-            return tesseract_text, tesseract_conf, tesseract_lines
-        elif easyocr_text:
-            return easyocr_text, easyocr_conf, easyocr_lines
-        elif tesseract_text:
-            return tesseract_text, tesseract_conf, tesseract_lines
-        else:
+        try:
+            # Prefer result with higher confidence and more text
+            if tesseract_conf > easyocr_conf and len(tesseract_text.strip()) > len(easyocr_text.strip()) / 2:
+                logger.debug("[extract_text_hybrid] Returning Tesseract result.")
+                return tesseract_text, tesseract_conf, tesseract_lines
+            elif easyocr_text:
+                logger.debug("[extract_text_hybrid] Returning EasyOCR result.")
+                return easyocr_text, easyocr_conf, easyocr_lines
+            elif tesseract_text:
+                logger.debug("[extract_text_hybrid] Returning Tesseract result (fallback).")
+                return tesseract_text, tesseract_conf, tesseract_lines
+            else:
+                logger.debug("[extract_text_hybrid] No text detected.")
+                return "No text detected", 0.0, []
+        except Exception as e:
+            logger.error(f"[extract_text_hybrid] Error during result selection: {e}")
             return "No text detected", 0.0, []
+
+    def _clean_text(self, text: str) -> str:
+        """Clean up OCR text: remove extra whitespace, fix common OCR errors, spellcheck if possible"""
+        import re
+        cleaned = re.sub(r'[\r\f]+', '\n', text)
+        cleaned = re.sub(r'\s+', ' ', cleaned)
+        cleaned = cleaned.strip()
+        # Optionally spellcheck (only for English)
+        if self.spellchecker and self.detect_language(cleaned) == 'en':
+            words = cleaned.split()
+            corrected = [self.spellchecker.correction(w) if w.isalpha() else w for w in words]
+            cleaned = ' '.join(corrected)
+        return cleaned
     
     def detect_language(self, text: str) -> Optional[str]:
-        """Detect primary language in extracted text"""
+        """Detect primary language in extracted text (script + langdetect)"""
         try:
-            # Simple character-based detection
             if not text.strip():
                 return None
-            
-            # Count different script characters
+            # Try langdetect if available and text is long enough
+            if self.langdetect_detect and len(text) > 20:
+                try:
+                    lang = self.langdetect_detect(text)
+                    if lang in SUPPORTED_LANGUAGES:
+                        return lang
+                except Exception:
+                    pass
+            # Fallback: script-based detection
             latin_count = sum(1 for c in text if ord(c) < 256)
             devanagari_count = sum(1 for c in text if 0x0900 <= ord(c) <= 0x097F)
             malayalam_count = sum(1 for c in text if 0x0D00 <= ord(c) <= 0x0D7F)
             tamil_count = sum(1 for c in text if 0x0B80 <= ord(c) <= 0x0BFF)
             kannada_count = sum(1 for c in text if 0x0C80 <= ord(c) <= 0x0CFF)
             telugu_count = sum(1 for c in text if 0x0C00 <= ord(c) <= 0x0C7F)
-            
-            # Determine primary language
             max_count = max(latin_count, devanagari_count, malayalam_count, tamil_count, kannada_count, telugu_count)
-            
             if max_count == malayalam_count and malayalam_count > 0:
                 return 'ml'
             elif max_count == tamil_count and tamil_count > 0:
@@ -379,7 +407,6 @@ class OCRProcessor:
                 return 'hi'
             else:
                 return 'en'
-                
         except Exception as e:
             logger.warning(f"Language detection failed: {e}")
             return None

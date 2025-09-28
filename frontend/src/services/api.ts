@@ -3,25 +3,26 @@ import axios, { AxiosInstance, AxiosProgressEvent, AxiosRequestConfig, AxiosResp
 // API Configuration
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8010';
 
-// Service URLs (through API Gateway)
+// Service URLs (through API Gateway on 8010)
 export const SERVICE_URLS = {
-  AUTH: `${API_BASE_URL}/auth`,         // Port 8011
-  DOCUMENTS: `${API_BASE_URL}/documents`, // Port 8012
-  OCR: `${API_BASE_URL}/ocr`,           // Port 8013
-  AI_ML: `${API_BASE_URL}/ai`,          // Port 8014
-  AI_SERVICE: `${API_BASE_URL}/ai`,      // Port 8014 (alias for AI_ML for better readability)
-  SEARCH: `${API_BASE_URL}/search`,      // Port 8015
-  NOTIFICATIONS: `${API_BASE_URL}/notifications`, // Port 8016
-  INTEGRATIONS: `${API_BASE_URL}/integrations`,  // Port 8017
-  ANALYTICS: `${API_BASE_URL}/analytics`,        // Port 8018
-  MODELS: `${API_BASE_URL}/models`,              // Port 8019
-  TASKS: `${API_BASE_URL}/tasks`,                // Port 8020
-  INTEGRATION_MANAGEMENT: `${API_BASE_URL}/integration-management`, // Port 8017
+  // Note: Gateway proxies to services; keep root paths consistent with backend
+  AUTH: `${API_BASE_URL}/auth`,
+  DOCUMENTS: `${API_BASE_URL}/documents`,
+  OCR: `${API_BASE_URL}/ocr`,
+  AI_ML: `${API_BASE_URL}/ai`,
+  AI_SERVICE: `${API_BASE_URL}/ai`,
+  SEARCH: `${API_BASE_URL}/search`,
+  NOTIFICATIONS: `${API_BASE_URL}/notifications`,
+  INTEGRATIONS: `${API_BASE_URL}/integrations`,
+  ANALYTICS: `${API_BASE_URL}/analytics`,
+  MODELS: `${API_BASE_URL}/models`,
+  TASKS: `${API_BASE_URL}/tasks`,
+  INTEGRATION_MANAGEMENT: `${API_BASE_URL}/integration-management`,
 };
 
-// WebSocket URLs
+// WebSocket URLs through API Gateway (8010)
 export const WEBSOCKET_URLS = {
-  NOTIFICATIONS: `ws://localhost:8016/ws`, // Points to notification service websocket endpoint
+  NOTIFICATIONS: `ws://localhost:8010/ws/notifications`,
 };
 
 // Error message handler - can be overridden by toast context

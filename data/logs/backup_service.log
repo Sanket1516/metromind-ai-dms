@@ -105,3 +105,8 @@
 2025-09-27 09:40:54 - backup_service - INFO - Backup & Recovery service shutdown
 2025-09-27 09:42:38 - backup_service - INFO - Starting Backup & Recovery service on port 8024
 2025-09-27 09:42:38 - backup_service - INFO - Backup & Recovery service started
+2025-09-28 12:15:21 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-28 12:15:21 - backup_service - INFO - Backup & Recovery service started
+2025-09-28 12:19:06 - backup_service - INFO - Backup & Recovery service shutdown
+2025-09-28 18:57:42 - backup_service - INFO - Starting Backup & Recovery service on port 8024
+2025-09-28 18:57:42 - backup_service - INFO - Backup & Recovery service started

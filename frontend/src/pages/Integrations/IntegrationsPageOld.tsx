@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Container, 
   Typography, 
@@ -19,6 +19,7 @@ import {
   IconButton
 } from '@mui/material';
 import { Add as AddIcon, Settings as SettingsIcon, CloudSync as CloudIcon } from '@mui/icons-material';
+import { API_BASE_URL } from '../../config';
 
 interface Integration {
   id: string;
@@ -47,7 +48,7 @@ const IntegrationsPage: React.FC = () => {
     const loadIntegrations = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:8017/integrations/');
+        const response = await fetch(`${API_BASE_URL}/integrations/`);
         
         if (response.ok) {
           const data = await response.json();
@@ -71,7 +72,7 @@ const IntegrationsPage: React.FC = () => {
 
   const handleToggle = async (integrationId: string, enabled: boolean) => {
     try {
-      const response = await fetch(`http://localhost:8017/integrations/${integrationId}/toggle`, {
+      const response = await fetch(`${API_BASE_URL}/integrations/${integrationId}/toggle`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ enabled })
@@ -104,7 +105,7 @@ const IntegrationsPage: React.FC = () => {
   const getGoogleDriveAuthUrl = async () => {
     try {
       setSetupLoading(true);
-      const response = await fetch('http://localhost:8017/integrations/google-drive/auth-url');
+      const response = await fetch(`${API_BASE_URL}/integrations/google-drive/auth-url`);
       const data = await response.json();
       setGoogleDriveAuthUrl(data.auth_url);
     } catch (err) {
@@ -120,7 +121,7 @@ const IntegrationsPage: React.FC = () => {
     
     try {
       setSetupLoading(true);
-      const response = await fetch('http://localhost:8017/integrations/google-drive/exchange-code', {
+      const response = await fetch(`${API_BASE_URL}/integrations/google-drive/exchange-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: authCode })
