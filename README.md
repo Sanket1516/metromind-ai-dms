@@ -336,5 +336,3 @@ This project is proprietary software developed for KMRL (Kochi Metro Rail Limite
 ---
 
 **Built with ❤️ for KMRL** - Revolutionizing document management with AI
-
-*Last Updated: December 2024*
