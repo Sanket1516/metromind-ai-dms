@@ -1,338 +1,504 @@
-# MetroMind MVP - Intelligent Document Management System
+# MetroMind AI DMS
 
-## 🚀 Overview
+MetroMind is an AI-powered Document Management System built for high-volume enterprise and public-sector document operations. The project combines document upload, OCR, AI analysis, semantic search, integrations, notifications, analytics, and workflow-style collaboration in one platform.
 
-MetroMind is a revolutionary AI-powered document management system designed for KMRL (Kochi Metro Rail Limited) to handle thousands of multilingual documents with intelligent processing, real-time notifications, and semantic search capabilities.
+This README is written so that you can explain the whole project in an interview just by reading it once.
 
-### ✨ Key Features
+## 1. Elevator Pitch
 
-- **🤖 AI-Powered Processing**: Advanced OCR with multi-language support (English, Malayalam, Hindi, Tamil)
-- **🔍 Semantic Search**: Vector-based document search using embeddings
-- **⚡ Real-time Notifications**: WebSocket-based live updates and email alerts
-- **🎯 Smart Classification**: Automatic document categorization (Safety, Maintenance, Finance, Operations, etc.)
-- **🔐 Secure Authentication**: JWT-based auth with role-based access control
-- **📊 Analytics Dashboard**: Comprehensive insights and performance metrics
-- **🌐 Multi-language Support**: Built for Indian languages and bilingual content
+MetroMind solves a common operational problem: organizations receive thousands of documents from email, portals, scans, shared drives, and manual uploads, but those files are usually hard to classify, search, secure, and act on.
 
-## 🏗️ Architecture
+This system turns raw files into searchable, structured, role-controlled knowledge:
 
-### Microservices Architecture
+- upload or auto-collect documents
+- extract text using OCR
+- classify and prioritize content
+- generate embeddings for semantic search
+- notify the right users in real time
+- manage tasks, versions, reports, and workflows around those documents
 
+## 2. Problem Statement
+
+Traditional document systems usually fail in one or more of these areas:
+
+- scanned files are not searchable
+- cross-language or multilingual documents are difficult to process
+- finding the right document depends on exact keywords
+- approvals and follow-up actions are disconnected from the document itself
+- external systems like email, SharePoint, or Google Drive are siloed
+- auditability and access control are weak
+
+MetroMind addresses these gaps with an AI-first, service-oriented design.
+
+## 3. What The Project Does
+
+### Core capabilities
+
+- secure authentication with JWT and role-based access control
+- upload and manage documents across multiple file types
+- OCR and text extraction for scanned files and images
+- AI-based document analysis, classification, tagging, and summarization
+- semantic search using embeddings with FAISS and ChromaDB support
+- real-time notifications using WebSockets
+- external integrations for email, SharePoint, Google Drive, webhook-style sources, and more
+- analytics, audit visibility, backup, security, and workflow support
+
+### Business use cases
+
+- metro rail or government office document operations
+- compliance and audit-heavy teams
+- engineering, maintenance, finance, HR, and legal document handling
+- search across large archives of PDFs, scans, reports, and mixed formats
+
+## 4. High-Level Architecture
+
+MetroMind follows a modular microservice-style architecture inside a single repository. Services are independently structured FastAPI apps, while the frontend is a separate React TypeScript application.
+
+```mermaid
+flowchart LR
+    U["Users"] --> FE["React Frontend"]
+    U --> EXT["Browser Extension"]
+    FE --> GW["API Gateway"]
+
+    GW --> AUTH["Auth Service"]
+    GW --> DOC["Document Service"]
+    GW --> OCR["OCR Service"]
+    GW --> AI["AI/ML Service"]
+    GW --> SEARCH["Search Service"]
+    GW --> NOTIF["Notification Service"]
+    GW --> INT["Integration Service"]
+    GW --> ANALYTICS["Analytics Service"]
+    GW --> TASKS["Task Service"]
+    GW --> WORKFLOW["Workflow Service"]
+    GW --> SECURITY["Security Service"]
+    GW --> BACKUP["Backup Service"]
+    GW --> REPORT["Reporting Service"]
+
+    AUTH --> PG["PostgreSQL"]
+    DOC --> PG
+    AI --> PG
+    SEARCH --> PG
+    NOTIF --> PG
+    INT --> PG
+    TASKS --> PG
+    WORKFLOW --> PG
+    SECURITY --> PG
+    ANALYTICS --> PG
+    REPORT --> PG
+
+    AUTH --> REDIS["Redis"]
+    NOTIF --> REDIS
+    SECURITY --> REDIS
+
+    SEARCH --> VDB["Vector DB Folder / FAISS / ChromaDB"]
+    AI --> MODELS["Local / Downloaded ML Models"]
+    OCR --> FILES["Uploaded Files"]
+    DOC --> FILES
+    INT --> FILES
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend UI   │◄───┤   API Gateway   │◄───┤   Load Balancer │
-│   (React/Next)  │    │   (Port 8000)   │    │     (Nginx)     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                                │
-                    ┌───────────┼───────────┐
-                    │           │           │
-            ┌───────▼──────┐   │   ┌───────▼──────┐
-            │ User Service │   │   │Document Svc  │
-            │ (Port 8005)  │   │   │ (Port 8003)  │
-            └──────────────┘   │   └──────────────┘
-                               │
-        ┌──────────────────────┼──────────────────────┐
-        │                     │                     │
-┌───────▼──────┐    ┌────────▼──────┐    ┌────────▼──────┐
-│   OCR Svc    │    │   AI/ML Svc   │    │ Notification  │
-│ (Port 8001)  │    │ (Port 8004)   │    │   Service     │
-└──────────────┘    └───────────────┘    │ (Port 8006)   │
-                                         └───────────────┘
-        │                     │                     │
-┌───────▼──────┐    ┌────────▼──────┐    ┌────────▼──────┐
-│   RAG Svc    │    │Vector Search  │    │   Monitoring  │
-│ (Port 8002)  │    │ (Port 8007)   │    │   Stack       │
-└──────────────┘    └───────────────┘    └───────────────┘
+
+## 5. Service Map
+
+The repository contains multiple backend services. The most central ones are:
+
+| Service | Main responsibility | Typical port in code/docs |
+| --- | --- | --- |
+| API Gateway | entry point and request routing | `8000` or configurable |
+| Auth Service | login, registration, JWT, RBAC, session logic | `8005` / configurable |
+| Document Service | upload, metadata, sharing, versions, storage | `8003` / configurable |
+| OCR Service | OCR and image/document text extraction | `8001` / configurable |
+| AI/ML Service | classification, summarization, embeddings, analysis | `8004` / configurable |
+| Search Service | semantic search and indexing | `8007` / configurable |
+| Notification Service | in-app and WebSocket notifications | `8006` / configurable |
+| Integration Service | external connectors and synchronization | `8008` / configurable |
+| Analytics Service | usage and operational analytics | `8018` / configurable |
+| Task Service | task tracking linked to documents | `8020` in config family |
+| Workflow Service | templates, reviews, versioned workflow actions | `8023` in config family |
+| Security Service | 2FA, sessions, security events | `8025` in config family |
+| Reporting Service | report templates and generated reports | `8026` in config family |
+| Backup Service | backup and restore operations | `8024` in config family |
+
+Important note: some ports differ between `start_complete_system.py` and `config.py`, so the best way to present this in an interview is: the system uses configurable service ports, and some local startup scripts reflect earlier orchestration stages.
+
+## 6. Frontend Architecture
+
+The frontend is a React + TypeScript dashboard application.
+
+### Main frontend patterns
+
+- React Router for navigation
+- React Query for server-state fetching and caching
+- Material UI for component system
+- Context providers for auth, notifications, toast messages, theme, and WebSocket state
+- protected routes for role-based pages
+
+### Key frontend modules
+
+- dashboard
+- documents
+- shared documents
+- auto-collected documents
+- tasks
+- search
+- analytics
+- integrations
+- AI dashboards
+- security, audit, backup, user management
+
+## 7. End-to-End Workflow
+
+### Document processing workflow
+
+```mermaid
+flowchart TD
+    A["User uploads file or integration syncs file"] --> B["Document Service validates file"]
+    B --> C["File stored in data/uploads"]
+    C --> D["Document metadata saved in PostgreSQL"]
+    D --> E["OCR Service extracts text if needed"]
+    E --> F["AI/ML Service analyzes content"]
+    F --> G["Category, priority, summary, language, tags generated"]
+    G --> H["Search Service generates embeddings and indexes document"]
+    H --> I["Notification Service alerts users"]
+    I --> J["Document becomes searchable and actionable"]
 ```
 
-### Service Details
+### Search workflow
 
-| Service | Port | Description | Key Technologies |
-|---------|------|-------------|------------------|
-| **API Gateway** | 8000 | Main entry point, request routing | FastAPI, JWT |
-| **OCR Service** | 8001 | Multi-language OCR processing | Tesseract, OpenCV |
-| **RAG Service** | 8002 | AI chat and document Q&A | OpenAI, ChromaDB |
-| **Document Service** | 8003 | File upload and management | FastAPI, PostgreSQL |
-| **AI/ML Service** | 8004 | Model management and inference | PyTorch, Transformers |
-| **User Service** | 8005 | Authentication and user management | JWT, bcrypt |
-| **Notification Service** | 8006 | Real-time notifications | WebSocket, SMTP |
-| **Vector Search Service** | 8007 | Semantic document search | FAISS, SentenceTransformers |
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Docker & Docker Compose** (v2.0+)
-- **Git**
-- **8GB RAM** (minimum), 16GB recommended
-- **10GB free disk space**
-
-### Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd metromind-mvp
-   ```
-
-2. **Start the services**:
-   ```bash
-   cd infrastructure
-   docker-compose up -d
-   ```
-
-3. **Wait for services to be healthy**:
-   ```bash
-   docker-compose ps
-   ```
-
-### Windows Quick Start
-
-For Windows users, use the PowerShell deployment script:
-
-```powershell
-# Run as Administrator
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-.\infrastructure\deploy.ps1
+```mermaid
+flowchart TD
+    A["User enters natural language query"] --> B["Search Service encodes query"]
+    B --> C["FAISS / Chroma similarity search"]
+    C --> D["Metadata filters applied"]
+    D --> E["Relevant documents returned"]
+    E --> F["Frontend displays ranked results"]
 ```
 
-## 📊 API Documentation
+### Integration workflow
 
-### Service Endpoints
+```mermaid
+flowchart TD
+    A["Admin/User configures integration"] --> B["Integration saved in DB"]
+    B --> C["Scheduler triggers sync"]
+    C --> D["Files or messages fetched from external source"]
+    D --> E["Imported as documents"]
+    E --> F["Normal OCR + AI + indexing pipeline runs"]
+```
 
-Once running, access API documentation:
+## 8. Database Design
 
-- **API Gateway**: http://localhost:8000/docs
-- **User Service**: http://localhost:8005/docs
-- **Document Service**: http://localhost:8003/docs
-- **OCR Service**: http://localhost:8001/docs
-- **AI/ML Service**: http://localhost:8004/docs
-- **Notification Service**: http://localhost:8006/docs
-- **Vector Search Service**: http://localhost:8007/docs
+The backend uses SQLAlchemy models on top of PostgreSQL. The schema is broad because the platform handles identity, documents, integrations, analytics, sharing, workflow, and security in one place.
 
-### Frontend & Monitoring
+### Core entities you should mention in an interview
 
-- **Admin Dashboard**: http://localhost:3000
-- **Grafana Dashboard**: http://localhost:3001 (admin/secure_password_123)
-- **Prometheus Metrics**: http://localhost:9090
-- **Jaeger Tracing**: http://localhost:16686
+- `users`
+- `role_permissions`
+- `user_sessions`
+- `documents`
+- `document_versions`
+- `shared_documents`
+- `document_embeddings`
+- `notifications`
+- `integrations`
+- `integration_sync_logs`
+- `analytics_records`
+- `audit_logs`
+- `tasks`
+- workflow-related entities
+- reporting-related entities
 
-## 🐳 Docker Services
+### Schema relationship snapshot
 
-Monitor service health:
+```mermaid
+erDiagram
+    USERS ||--o{ DOCUMENTS : uploads
+    USERS ||--o{ USER_SESSIONS : owns
+    USERS ||--o{ NOTIFICATIONS : receives
+    USERS ||--o{ INTEGRATIONS : configures
+    USERS ||--o{ ANALYTICS_RECORDS : generates
+    USERS ||--o{ TASKS : assigned_to
+
+    DOCUMENTS ||--o{ DOCUMENT_VERSIONS : has
+    DOCUMENTS ||--o{ DOCUMENT_EMBEDDINGS : indexed_as
+    DOCUMENTS ||--o{ SHARED_DOCUMENTS : shared_via
+    DOCUMENTS ||--o{ ANALYTICS_RECORDS : referenced_in
+```
+
+### Why this schema design works
+
+- normalized enough for operational consistency
+- flexible JSON fields for integration configs and metadata
+- UUID-heavy identifiers fit distributed services well
+- role and permission tables support extensible RBAC
+- document versions and shared documents support collaboration features
+
+## 9. Tech Stack And Why It Is Used
+
+### Backend
+
+| Technology | Why it is used |
+| --- | --- |
+| FastAPI | fast async APIs, automatic docs, clean service boundaries |
+| SQLAlchemy | ORM-based schema management and query modeling |
+| PostgreSQL | reliable relational storage for users, documents, workflow, audit, analytics |
+| Redis | sessions, caching, pub/sub style realtime support |
+| Pydantic | request/response validation |
+| Uvicorn | ASGI app serving |
+
+### AI / ML / Search
+
+| Technology | Why it is used |
+| --- | --- |
+| Tesseract / EasyOCR / OpenCV | OCR and document image preprocessing |
+| Transformers | NLP tasks such as analysis and summarization |
+| Sentence Transformers | document and query embeddings |
+| FAISS | fast vector similarity search |
+| ChromaDB | persistent vector collection option |
+| spaCy / langdetect / NLTK | NLP utilities, language detection, text processing |
+
+### Frontend
+
+| Technology | Why it is used |
+| --- | --- |
+| React | component-driven dashboard UI |
+| TypeScript | safer frontend code and better maintainability |
+| Material UI | faster enterprise UI development |
+| React Query | caching and async data fetching |
+| React Router | protected page navigation |
+| Socket.io client / WebSocket context | real-time notification experience |
+
+### DevOps / Ops
+
+| Technology | Why it is used |
+| --- | --- |
+| Docker | service packaging and environment consistency |
+| Nginx | reverse proxy and web serving |
+| Prometheus | metrics collection |
+| Grafana | dashboards and observability |
+
+## 10. Security Architecture
+
+Security is a major talking point for this project.
+
+### Implemented security ideas in the repo
+
+- JWT-based authentication
+- password hashing with bcrypt
+- role-based access control
+- session tracking
+- audit logging
+- optional 2FA flows in the security service
+- validation with Pydantic
+- permission-based access checks in service code
+
+### Interview explanation
+
+If asked about security, say:
+
+1. authentication is centralized with JWT and session awareness
+2. authorization is role and permission driven, not just route driven
+3. sensitive actions are auditable
+4. security features are separated into dedicated services so they can evolve independently
+
+## 11. Search And AI Pipeline
+
+This is one of the strongest parts to explain in an interview.
+
+### Pipeline summary
+
+1. a document is uploaded or synced from an external source
+2. OCR extracts machine-readable text if the file is scanned or image-based
+3. AI analysis identifies category, language, priority, and summary
+4. embeddings are generated from content
+5. embeddings are stored and indexed
+6. user queries are embedded and matched semantically
+7. ranked documents are returned with previews and metadata
+
+### Why semantic search matters
+
+Keyword search only works when the user knows the exact phrase. Semantic search helps when:
+
+- the user describes meaning instead of exact wording
+- documents use synonyms
+- files come from different departments with inconsistent naming
+- multilingual content appears in the same dataset
+
+## 12. Integrations Story
+
+MetroMind is not only an upload portal. It is designed as a document intake platform.
+
+### Integration categories visible in the codebase
+
+- email and IMAP-style inbox ingestion
+- SharePoint
+- Google Drive
+- webhook-based ingestion
+- Dropbox-style or file-source extensions
+- communication and enterprise tool placeholders
+
+### Why integrations matter
+
+- reduce manual upload effort
+- bring documents from systems users already work in
+- make MetroMind the central searchable layer across tools
+
+## 13. Folder Structure
+
+```text
+metromind-ai-dms/
+├── browser-extension/   # extension UI and scripts
+├── data/                # uploads, templates, generated artifacts
+├── docker/              # Docker and nginx config
+├── frontend/            # React TypeScript frontend
+├── models/              # model registry and related assets
+├── scripts/             # utility and admin scripts
+├── services/            # FastAPI backend services
+├── tests/               # backend, frontend, extension, e2e tests
+├── utils/               # shared helpers like logging and email
+├── vector_db/           # vector index persistence
+├── config.py            # centralized configuration
+├── database.py          # SQLAlchemy models and DB setup
+└── start_complete_system.py
+```
+
+## 14. Key Engineering Decisions
+
+### Why microservices-style separation?
+
+- better modularity
+- easier ownership of domains like auth, documents, search, notifications
+- easier scaling of heavy services like OCR and AI
+- cleaner future deployment path
+
+### Why PostgreSQL plus vector search instead of only one database?
+
+- transactional business data fits PostgreSQL
+- vector similarity search needs specialized indexing behavior
+- hybrid design keeps both structured and semantic workloads efficient
+
+### Why React dashboard for frontend?
+
+- many admin-style modules
+- fast iteration for enterprise UI
+- strong ecosystem for tables, charts, forms, and role-based screens
+
+## 15. Strengths Of The Project
+
+- broad real-world scope: documents, AI, integrations, workflows, security
+- strong backend domain coverage
+- practical enterprise features, not just a demo upload screen
+- good interview value because it covers architecture, data, AI, and UX together
+- codebase shows both product thinking and systems thinking
+
+## 16. Honest Gaps / Improvement Areas
+
+This section is useful in interviews because it shows engineering maturity.
+
+- some documentation files overstate or drift from the current repository structure
+- some startup scripts and configured ports are inconsistent
+- API gateway implementation appears partially in transition compared with other services
+- some modules look more production-ready than others
+- there is room to standardize orchestration, environment setup, and API contracts
+
+If an interviewer asks about this, say:
+
+"The project is functionally broad, and one of the engineering lessons was that as the platform expanded, documentation and orchestration needed consolidation. A next step would be standardizing deployment, service discovery, and cross-service contracts."
+
+## 17. How To Run The Project
+
+Because the repo contains multiple scripts and evolving service orchestration, the safest local entry points are:
+
+### Backend dependencies
+
 ```bash
-docker-compose ps
-docker-compose logs -f [service-name]
+pip install -r requirements.txt
 ```
 
-### Scaling Services
+### Frontend dependencies
 
 ```bash
-# Scale document processing
-docker-compose up -d --scale document-service=3
-
-# Scale AI/ML service  
-docker-compose up -d --scale ai-ml-service=2
+cd frontend
+npm install
 ```
 
-## 🔍 Troubleshooting
-
-### Common Issues
-
-1. **Services not starting**:
-   ```bash
-   docker-compose down
-   docker-compose up -d --force-recreate
-   ```
-
-2. **Database connection errors**:
-   ```bash
-   docker-compose exec postgres pg_isready -U metromind_user
-   ```
-
-3. **Memory issues**:
-   - Increase Docker memory allocation to 8GB+
-   - Reduce `MAX_BATCH_SIZE` in AI/ML service
-
-### Logs
+### Start the system
 
 ```bash
-# View all logs
-docker-compose logs
-
-# Follow specific service logs
-docker-compose logs -f api-gateway
-docker-compose logs -f ai-ml-service
-
-# View error logs only
-docker-compose logs | grep ERROR
+python start_complete_system.py
 ```
 
-## 🔧 Project Structure
+Alternative scripts also exist, such as:
 
-```
-metromind-mvp/
-├── services/                    # Microservices
-│   ├── api-gateway/            # API Gateway (Port 8000)
-│   ├── document-service/       # Document Management (Port 8003)
-│   ├── ocr-service/           # OCR Processing (Port 8001)
-│   ├── rag-service/           # AI Chat & Q&A (Port 8002)
-│   ├── ai-ml-service/         # ML Models (Port 8004)
-│   ├── user-service/          # Authentication (Port 8005)
-│   ├── notification-service/   # Real-time Notifications (Port 8006)
-│   └── vector-search-service/ # Semantic Search (Port 8007)
-├── shared/                     # Shared utilities
-│   ├── database.py            # Database models
-│   ├── auth.py               # Authentication utilities
-│   └── utils/               # Common utilities
-├── infrastructure/            # Infrastructure & deployment
-│   ├── docker-compose.yml    # Development orchestration
-│   ├── docker-compose.prod.yml # Production orchestration
-│   ├── deploy.ps1           # Windows deployment script
-│   ├── .env.template        # Environment variables template
-│   └── monitoring/          # Grafana, Prometheus configs
-├── frontend/                 # Web interface
-├── mobile_app/              # Flutter mobile app
-└── old-files/               # Legacy/unused files
-```
+- `python start_services.py`
+- `bash start_all.sh`
 
-## 🎯 Key Implemented Features
-
-### ✅ Complete Implementation Status
-
-**Core Services** (8/8 Implemented):
-- ✅ **API Gateway**: Request routing, authentication
-- ✅ **User Service**: JWT auth, user management, sessions
-- ✅ **Document Service**: File upload, processing pipeline
-- ✅ **OCR Service**: Multi-language text extraction
-- ✅ **AI/ML Service**: Model management, embeddings, classification
-- ✅ **RAG Service**: AI chat, document Q&A
-- ✅ **Notification Service**: WebSocket notifications, email alerts
-- ✅ **Vector Search Service**: FAISS-based semantic search
-
-**Infrastructure** (100% Complete):
-- ✅ **Docker Compose**: Full orchestration with 8 services
-- ✅ **Database**: PostgreSQL with comprehensive schema
-- ✅ **Caching**: Redis for sessions and caching
-- ✅ **Monitoring**: Prometheus, Grafana, Jaeger
-- ✅ **Load Balancing**: Nginx configuration
-
-**Security & Authentication**:
-- ✅ **JWT Authentication**: Token-based auth with refresh
-- ✅ **Password Security**: bcrypt hashing
-- ✅ **Session Management**: Redis-backed sessions
-- ✅ **Role-based Access**: Admin, employee, manager roles
-- ✅ **Audit Logging**: Complete action tracking
-
-**AI & ML Capabilities**:
-- ✅ **Multi-language OCR**: English, Malayalam, Hindi, Tamil
-- ✅ **Smart Classification**: Document type detection
-- ✅ **Semantic Search**: Vector similarity using FAISS
-- ✅ **Embeddings**: SentenceTransformers integration
-- ✅ **Model Management**: Dynamic model loading/unloading
-
-**Real-time Features**:
-- ✅ **WebSocket Notifications**: Live updates
-- ✅ **Email Alerts**: SMTP integration with templates
-- ✅ **Broadcast Messages**: Department/role-based notifications
-- ✅ **Connection Management**: Multiple user sessions
-
-## 💾 Database Schema
-
-The system uses a comprehensive PostgreSQL schema with the following key tables:
-
-- **users**: User accounts and profiles
-- **documents**: Document metadata and status
-- **ocr_jobs**: OCR processing tracking
-- **notifications**: User notifications
-- **user_sessions**: Authentication sessions
-- **ai_models**: ML model registry
-- **audit_logs**: Security and action logging
-- **vector_embeddings**: Document embeddings for search
-
-## 🔒 Security Features
-
-- **JWT Authentication** with configurable expiration
-- **bcrypt Password Hashing** with salt
-- **Rate Limiting** on API endpoints
-- **Input Validation** and sanitization
-- **Audit Logging** for all user actions
-- **Role-based Access Control**
-- **Token Blacklisting** for secure logout
-- **Session Management** with Redis
-
-## 📈 Performance Metrics
-
-### Recommended System Requirements
-
-- **Minimum**: 8GB RAM, 4 CPU cores, 20GB storage
-- **Recommended**: 16GB RAM, 8 CPU cores, 100GB SSD
-- **Production**: 32GB RAM, 16 CPU cores, 500GB SSD
-
-### Performance Targets
-
-- **Response Time**: < 2s for document upload
-- **OCR Processing**: < 30s for standard documents
-- **Search Latency**: < 500ms for vector search
-- **Memory Usage**: < 8GB total system usage
-
-## 🧪 Testing the System
-
-### Quick Functionality Test
-
-1. **Start Services**:
-   ```bash
-   cd infrastructure && docker-compose up -d
-   ```
-
-2. **Register a User**:
-   ```bash
-   curl -X POST http://localhost:8005/auth/register \
-     -H "Content-Type: application/json" \
-     -d '{"email":"test@kmrl.gov.in","password":"Test123","first_name":"Test","last_name":"User","department":"operations"}'
-   ```
-
-3. **Upload a Document**:
-   ```bash
-   # Get token from login response, then:
-   curl -X POST http://localhost:8003/documents/upload \
-     -H "Authorization: Bearer <token>" \
-     -F "file=@sample_document.pdf"
-   ```
-
-4. **Search Documents**:
-   ```bash
-   curl -X POST http://localhost:8007/search \
-     -H "Content-Type: application/json" \
-     -d '{"query":"safety procedures","limit":10}'
-   ```
-
-## 📞 Support & Maintenance
-
-### Health Monitoring
-
-All services include health check endpoints at `/health`. Monitor system health:
+### Frontend only
 
 ```bash
-# Check all services
-for service in api-gateway user-service document-service ocr-service ai-ml-service rag-service notification-service vector-search-service; do
-  echo "Checking $service..."
-  curl -s http://localhost:800$(($(echo $service | wc -c) % 8))/health | jq .status
-done
+cd frontend
+npm start
 ```
 
-### Backup Strategy
+## 18. Interview Questions And Strong Answers
 
-The system includes automated backup capabilities:
-- **Database**: PostgreSQL daily backups
-- **Documents**: File system snapshots
-- **Configuration**: Environment and Docker configs
-- **Models**: ML model versioning
+### 1. What problem does this project solve?
 
-## 📄 License
+It converts raw, scattered, and often non-searchable documents into a structured, searchable, secure knowledge system with AI-assisted processing and workflow support.
 
-This project is proprietary software developed for KMRL (Kochi Metro Rail Limited).
+### 2. Why did you choose microservices?
 
----
+Different domains like OCR, authentication, notifications, and search have different scaling and operational needs. Splitting them reduces coupling and makes the system easier to evolve.
 
-**Built with ❤️ for KMRL** - Revolutionizing document management with AI
+### 3. Why use OCR here?
+
+A large portion of enterprise documents are scans, images, or PDFs without selectable text. OCR makes them machine-readable so search, analytics, and AI can work.
+
+### 4. Why use semantic search instead of keyword search?
+
+Semantic search improves discovery when wording differs between the query and the document. It is especially useful for large archives and inconsistent file naming.
+
+### 5. Why PostgreSQL if you already have a vector database?
+
+PostgreSQL stores transactional and relational business data well. Vector search solves a different problem: similarity matching over embeddings. They complement each other.
+
+### 6. How do you handle security?
+
+JWT authentication, bcrypt password hashing, role-based permissions, audit logs, session tracking, and an extended security service for 2FA and session governance.
+
+### 7. How does the upload pipeline work?
+
+Upload -> validate -> store file -> persist metadata -> OCR -> AI analysis -> embedding generation -> vector indexing -> notify users -> expose for search and workflow.
+
+### 8. How does the system scale?
+
+Heavy workloads like OCR and AI can be scaled independently from auth or reporting. The architecture also supports future queue-based processing and container-based deployment.
+
+### 9. What was the hardest engineering part?
+
+Coordinating document lifecycle stages across services: file storage, OCR, AI enrichment, indexing, permissions, notifications, and user-facing status updates.
+
+### 10. What would you improve next?
+
+- unify service orchestration
+- standardize ports and environment handling
+- strengthen contract testing between services
+- improve deployment automation
+- formalize background job processing with queues/workers
+
+## 19. Short Interview Summary
+
+If you need a 30-second explanation, use this:
+
+"MetroMind is an AI-powered document management system built with FastAPI microservices, PostgreSQL, Redis, React, OCR, and vector search. It takes documents from uploads and external integrations, extracts and analyzes content, indexes it for semantic search, secures access with RBAC, and supports notifications, tasks, analytics, and workflow features for enterprise-scale operations."
+
+## 20. Final Takeaway
+
+MetroMind is not just a CRUD document app. It is a full platform that combines:
+
+- document lifecycle management
+- AI enrichment
+- semantic retrieval
+- enterprise security
+- collaboration and workflow support
+- cross-system integrations
+
+That combination is exactly what makes it a strong project to present in interviews.
