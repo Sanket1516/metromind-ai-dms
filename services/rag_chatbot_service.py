@@ -21,6 +21,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import get_db, Document, User, Task, DocumentCategory
+from config import get_service_url
 from utils.logging_utils import setup_logger
 
 logger = setup_logger(__name__)
@@ -55,8 +56,8 @@ class RAGChatbot:
     
     def __init__(self):
         # Service URLs
-        self.search_service_url = "http://localhost:8007"
-        self.ai_service_url = "http://localhost:8004"
+        self.search_service_url = get_service_url("search_service")
+        self.ai_service_url = get_service_url("ai_ml_service")
         
         # Chat context storage
         self.chat_sessions = {}

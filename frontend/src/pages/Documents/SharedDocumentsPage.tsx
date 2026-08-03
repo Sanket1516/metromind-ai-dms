@@ -126,12 +126,7 @@ const SharedDocumentsPage: React.FC = () => {
       } catch (err: any) {
         if (err?.response?.status === 404) {
           // Retry preserving segment
-          try {
-            await api.post(`/documents/documents/${docId}/share`, payload);
-          } catch (err2: any) {
-            // Final fallback: call document service directly
-            await api.post(`http://localhost:8012/documents/${docId}/share`, payload);
-          }
+          await api.post(`/documents/documents/${docId}/share`, payload);
         } else {
           throw err;
         }
@@ -159,11 +154,7 @@ const SharedDocumentsPage: React.FC = () => {
         await api.delete(`/documents/${item.document_id}/share/${item.id}`);
       } catch (err: any) {
         if (err?.response?.status === 404) {
-          try {
-            await api.delete(`/documents/documents/${item.document_id}/share/${item.id}`);
-          } catch (err2: any) {
-            await api.delete(`http://localhost:8012/documents/${item.document_id}/share/${item.id}`);
-          }
+          await api.delete(`/documents/documents/${item.document_id}/share/${item.id}`);
         } else {
           throw err;
         }

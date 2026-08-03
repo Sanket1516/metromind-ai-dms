@@ -19,6 +19,7 @@ import mimetypes
 import asyncio
 from pathlib import Path
 import json
+import httpx
 
 # Import our models and database
 import sys
@@ -26,9 +27,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import (
     get_db, Document, User, AuditLog, Notification, DocumentStatus, 
-    DocumentCategory, Priority, NotificationType, Permission, UserRole,SharedDocument,DocumentVersion
+    DocumentCategory, Priority, NotificationType, Permission, UserRole, SharedDocument, DocumentVersion, Task
 )
-from config import service_config, app_config, ai_config
+from config import service_config, app_config, ai_config, get_service_url
 from utils.logging_utils import setup_logger
 from services.auth_service import (
     get_current_user, require_permission, has_permission
@@ -400,11 +401,30 @@ async def extract_pdf_text(file_path: str) -> str:
         return ""
 
 async def extract_image_text(file_path: str) -> str:
-    """Extract text from image using OCR (placeholder)"""
+    """Extract text from image using the OCR service when available."""
     try:
-        # This would call the OCR service in a real implementation
-        # For now, return placeholder
-        return f"[OCR processing needed for {file_path}]"
+        ocr_url = f"{get_service_url('ocr_service')}/extract-text"
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            with open(file_path, "rb") as image_file:
+                response = await client.post(
+                    ocr_url,
+                    files={
+                        "file": (
+                            Path(file_path).name,
+                            image_file,
+                            mimetypes.guess_type(file_path)[0] or "application/octet-stream",
+                        )
+                    },
+                    data={
+                        "languages": json.dumps(["en", "ml"]),
+                        "preprocess": "true",
+                        "method": "hybrid",
+                    },
+                )
+
+        response.raise_for_status()
+        payload = response.json()
+        return payload.get("extracted_text", "") or ""
     except Exception as e:
         logger.error(f"Error extracting image text: {e}")
         return ""
@@ -590,41 +610,31 @@ async def upload_document(
         
         # Create associated task for document processing
         try:
-            # Import task service models
-            import requests
-            from config import service_config
-            
-            # Create task for document processing
-            task_data = {
-                "title": f"Process Document: {file.filename}",
-                "description": f"Automated processing task for uploaded document '{file.filename}'. Includes text extraction, classification, and analysis.",
-                "document_id": str(document.id),
-                "assigned_to": str(current_user.id),  # Assign to uploader initially
-                "priority": priority_enum.value,
-                "category": category.value if category else "Document Processing",
-                "task_type": "DOCUMENT_PROCESS",
-                "tags": tag_list + ["auto-generated", "document-processing"],
-                "task_metadata": {
+            task = Task(
+                title=f"Process Document: {file.filename}",
+                description=(
+                    f"Automated processing task for uploaded document '{file.filename}'. "
+                    "Includes text extraction, classification, and analysis."
+                ),
+                document_id=document.id,
+                assigned_to=current_user.id,
+                assigned_by=current_user.id,
+                priority=priority_enum,
+                status="PENDING",
+                category=category.value if category else "document_processing",
+                tags=tag_list + ["auto-generated", "document-processing"],
+                task_metadata={
                     "auto_generated": True,
+                    "task_type": "DOCUMENT_PROCESS",
                     "document_filename": file.filename,
                     "file_size": file_size,
-                    "mime_type": mime_type or 'application/octet-stream'
-                }
-            }
-            
-            # Call task service to create task
-            task_response = requests.post(
-                f"http://localhost:{service_config.get('task_service', {}).get('port', 8004)}/tasks",
-                json=task_data,
-                headers={"Authorization": f"Bearer {current_user.username}"}  # Pass user context
+                    "mime_type": mime_type or "application/octet-stream",
+                },
             )
-            
-            if task_response.status_code == 200:
-                task_id = task_response.json().get("id")
-                logger.info(f"Created processing task {task_id} for document {document.id}")
-            else:
-                logger.warning(f"Failed to create task for document {document.id}: {task_response.text}")
-                
+            db.add(task)
+            db.commit()
+            db.refresh(task)
+            logger.info(f"Created processing task {task.id} for document {document.id}")
         except Exception as task_error:
             logger.error(f"Error creating task for document {document.id}: {task_error}")
             # Don't fail the upload if task creation fails

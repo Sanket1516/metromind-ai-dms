@@ -169,6 +169,7 @@ check_disk() {
     python3 -c "
 import psutil
 import sys
+import os
 
 try:
     # Check main disk usage

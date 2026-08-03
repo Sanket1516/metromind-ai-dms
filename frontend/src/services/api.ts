@@ -3,6 +3,25 @@ import axios, { AxiosInstance, AxiosProgressEvent, AxiosRequestConfig, AxiosResp
 // API Configuration
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8010';
 
+const resolveWebSocketBaseUrl = (): string => {
+  const configured = process.env.REACT_APP_WS_BASE_URL;
+  if (configured) {
+    return configured;
+  }
+
+  if (API_BASE_URL.startsWith('https://')) {
+    return API_BASE_URL.replace(/^https:\/\//, 'wss://');
+  }
+
+  if (API_BASE_URL.startsWith('http://')) {
+    return API_BASE_URL.replace(/^http:\/\//, 'ws://');
+  }
+
+  return 'ws://localhost:8010';
+};
+
+const WEBSOCKET_BASE_URL = resolveWebSocketBaseUrl();
+
 // Service URLs (through API Gateway on 8010)
 export const SERVICE_URLS = {
   // Note: Gateway proxies to services; keep root paths consistent with backend
@@ -22,7 +41,7 @@ export const SERVICE_URLS = {
 
 // WebSocket URLs through API Gateway (8010)
 export const WEBSOCKET_URLS = {
-  NOTIFICATIONS: `ws://localhost:8010/ws/notifications`,
+  NOTIFICATIONS: `${WEBSOCKET_BASE_URL}/ws/notifications`,
 };
 
 // Error message handler - can be overridden by toast context

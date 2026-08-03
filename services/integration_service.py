@@ -55,7 +55,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import get_db, User, Integration, Document, AnalyticsRecord
-from config import service_config, integration_config
+from config import service_config, integration_config, get_service_url
 from utils.logging_utils import setup_logger
 
 # Setup
@@ -214,9 +214,14 @@ app.add_middleware(
 class BaseIntegrationProcessor:
     """Base class for integration processors"""
     
-    def __init__(self, integration: Integration):
+    def __init__(self, integration: Union[Integration, BaseModel]):
         self.integration = integration
-        self.config = integration.config
+        if hasattr(integration, "config"):
+            self.config = integration.config
+        elif hasattr(integration, "model_dump"):
+            self.config = integration.model_dump(exclude_none=True)
+        else:
+            self.config = dict(integration)
         
     async def test_connection(self) -> Dict[str, Any]:
         """Test the integration connection"""
@@ -406,7 +411,7 @@ class EmailIMAPProcessor(BaseIntegrationProcessor):
             import os
             import hashlib
             from pathlib import Path
-            from database import get_db, Document, DocumentCategory, Priority
+            from database import get_db, Document, DocumentCategory, Priority, DocumentStatus
             
             # Get file content
             file_content = part.get_payload(decode=True)
@@ -427,8 +432,11 @@ class EmailIMAPProcessor(BaseIntegrationProcessor):
             # Create document record
             db = next(get_db())
             
+            uploader_id = getattr(self.integration, "user_id", None)
+            if not uploader_id:
+                raise ValueError("Integration user_id is required to save imported documents")
+
             document = Document(
-                id=str(uuid.uuid4()),
                 filename=unique_filename,
                 original_filename=filename,
                 file_path=str(file_path),
@@ -439,9 +447,9 @@ class EmailIMAPProcessor(BaseIntegrationProcessor):
                 description=f"From email: {subject}\nSender: {sender}\nDate: {date_str}",
                 category=DocumentCategory.GENERAL,
                 priority=Priority.MEDIUM,
-                uploaded_by="email_integration",
+                uploaded_by=uploader_id,
                 created_at=datetime.now(timezone.utc),
-                status="PROCESSING"
+                status=DocumentStatus.PROCESSING
             )
             
             db.add(document)
@@ -462,7 +470,7 @@ class EmailIMAPProcessor(BaseIntegrationProcessor):
         try:
             import hashlib
             from pathlib import Path
-            from database import get_db, Document, DocumentCategory, Priority
+            from database import get_db, Document, DocumentCategory, Priority, DocumentStatus
             
             # Create text file
             text_content = f"Subject: {subject}\nFrom: {sender}\nDate: {date_str}\n\n{content}"
@@ -481,8 +489,11 @@ class EmailIMAPProcessor(BaseIntegrationProcessor):
             # Create document record
             db = next(get_db())
             
+            uploader_id = getattr(self.integration, "user_id", None)
+            if not uploader_id:
+                raise ValueError("Integration user_id is required to save imported documents")
+
             document = Document(
-                id=str(uuid.uuid4()),
                 filename=filename,
                 original_filename=f"Email: {subject}",
                 file_path=str(file_path),
@@ -494,9 +505,9 @@ class EmailIMAPProcessor(BaseIntegrationProcessor):
                 description=f"Sender: {sender}\nDate: {date_str}",
                 category=DocumentCategory.GENERAL,
                 priority=Priority.MEDIUM,
-                uploaded_by="email_integration",
+                uploaded_by=uploader_id,
                 created_at=datetime.now(timezone.utc),
-                status="PROCESSING"
+                status=DocumentStatus.PROCESSING
             )
             
             db.add(document)
@@ -962,9 +973,10 @@ class IntegrationManager:
     
     def get_processor(self, integration: Integration) -> BaseIntegrationProcessor:
         """Get processor for integration type"""
-        processor_class = self.processors.get(integration.integration_type)
+        integration_type = getattr(integration, "integration_type", None) or getattr(integration, "type", None)
+        processor_class = self.processors.get(integration_type)
         if not processor_class:
-            raise ValueError(f"No processor available for integration type: {integration.integration_type}")
+            raise ValueError(f"No processor available for integration type: {integration_type}")
         
         return processor_class(integration)
     
@@ -1055,12 +1067,12 @@ class SyncScheduler:
                 logger.error(f"Integration {integration_id} not found")
                 return
             
-            logger.info(f"Background sync started for integration {integration_id} ({integration.integration_type})")
+            logger.info(f"Background sync started for integration {integration_id} ({integration.type})")
             
             # Get the appropriate processor
             processor = integration_manager.get_processor(integration)
             if not processor:
-                logger.error(f"No processor found for integration type {integration.integration_type}")
+                logger.error(f"No processor found for integration type {integration.type}")
                 return
             
             # Perform the sync
@@ -1110,7 +1122,7 @@ class SyncScheduler:
                     # Call AI/ML service for document processing
                     async with httpx.AsyncClient() as client:
                         ai_response = await client.post(
-                            f"http://localhost:8004/process_document",
+                            f"{get_service_url('ai_ml_service')}/analyze-document",
                             json={"document_id": doc_id},
                             timeout=30
                         )
@@ -1121,12 +1133,24 @@ class SyncScheduler:
                             logger.warning(f"AI processing failed for document {doc_id}")
                     
                     # Call notification service to notify users
-                    async with httpx.AsyncClient() as client:
-                        notification_response = await client.post(
-                            f"http://localhost:8006/auto_notify_document",
-                            json={"document_id": doc_id, "source": integration.integration_type},
-                            timeout=10
-                        )
+                    if integration.user_id:
+                        async with httpx.AsyncClient() as client:
+                            await client.post(
+                                f"{get_service_url('notification_service')}/notifications",
+                                json={
+                                    "user_id": str(integration.user_id),
+                                    "title": "Imported document ready",
+                                    "message": f"A document from {integration.type} has been imported and processed.",
+                                    "notification_type": "integration_status",
+                                    "priority": "medium",
+                                    "channels": ["in_app"],
+                                    "metadata": {
+                                        "document_id": str(doc_id),
+                                        "source": integration.type.value if hasattr(integration.type, "value") else str(integration.type)
+                                    }
+                                },
+                                timeout=10
+                            )
                         
                 except Exception as e:
                     logger.error(f"Error processing document {doc_id}: {e}")
@@ -1185,7 +1209,7 @@ async def setup_automation(
         if email_config:
             email_integration = Integration(
                 user_id=None,  # Global integration
-                integration_type=IntegrationType.EMAIL_IMAP,
+                type=IntegrationType.IMAP_EMAIL,
                 name="Email Automation",
                 config=await encrypt_config(email_config),
                 status=IntegrationStatus.ACTIVE,
@@ -1203,7 +1227,7 @@ async def setup_automation(
         if whatsapp_config:
             whatsapp_integration = Integration(
                 user_id=None,  # Global integration
-                integration_type=IntegrationType.WHATSAPP_BUSINESS,
+                type=IntegrationType.WHATSAPP,
                 name="WhatsApp Automation",
                 config=await encrypt_config(whatsapp_config),
                 status=IntegrationStatus.ACTIVE,
@@ -1242,8 +1266,8 @@ async def create_integration(
         # Create integration
         integration = Integration(
             user_id=request.user_id if not request.is_global else None,
-            integration_type=request.integration_type,
-            name=request.config.get("name", f"{request.integration_type}_integration"),
+            type=request.integration_type,
+            name=request.config.get("name", f"{request.integration_type.value if hasattr(request.integration_type, 'value') else request.integration_type}_integration"),
             config=encrypted_config,
             status=IntegrationStatus.TESTING,
             is_global=request.is_global,
@@ -1273,7 +1297,7 @@ async def create_integration(
         return IntegrationResponse(
             id=integration.id,
             user_id=integration.user_id,
-            integration_type=integration.integration_type,
+            integration_type=integration.type,
             name=integration.name,
             status=integration.status,
             last_sync=integration.last_sync,
@@ -1306,7 +1330,7 @@ async def list_integrations(
             )
         
         if integration_type:
-            query = query.filter(Integration.integration_type == integration_type)
+            query = query.filter(Integration.type == integration_type)
         
         if status:
             query = query.filter(Integration.status == status)
@@ -1318,7 +1342,7 @@ async def list_integrations(
                 IntegrationResponse(
                     id=i.id,
                     user_id=i.user_id,
-                    integration_type=i.integration_type,
+                    integration_type=i.type,
                     name=i.name,
                     status=i.status,
                     last_sync=i.last_sync,
@@ -1354,7 +1378,7 @@ async def get_integration(
             "integration": IntegrationResponse(
                 id=integration.id,
                 user_id=integration.user_id,
-                integration_type=integration.integration_type,
+                integration_type=integration.type,
                 name=integration.name,
                 status=integration.status,
                 last_sync=integration.last_sync,

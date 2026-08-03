@@ -1,0 +1,115 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: metromind-postgres
+    environment:
+      POSTGRES_DB: metromind_db
+      POSTGRES_USER: metromind_user
+      POSTGRES_PASSWORD: MetroMind@2025
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metromind_user -d metromind_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: metromind-redis
+    command: ["redis-server", "--requirepass", "MetroRedis@2024"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "MetroRedis@2024", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: metromind-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: metromind_db
+      POSTGRES_USER: metromind_user
+      POSTGRES_PASSWORD: MetroMind@2025
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: MetroRedis@2024
+      API_GATEWAY_PORT: 8010
+      AUTH_SERVICE_PORT: 8011
+      DOCUMENT_SERVICE_PORT: 8012
+      OCR_SERVICE_PORT: 8013
+      AI_ML_SERVICE_PORT: 8014
+      SEARCH_SERVICE_PORT: 8015
+      NOTIFICATION_SERVICE_PORT: 8016
+      INTEGRATION_SERVICE_PORT: 8017
+      ANALYTICS_SERVICE_PORT: 8018
+      MODEL_DOWNLOADER_PORT: 8019
+      TASK_SERVICE_PORT: 8020
+      REALTIME_SERVICE_PORT: 8021
+      AUDIT_SERVICE_PORT: 8022
+      WORKFLOW_SERVICE_PORT: 8023
+      BACKUP_SERVICE_PORT: 8024
+      SECURITY_SERVICE_PORT: 8025
+      REPORTING_SERVICE_PORT: 8026
+      INTEGRATION_MANAGEMENT_PORT: 8027
+      WEB_FRONTEND_PORT: 3000
+    ports:
+      - "8010:8010"
+      - "8011:8011"
+      - "8012:8012"
+      - "8013:8013"
+      - "8014:8014"
+      - "8015:8015"
+      - "8016:8016"
+      - "8017:8017"
+      - "8018:8018"
+      - "8019:8019"
+      - "8020:8020"
+      - "8021:8021"
+      - "8022:8022"
+      - "8023:8023"
+      - "8024:8024"
+      - "8025:8025"
+      - "8026:8026"
+      - "8027:8027"
+      - "8028:8028"
+    volumes:
+      - app_data:/app/data
+      - model_cache:/app/models
+      - vector_data:/app/vector_db
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+      args:
+        REACT_APP_API_BASE_URL: http://localhost:8010
+        REACT_APP_WS_BASE_URL: ws://localhost:8010
+    container_name: metromind-frontend
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:
+  redis_data:
+  app_data:
+  model_cache:
+  vector_data:

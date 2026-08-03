@@ -219,6 +219,13 @@ def get_service_urls() -> Dict[str, str]:
         "web_frontend": f"http://localhost:{service_config.web_frontend_port}"
     }
 
+def get_service_url(service_name: str) -> str:
+    """Get a single service base URL by key."""
+    service_urls = get_service_urls()
+    if service_name not in service_urls:
+        raise KeyError(f"Unknown service name: {service_name}")
+    return service_urls[service_name]
+
 # Environment validation
 def validate_config():
     """Validate configuration and warn about missing required settings"""
