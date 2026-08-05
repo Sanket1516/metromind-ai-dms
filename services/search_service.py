@@ -135,6 +135,7 @@ class VectorSearchEngine:
     """Core vector search engine with multiple backends"""
     
     def __init__(self):
+        self.preload_enabled = os.getenv("PRELOAD_SEARCH_MODELS", "false").lower() == "true"
         self.embedding_model = None
         self.faiss_index = None
         self.document_ids = []  # Mapping from index position to document ID
@@ -148,11 +149,6 @@ class VectorSearchEngine:
         logger.info("Initializing vector search engine...")
         
         try:
-            # Load embedding model
-            if SENTENCE_TRANSFORMERS_AVAILABLE:
-                self.embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-                logger.info("Loaded sentence transformer model")
-            
             # Initialize vector database backends
             if FAISS_AVAILABLE:
                 await self._initialize_faiss()
@@ -162,11 +158,33 @@ class VectorSearchEngine:
             
             # Load existing index if available
             await self._load_existing_index()
+
+            if self.preload_enabled:
+                await self._ensure_embedding_model()
             
             logger.info("Vector search engine initialized successfully")
             
         except Exception as e:
             logger.error(f"Failed to initialize vector search engine: {e}")
+
+    async def _ensure_embedding_model(self):
+        """Load the embedding model only when required."""
+        if self.embedding_model is not None:
+            return self.embedding_model
+
+        if not SENTENCE_TRANSFORMERS_AVAILABLE:
+            logger.warning("SentenceTransformer is not available")
+            return None
+
+        try:
+            logger.info("Loading sentence transformer model on demand...")
+            self.embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+            logger.info("Loaded sentence transformer model")
+            return self.embedding_model
+        except Exception as e:
+            logger.error(f"Failed to load sentence transformer model: {e}")
+            self.embedding_model = None
+            return None
     
     async def _initialize_faiss(self):
         """Initialize FAISS index"""
@@ -244,7 +262,7 @@ class VectorSearchEngine:
     
     async def add_document(self, document_id: int, text: str, metadata: Dict = None):
         """Add document to vector index"""
-        if not self.embedding_model:
+        if not await self._ensure_embedding_model():
             logger.warning("No embedding model available")
             return False
         
@@ -279,7 +297,7 @@ class VectorSearchEngine:
     
     async def search(self, query: str, limit: int = 10, threshold: float = 0.7) -> List[Tuple[int, float]]:
         """Search for similar documents"""
-        if not self.embedding_model:
+        if not await self._ensure_embedding_model():
             logger.warning("No embedding model available")
             return []
         
@@ -348,7 +366,7 @@ class VectorSearchEngine:
     
     async def _rebuild_faiss_index(self):
         """Rebuild FAISS index (expensive operation)"""
-        if not FAISS_AVAILABLE or not self.embedding_model:
+        if not FAISS_AVAILABLE or not await self._ensure_embedding_model():
             return
         
         try:

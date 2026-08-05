@@ -14,6 +14,8 @@ import requests
 import logging
 from datetime import datetime
 
+from config import service_config
+
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -27,77 +29,118 @@ class MetroMindOrchestrator:
         
         # Service definitions with automation services
         self.service_definitions = {
+            "model_downloader": {
+                "script": "services/model_downloader.py",
+                "port": service_config.model_downloader_port,
+                "priority": 0,
+                "description": "Model Downloading and Caching"
+            },
             "api_gateway": {
                 "script": "services/api_gateway.py",
-                "port": 8000,
+                "port": service_config.api_gateway_port,
                 "priority": 1,
                 "description": "Central API Gateway and Routing"
             },
             "auth_service": {
                 "script": "services/auth_service.py", 
-                "port": 8005,
+                "port": service_config.auth_service_port,
                 "priority": 1,
                 "description": "Authentication and Authorization"
             },
             "document_service": {
                 "script": "services/document_service.py",
-                "port": 8003,
+                "port": service_config.document_service_port,
                 "priority": 2,
                 "description": "Document Management and Storage"
             },
             "ocr_service": {
                 "script": "services/ocr_service.py",
-                "port": 8001,
+                "port": service_config.ocr_service_port,
                 "priority": 3,
                 "description": "OCR and Image Processing"
             },
             "ai_ml_service": {
                 "script": "services/ai_ml_service.py",
-                "port": 8004,
+                "port": service_config.ai_ml_service_port,
                 "priority": 3,
                 "description": "AI/ML Processing and Analysis"
             },
             "search_service": {
                 "script": "services/search_service.py",
-                "port": 8007,
+                "port": service_config.search_service_port,
                 "priority": 4,
                 "description": "Vector Search and Semantic Search"
             },
             "notification_service": {
                 "script": "services/notification_service.py",
-                "port": 8006,
+                "port": service_config.notification_service_port,
                 "priority": 4,
                 "description": "Real-time Notifications and Alerts"
             },
             "analytics_service": {
                 "script": "services/analytics_service.py",
-                "port": 8018,
+                "port": service_config.analytics_service_port,
                 "priority": 5,
                 "description": "Analytics and Reporting"
             },
             "integration_service": {
                 "script": "services/integration_service.py",
-                "port": 8008,
+                "port": service_config.integration_service_port,
                 "priority": 5,
                 "description": "External System Integrations"
             },
-            # New automation services
-            "email_integration": {
-                "script": "services/email_integration_service.py",
-                "port": 8009,
-                "priority": 3,
-                "description": "Email Integration and Automation"
-            },
-            "task_management": {
-                "script": "services/task_management_service.py",
-                "port": 8010,
-                "priority": 2,
+            "task_service": {
+                "script": "services/task_service.py",
+                "port": service_config.task_service_port,
+                "priority": 5,
                 "description": "Task Management and Assignment"
+            },
+            "realtime_service": {
+                "script": "services/realtime_service.py",
+                "port": service_config.realtime_service_port,
+                "priority": 5,
+                "description": "Real-time Communication"
+            },
+            "audit_service": {
+                "script": "services/audit_service.py",
+                "port": service_config.audit_service_port,
+                "priority": 5,
+                "description": "Audit and Monitoring"
+            },
+            "workflow_service": {
+                "script": "services/workflow_service.py",
+                "port": service_config.workflow_service_port,
+                "priority": 5,
+                "description": "Document Workflow Automation"
+            },
+            "backup_service": {
+                "script": "services/backup_service.py",
+                "port": service_config.backup_service_port,
+                "priority": 6,
+                "description": "Backup and Recovery"
+            },
+            "security_service": {
+                "script": "services/security_service.py",
+                "port": service_config.security_service_port,
+                "priority": 6,
+                "description": "Security and Compliance"
+            },
+            "reporting_service": {
+                "script": "services/reporting_service.py",
+                "port": service_config.reporting_service_port,
+                "priority": 6,
+                "description": "Reporting and Dashboards"
+            },
+            "integration_management_service": {
+                "script": "services/integration_management_service.py",
+                "port": service_config.integration_management_port,
+                "priority": 6,
+                "description": "Integration Management"
             },
             "rag_chatbot": {
                 "script": "services/rag_chatbot_service.py",
-                "port": 8011,
-                "priority": 4,
+                "port": 8028,
+                "priority": 6,
                 "description": "RAG-based Intelligent Chatbot"
             }
         }
@@ -302,14 +345,13 @@ class MetroMindOrchestrator:
         """Print access information"""
         logger.info("\n" + "🌐 ACCESS INFORMATION")
         logger.info("="*50)
-        logger.info("🎮 Main Dashboard:     http://localhost:3000")
-        logger.info("🔗 API Gateway:       http://localhost:8000")
-        logger.info("📚 API Documentation: http://localhost:8000/docs")
-        logger.info("📊 Analytics:         http://localhost:8000/analytics/dashboard")
-        logger.info("💬 Chatbot:           http://localhost:8000/chat")
-        logger.info("📧 Email Integration: http://localhost:8009")
-        logger.info("📋 Task Management:   http://localhost:8010")
-        logger.info("🔍 Search Service:    http://localhost:8007")
+        logger.info(f"🎮 Main Dashboard:     http://localhost:{service_config.web_frontend_port}")
+        logger.info(f"🔗 API Gateway:       http://localhost:{service_config.api_gateway_port}")
+        logger.info(f"📚 API Documentation: http://localhost:{service_config.api_gateway_port}/docs")
+        logger.info(f"📊 Analytics:         http://localhost:{service_config.api_gateway_port}/analytics/dashboard")
+        logger.info("💬 Chatbot:           http://localhost:8028/chat")
+        logger.info(f"📋 Task Management:   http://localhost:{service_config.task_service_port}")
+        logger.info(f"🔍 Search Service:    http://localhost:{service_config.search_service_port}")
         logger.info("="*50)
         
         logger.info("\n🎯 AUTOMATION FEATURES ACTIVE:")

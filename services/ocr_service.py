@@ -18,12 +18,17 @@ import tempfile
 from pathlib import Path
 import logging
 import uuid
+import threading
 
 # OCR libraries
 import pytesseract
+ENABLE_EASYOCR = os.getenv("ENABLE_EASYOCR", "false").lower() == "true"
 try:
-    import easyocr
-    EASYOCR_AVAILABLE = True
+    if ENABLE_EASYOCR:
+        import easyocr
+        EASYOCR_AVAILABLE = True
+    else:
+        EASYOCR_AVAILABLE = False
 except ImportError:
     EASYOCR_AVAILABLE = False
     print("EasyOCR not available - falling back to Tesseract only")
@@ -53,16 +58,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize EasyOCR reader if available
+# Lazy EasyOCR initialization so startup does not block on model downloads.
 EASYOCR_READER = None
-if EASYOCR_AVAILABLE:
-    try:
-        # Initialize with supported languages and disable verbose output
-        EASYOCR_READER = easyocr.Reader(['en'], gpu=False, verbose=False)
-        logger.info("EasyOCR initialized with multi-language support")
-    except Exception as e:
-        logger.warning(f"Failed to initialize EasyOCR: {e}")
-        EASYOCR_READER = None
+EASYOCR_LOCK = threading.Lock()
+EASYOCR_MODEL_DIR = os.getenv("EASYOCR_MODEL_DIR", "/app/models/easyocr")
 
 # Pydantic models
 class OCRRequest(BaseModel):
@@ -111,7 +110,7 @@ class OCRProcessor:
     
     def __init__(self):
         self.tesseract_available = self._check_tesseract()
-        self.easyocr_available = EASYOCR_AVAILABLE and EASYOCR_READER is not None
+        self.easyocr_available = EASYOCR_AVAILABLE
         if os.name == 'nt':
             tesseract_paths = [
                 r'C:\Program Files\Tesseract-OCR\tesseract.exe',
@@ -134,6 +133,35 @@ class OCRProcessor:
             self.spellchecker = SpellChecker()
         except ImportError:
             self.spellchecker = None
+
+    def _get_easyocr_reader(self):
+        """Create the EasyOCR reader only when OCR actually needs it."""
+        global EASYOCR_READER
+
+        if not EASYOCR_AVAILABLE:
+            return None
+
+        if EASYOCR_READER is not None:
+            return EASYOCR_READER
+
+        with EASYOCR_LOCK:
+            if EASYOCR_READER is not None:
+                return EASYOCR_READER
+
+            try:
+                Path(EASYOCR_MODEL_DIR).mkdir(parents=True, exist_ok=True)
+                EASYOCR_READER = easyocr.Reader(
+                    ['en'],
+                    gpu=False,
+                    verbose=False,
+                    model_storage_directory=EASYOCR_MODEL_DIR,
+                )
+                logger.info(f"EasyOCR initialized with cache dir: {EASYOCR_MODEL_DIR}")
+                return EASYOCR_READER
+            except Exception as e:
+                logger.warning(f"Failed to initialize EasyOCR: {e}")
+                EASYOCR_READER = None
+                return None
     
     def _check_tesseract(self) -> bool:
         """Check if Tesseract is available"""
@@ -256,7 +284,8 @@ class OCRProcessor:
     
     async def extract_text_easyocr(self, image: np.ndarray, languages: List[str]) -> Tuple[str, float, List[Dict]]:
         """Extract text using EasyOCR"""
-        if not self.easyocr_available:
+        reader = self._get_easyocr_reader()
+        if reader is None:
             raise Exception("EasyOCR is not available")
         
         try:
@@ -270,7 +299,7 @@ class OCRProcessor:
                 easyocr_langs = ['en']  # Default to English
             
             # Perform OCR
-            results = EASYOCR_READER.readtext(image, detail=1)
+            results = reader.readtext(image, detail=1)
             text_parts = []
             lines = []
             total_confidence = 0.0

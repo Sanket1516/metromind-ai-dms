@@ -50,8 +50,10 @@ const RegisterPage: React.FC = () => {
       const { confirmPassword, firstName, lastName, phoneNumber, ...rest } = formData;
       const registrationData: RegisterData = {
         ...rest,
-        full_name: `${firstName} ${lastName}`,
-        role: 'user'
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+        department: formData.department.trim(),
+        phone: phoneNumber.trim() || undefined,
       };
       await register(registrationData);
       // Show success message and redirect to login

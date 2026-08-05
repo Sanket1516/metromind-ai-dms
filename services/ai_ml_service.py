@@ -122,6 +122,7 @@ class AIModelManager:
     """Manages AI/ML models with lazy loading"""
     
     def __init__(self):
+        self.preload_enabled = os.getenv("PRELOAD_AI_MODELS", "false").lower() == "true"
         self.models = {}
         self.model_configs = {
             'sentence_transformer': {
@@ -142,8 +143,9 @@ class AIModelManager:
             }
         }
         
-        # Pre-load essential models at startup
-        self._preload_essential_models()
+        # Keep startup fast unless the operator explicitly opts in.
+        if self.preload_enabled:
+            self._preload_essential_models()
         
     def _preload_essential_models(self):
         """Pre-load models that are essential for basic functionality"""

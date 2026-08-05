@@ -68,6 +68,13 @@ services:
       REPORTING_SERVICE_PORT: 8026
       INTEGRATION_MANAGEMENT_PORT: 8027
       WEB_FRONTEND_PORT: 3000
+      EASYOCR_MODEL_DIR: /app/models/easyocr
+      ENABLE_EASYOCR: "false"
+      HF_HOME: /app/models/huggingface
+      TRANSFORMERS_CACHE: /app/models/huggingface
+      SENTENCE_TRANSFORMERS_HOME: /app/models/huggingface
+      PRELOAD_AI_MODELS: "false"
+      PRELOAD_SEARCH_MODELS: "false"
     ports:
       - "8010:8010"
       - "8011:8011"
@@ -103,7 +110,7 @@ services:
     container_name: metromind-frontend
     depends_on:
       backend:
-        condition: service_started
+        condition: service_healthy
     ports:
       - "3000:3000"
 

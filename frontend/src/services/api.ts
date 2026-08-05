@@ -130,13 +130,23 @@ api.interceptors.response.use(
   },
   (error) => {
     const { response } = error;
+    const requestUrl = (error?.config?.url || '').toString();
+    const normalizedPath = requestUrl.replace(/^https?:\/\/[^/]+/i, '');
+    const isAuthAttempt = ['/login', '/auth/login', '/register', '/auth/register'].some((path) =>
+      normalizedPath === path || normalizedPath.startsWith(`${path}?`)
+    );
     
     if (response?.status === 401) {
-      // Unauthorized - clear token and redirect to login
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
-      showError('Session expired. Please log in again.');
+      if (isAuthAttempt) {
+        // Let the login/register form show backend credential/approval errors.
+        showError(toErrorMessage(error));
+      } else {
+        // Unauthorized on protected endpoints - clear auth state and redirect.
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+        showError('Session expired. Please log in again.');
+      }
     } else if (response?.status === 403) {
       showError('Access denied. You do not have permission to perform this action.');
     } else if (response?.status >= 500) {
@@ -150,7 +160,7 @@ api.interceptors.response.use(
     } else if (error.code === 'ECONNABORTED') {
       showError('Request timeout. Please try again.');
     } else if (error.message === 'Network Error') {
-      showError('Network error. Please check your connection.');
+      showError('Unable to reach the MetroMind API gateway. Make sure the Docker backend is running and try again.');
     } else if (error.message) {
       showError(error.message);
     } else {

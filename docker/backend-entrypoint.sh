@@ -36,6 +36,6 @@ do
   sleep 2
 done
 
-mkdir -p /app/data/uploads /app/data/temp /app/data/processed /app/data/logs /app/models/cache /app/vector_db
+mkdir -p /app/data/uploads /app/data/temp /app/data/processed /app/data/logs /app/models/cache /app/models/easyocr /app/models/huggingface /app/models/search /app/vector_db
 
 exec python start_services.py

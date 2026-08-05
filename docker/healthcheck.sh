@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # MetroMind Backend Health Check Script
 # Comprehensive health monitoring for all backend services

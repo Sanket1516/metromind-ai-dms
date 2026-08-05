@@ -596,11 +596,11 @@ async def root():
 if __name__ == "__main__":
     import uvicorn
     
-    logger.info(f"Starting Task Management service on port {service_config.model_downloader_port + 1}")
+    logger.info(f"Starting Task Management service on port {service_config.task_service_port}")
     
     uvicorn.run(
         app,
         host="0.0.0.0",
-        port=service_config.model_downloader_port + 1,  # Use port 8020
+        port=service_config.task_service_port,
         log_level="info"
     )

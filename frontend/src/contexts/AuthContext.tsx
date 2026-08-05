@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { apiClient } from '../services/api';
+import { apiClient, toErrorMessage } from '../services/api';
 import { toast } from 'react-toastify';
-import { UserUpdateData, UserSettings } from '../types/auth';
+import { RegisterData, UserUpdateData, UserSettings } from '../types/auth';
 
 // Types
 export interface User {
@@ -31,14 +31,6 @@ export interface AuthContextType {
   updateProfile: (data: UserUpdateData) => Promise<void>;
   updateUserSettings: (settings: Partial<UserSettings>) => Promise<void>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
-}
-
-export interface RegisterData {
-  username: string;
-  email: string;
-  password: string;
-  full_name: string;
-  role?: string;
 }
 
 // Create context
@@ -104,14 +96,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       toast.success('Login successful!');
     } catch (error: any) {
       console.error('Login error:', error);
-      
-      if (error.response?.data?.detail) {
-        toast.error(error.response.data.detail);
-      } else {
-        toast.error('Login failed. Please check your credentials.');
-      }
-      
-      throw error;
+
+      const message = toErrorMessage(error) || 'Login failed. Please check your credentials.';
+      toast.error(message);
+
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -129,14 +118,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Don't automatically log in after registration as approval is required
     } catch (error: any) {
       console.error('Registration error:', error);
-      
-      if (error.response?.data?.detail) {
-        toast.error(error.response.data.detail);
-      } else {
-        toast.error('Registration failed. Please try again.');
-      }
-      
-      throw error;
+
+      const message = toErrorMessage(error) || 'Registration failed. Please try again.';
+      toast.error(message);
+
+      throw new Error(message);
     } finally {
       setLoading(false);
     }

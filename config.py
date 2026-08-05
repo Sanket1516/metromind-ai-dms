@@ -41,7 +41,7 @@ class ServiceConfig:
     security_service_port: int = int(os.getenv("SECURITY_SERVICE_PORT", "8025"))
     reporting_service_port: int = int(os.getenv("REPORTING_SERVICE_PORT", "8026"))
     integration_management_port: int = int(os.getenv("INTEGRATION_MANAGEMENT_PORT", "8027"))
-    web_frontend_port: int = int(os.getenv("WEB_FRONTEND_PORT", "3001"))  # Non-default port
+    web_frontend_port: int = int(os.getenv("WEB_FRONTEND_PORT", "3000"))
 
 @dataclass
 class NotificationConfig:

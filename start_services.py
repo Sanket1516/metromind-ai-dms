@@ -64,7 +64,7 @@ SERVICES = [
     {
         'name': 'Task Management Service',
         'script': 'services/task_service.py',
-        'port': service_config.model_downloader_port + 1,  # Port 8020
+        'port': service_config.task_service_port,
         'essential': True,
         'dependencies': ['Auth Service']
     },
